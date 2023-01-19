@@ -26,15 +26,15 @@ public class FindNextPrime implements Runnable {
                 primeCheck++;
             }
         }
-        try {
-            if(m_lockSupplier.get().tryLock(10, TimeUnit.MILLISECONDS)){
+//        try {
+//            if(m_lockSupplier.get().tryLock(10, TimeUnit.MILLISECONDS)){
                 m_mapSupplier.get().put(m_primeKey, primeCheck);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }finally{
-            m_lockSupplier.get().unlock();
-        }
+//            }
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }finally{
+//            m_lockSupplier.get().unlock();
+//        }
     }
     public boolean isPrime(long n) {
         for (long i = 2; i <= Math.sqrt(n); i++) {

@@ -2,6 +2,7 @@ package com.j4.alon;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -20,10 +21,16 @@ public class Primes {
             m_pool.submit(new FindNextPrime(i + 1, start, () -> m_map, () -> m_lock));
         }
         m_pool.shutdown();
+        try {
+            m_pool.awaitTermination(1000, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
     public void printRangePrimes(int start, int end) {
         for (int i = start; i < end + 1; i++) {
             System.out.println(m_map.get(i));
         }
+        m_map.forEach((Integer, Long) -> System.out.println(Integer + " " + Long));
     }
 }
