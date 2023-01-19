@@ -19,7 +19,7 @@ public class Primes {
         for (int i = 0; i < howMany; i++) {
             m_pool.submit(new FindNextPrime(i + 1, start, () -> m_map, () -> m_lock));
         }
-        m_pool.close();
+        m_pool.shutdown();
     }
     public void printRangePrimes(int start, int end) {
         for (int i = start; i < end + 1; i++) {

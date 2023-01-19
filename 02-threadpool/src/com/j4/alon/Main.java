@@ -9,6 +9,6 @@ public class Main {
         var primes = new Primes(pool);
         primes.calculatePrimes(1000, 5000);
 
-        primes.printRangePrimes(0, 50);
+        primes.printRangePrimes(1, 50);
     }
 }
