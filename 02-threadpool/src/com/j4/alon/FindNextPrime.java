@@ -10,14 +10,16 @@ public class FindNextPrime implements Runnable {
     private final int m_primeKey;
     private final Supplier<Map<Integer, Long>> m_mapSupplier;
     private final Supplier<Lock> m_lockSupplier;
-    public FindNextPrime(int primeKey, Supplier<Map<Integer, Long>> mapConsumer, Supplier<Lock> lockSupplier) {
+    private final long m_start;
+    public FindNextPrime(int primeKey, long start, Supplier<Map<Integer, Long>> mapConsumer, Supplier<Lock> lockSupplier) {
         this.m_primeKey = primeKey;
         this.m_mapSupplier = mapConsumer;
         this.m_lockSupplier = lockSupplier;
+        this.m_start = start;
     }
     @Override
     public void run() {
-        long primeCheck = 4999;
+        long primeCheck = m_start - 1;
         for (int i = 0; i < m_primeKey; i++) {
             primeCheck++;
             while (!isPrime(primeCheck)) {

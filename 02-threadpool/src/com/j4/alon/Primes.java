@@ -1,5 +1,4 @@
 package com.j4.alon;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -16,9 +15,9 @@ public class Primes {
         this.m_lock = new ReentrantLock();
     }
 
-    public void calculatePrimes() {
-        for (int i = 0; i < 1000; i++) {
-            m_pool.submit(new FindNextPrime(i + 1, () -> m_map, () -> m_lock));
+    public void calculatePrimes(int howMany, long start) {
+        for (int i = 0; i < howMany; i++) {
+            m_pool.submit(new FindNextPrime(i + 1, start, () -> m_map, () -> m_lock));
         }
         m_pool.close();
     }

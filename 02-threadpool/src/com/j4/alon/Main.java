@@ -7,8 +7,8 @@ public class Main {
         ExecutorService pool = Executors.newFixedThreadPool(4);
         //ExecutorService pool2 = new ThreadPoolExecutor(4, 4, 10, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         var primes = new Primes(pool);
-        primes.calculatePrimes();
+        primes.calculatePrimes(1000, 5000);
 
-        primes.printRangePrimes(1, 50);
+        primes.printRangePrimes(0, 50);
     }
 }
