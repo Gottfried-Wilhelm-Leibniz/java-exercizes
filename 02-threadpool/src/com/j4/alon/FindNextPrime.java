@@ -1,47 +1,36 @@
 package com.j4.alon;
-
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.Lock;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class FindNextPrime implements Runnable {
     private final int m_primeKey;
-    private final Supplier<Map<Integer, Long>> m_mapSupplier;
-    private final Supplier<Lock> m_lockSupplier;
+    private final Map<Integer, Long> m_map;
+    private final Lock m_lock;
+    private final CountDownLatch m_countDownLatch;
+    private final PrimeCalculation m_primeCalculation;
     private final long m_start;
-    public FindNextPrime(int primeKey, long start, Supplier<Map<Integer, Long>> mapConsumer, Supplier<Lock> lockSupplier) {
-        this.m_primeKey = primeKey;
-        this.m_mapSupplier = mapConsumer;
-        this.m_lockSupplier = lockSupplier;
-        this.m_start = start;
+    public FindNextPrime(int primeKey, long start, Map<Integer, Long> map, Lock lock, CountDownLatch countDownLatch, PrimeCalculation primeCalculation) {
+        m_primeKey = primeKey;
+        m_map = map;
+        m_lock = lock;
+        m_start = start;
+        m_countDownLatch = countDownLatch;
+        m_primeCalculation = primeCalculation;
     }
     @Override
     public void run() {
-        long primeCheck = m_start - 1;
-        for (int i = 0; i < m_primeKey; i++) {
-            primeCheck++;
-            while (!isPrime(primeCheck)) {
-                primeCheck++;
-            }
-        }
-//        try {
-//            if(m_lockSupplier.get().tryLock(10, TimeUnit.MILLISECONDS)){
-                m_mapSupplier.get().put(m_primeKey, primeCheck);
-//            }
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }finally{
-//            m_lockSupplier.get().unlock();
-//        }
+        long nextPrime = m_primeCalculation.findPrime(m_primeKey, m_start);
+        putPrime(nextPrime);
+        m_countDownLatch.countDown();
     }
-    public boolean isPrime(long n) {
-        for (long i = 2; i <= Math.sqrt(n); i++) {
-            if (n % i == 0) {
-                return false;
-            }
+
+    private void putPrime(long nextPrime) {
+        m_lock.lock();
+        try {
+            m_map.put(m_primeKey, nextPrime);
+        } finally{
+            m_lock.unlock();
         }
-        return true;
     }
 }

@@ -1,36 +1,30 @@
 package com.j4.alon;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Primes {
     private final ExecutorService m_pool;
-    private final Map<Integer,Long> m_map = new HashMap<>(1000);
-    private final Lock m_lock;
-
-    public Primes(ExecutorService mPool) {
-        m_pool = mPool;
-        this.m_lock = new ReentrantLock();
+    private final PrimeCalculation m_calculationsPrime;
+    public Primes(ExecutorService pool, PrimeCalculation primeCalculation) {
+        m_pool = pool;
+        m_calculationsPrime = primeCalculation;
     }
 
-    public void calculatePrimes(int howMany, long start) {
+    public Map<Integer, Long> calculatePrimes(int howMany, long start) {
+        final Map<Integer,Long> map = new HashMap<>(howMany);
+        final var countDownLatch = new CountDownLatch(howMany);
+        final var lock = new ReentrantLock();
         for (int i = 0; i < howMany; i++) {
-            m_pool.submit(new FindNextPrime(i + 1, start, () -> m_map, () -> m_lock));
+            m_pool.submit(new FindNextPrime(i + 1, start, map, lock, countDownLatch, m_calculationsPrime));
         }
-        m_pool.shutdown();
         try {
-            m_pool.awaitTermination(1000, TimeUnit.MILLISECONDS);
+            countDownLatch.await();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-    }
-    public void printRangePrimes(int start, int end) {
-        for (int i = start; i < end + 1; i++) {
-            System.out.println(m_map.get(i));
-        }
-        m_map.forEach((Integer, Long) -> System.out.println(Integer + " " + Long));
+        return map;
     }
 }
