@@ -26,7 +26,6 @@ class DiscTest {
     }
     @BeforeEach
     public void before() {
-        //filePath = folder.resolve("disc-01.dsk");
         filePath = Path.of(folder.toString());
     }
 
@@ -70,17 +69,6 @@ class DiscTest {
                         throw new RuntimeException(e);
                     }
                 });
-//        if (Files.exists(folder)) {
-//            try (Stream<Path> walk = Files.walk(folder)) {
-//                walk.forEach(path1 -> {
-//                    try {
-//                        Files.delete(path1);
-//                    } catch (IOException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                });
-//            }
-//        }
         Files.deleteIfExists(filePath);
         Files.createDirectory(folder);
     }

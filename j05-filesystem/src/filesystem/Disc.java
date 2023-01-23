@@ -2,7 +2,6 @@ package filesystem;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
@@ -22,20 +21,20 @@ public class Disc {
     public int getM_blockSize() {
         return m_blockSize;
     }
-
-    //private final RandomAccessFile m_randomAccessFile;
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock m_readLock = lock.readLock();
     private final Lock m_writeLock = lock.writeLock();
     private final AtomicBoolean m_isClosed = new AtomicBoolean();
-    private final SeekableByteChannel m_seekable;
+    private final SeekableByteChannel m_seekableRead;
+    private final SeekableByteChannel m_seekableWrite;
     public Disc(Path path, int discNum, int numBlocks, int blockSize) throws IOException {
         m_numBlocks = numBlocks;
         m_blockSize = blockSize;
         Path fileName = Paths.get("disk-" + discNum + ".dsk");
         var file = new File(path.resolve(fileName).toString());
         file.createNewFile();
-        m_seekable = Files.newByteChannel(path.resolve(fileName));
+        m_seekableRead = Files.newByteChannel(path.resolve(fileName), StandardOpenOption.READ);
+        m_seekableWrite = Files.newByteChannel(path.resolve(fileName), StandardOpenOption.WRITE);
     }
 
     public void read(int blockNum, byte[] buffer) throws IOException {
@@ -50,9 +49,8 @@ public class Disc {
         }
         m_readLock.lock();
         try {
-            //var readBuff = ByteBuffer.wrap(buffer,0, m_blockSize);
-            m_seekable.position(blockNum * m_blockSize);
-            m_seekable.read(ByteBuffer.wrap(buffer, 0, m_blockSize));
+            m_seekableRead.position(blockNum * m_blockSize);
+            m_seekableRead.read(ByteBuffer.wrap(buffer, 0, m_blockSize));
         } finally {
             m_readLock.unlock();
         }
@@ -67,9 +65,8 @@ public class Disc {
         }
         m_writeLock.lock();
         try {
-            m_seekable.position(blockNum * m_blockSize);
-
-            m_seekable.write(ByteBuffer.wrap(buffer));
+            m_seekableWrite.position(blockNum * m_blockSize);
+            m_seekableWrite.write(ByteBuffer.wrap(buffer));
         } finally {
             m_writeLock.lock();
         }
