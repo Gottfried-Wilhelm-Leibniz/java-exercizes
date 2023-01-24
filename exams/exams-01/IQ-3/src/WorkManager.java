@@ -1,7 +1,15 @@
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CollectionQ<T> {
+public class WorkManager<T> {
     private final ConcurrentHashMap<String,T> m_map = new ConcurrentHashMap<>();
+    private final ArrayBlockingQueue<T[]> m_q = new ArrayBlockingQueue<>(100, true);
+
+    public WorkManager() {
+        var t = new Thread(new PoolWorker(m_q, this));
+        t.start();
+    }
+
     public void add(T t) {
         m_map.put(Thread.currentThread().getName(), t);
     }

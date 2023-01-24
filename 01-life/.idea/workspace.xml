@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7fb60afa-b1f6-4d97-b3fd-bd80f34b65e4" name="Changes" comment="after fixing mohamad review" />
+    <list default="true" id="7fb60afa-b1f6-4d97-b3fd-bd80f34b65e4" name="Changes" comment="after fixing mohamad review">
+      <change beforePath="$PROJECT_DIR$/../03-ThreadPoolMaxNum" beforeDir="false" afterPath="$PROJECT_DIR$/../03-ThreadPoolMaxNum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../exams/exams-01/IQ-3/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../exams/exams-01/IQ-3/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../exams/exams-01/IQ-3/src/AddToPull.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../exams/exams-01/IQ-3/src/CollectionQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/../exams/exams-01/IQ-3/src/CollectionQ.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../exams/exams-01/IQ-3/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../exams/exams-01/IQ-3/src/Main.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,7 +25,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
     <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -31,13 +37,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "C:/E/mohamadJava/j4.alon/01-life"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.tryfinally.life" />

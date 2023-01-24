@@ -1,12 +1,12 @@
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class AddToPull<T> implements Runnable{
-    private final CollectionQ<T> m_coll;
+public class PoolWorker<T> implements Runnable{
+    private final WorkManager<T> m_coll;
     private final ArrayBlockingQueue<T[]> m_q;
 
-    public AddToPull(ArrayBlockingQueue<T[]> mQ) {
+    public PoolWorker(ArrayBlockingQueue<T[]> mQ, WorkManager coll) {
         m_q = mQ;
-        m_coll = new CollectionQ<>();
+        m_coll = coll;
     }
 
     @Override
@@ -14,7 +14,7 @@ public class AddToPull<T> implements Runnable{
         while(true) {
             try {
                 var got = m_coll.take();
-                if (m_coll != null) {
+                if (got != null) {
                     m_q.put(got);
                 }
             } catch (InterruptedException e) {
