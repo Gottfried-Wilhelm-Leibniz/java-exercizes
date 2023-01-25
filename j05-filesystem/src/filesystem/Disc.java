@@ -25,16 +25,14 @@ public class Disc {
     private final Lock m_readLock = lock.readLock();
     private final Lock m_writeLock = lock.writeLock();
     private final AtomicBoolean m_isClosed = new AtomicBoolean();
-    private final SeekableByteChannel m_seekableRead;
-    private final SeekableByteChannel m_seekableWrite;
+    private final SeekableByteChannel m_seekable;
     public Disc(Path path, int discNum, int numBlocks, int blockSize) throws IOException {
         m_numBlocks = numBlocks;
         m_blockSize = blockSize;
         Path fileName = Paths.get("disk-" + discNum + ".dsk");
-        var file = new File(path.resolve(fileName).toString());
-        file.createNewFile();
-        m_seekableRead = Files.newByteChannel(path.resolve(fileName), StandardOpenOption.READ);
-        m_seekableWrite = Files.newByteChannel(path.resolve(fileName), StandardOpenOption.WRITE);
+        m_seekable = Files.newByteChannel(path.resolve(fileName), StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE);
+        ByteBuffer buffer = ByteBuffer.allocate(numBlocks * blockSize);
+        m_seekable.write(buffer);
     }
 
     public void read(int blockNum, byte[] buffer) throws IOException {
@@ -49,8 +47,8 @@ public class Disc {
         }
         m_readLock.lock();
         try {
-            m_seekableRead.position(blockNum * m_blockSize);
-            m_seekableRead.read(ByteBuffer.wrap(buffer, 0, m_blockSize));
+            m_seekable.position(blockNum * m_blockSize);
+            m_seekable.read(ByteBuffer.wrap(buffer, 0, m_blockSize));
         } finally {
             m_readLock.unlock();
         }
@@ -65,8 +63,8 @@ public class Disc {
         }
         m_writeLock.lock();
         try {
-            m_seekableWrite.position(blockNum * m_blockSize);
-            m_seekableWrite.write(ByteBuffer.wrap(buffer));
+            m_seekable.position(blockNum * m_blockSize);
+            m_seekable.write(ByteBuffer.wrap(buffer));
         } finally {
             m_writeLock.lock();
         }

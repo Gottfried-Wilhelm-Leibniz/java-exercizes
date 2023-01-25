@@ -11,25 +11,35 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DiscTest {
-    private static Path folder;
-    private Path filePath;
+    private static Path filePath;
     private static final int NUMOFBLOCKS = 10;
     private static final int BLOCKSIZE = 10;
     @BeforeAll
     public static void start() throws IOException {
-        folder = Path.of("./check");
-        Files.createDirectory(folder);
+        filePath = Path.of("./check");
+        Files.createDirectory(filePath);
     }
     @AfterAll
     public static void end() throws IOException {
-        Files.deleteIfExists(folder);
+        Files.deleteIfExists(filePath);
     }
     @BeforeEach
     public void before() {
-        filePath = Path.of(folder.toString());
+        //filePath = Path.of(folder.toString());
     }
 
-
+    @AfterEach
+    public void after() throws IOException {
+        Files.walk(filePath)
+                .filter(Files::isRegularFile)
+                .forEach(path -> {
+                    try {
+                        Files.delete(path);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+    }
     @Test
     void read() throws IOException {
         var disc = new Disc(filePath, 1, 4,4);
@@ -38,7 +48,9 @@ class DiscTest {
         byte[] buffer = new byte[blockSize];
         for (int i = 0; i < numOfBlocks; i++) {
             disc.read(i, buffer);
-            Assertions.assertEquals(buffer[i], (byte) 0);
+            for (int j = 0; j < blockSize; j++) {
+                Assertions.assertEquals(buffer[i], (byte) 0);
+            }
         }
     }
     @Test
@@ -48,29 +60,17 @@ class DiscTest {
         var numOfBlocks = disc.getM_numBlocks();
         byte[] writeBuff = new byte[blockSize];
         for (int i = 0; i < writeBuff.length; i++) {
-            writeBuff[i] = (byte) 0;
+            writeBuff[i] = (byte) 1;
         }
         for (int i = 0; i < numOfBlocks; i++) {
             disc.write(i, writeBuff);
-            byte[] readBuff = new byte[blockSize];
+        }
+        byte[] readBuff = new byte[blockSize];
+        for (int i = 0; i < numOfBlocks; i++) {
             disc.read(i, readBuff);
-            Assertions.assertArrayEquals(readBuff, writeBuff);
+            for (int j = 0; j < blockSize; j++) {
+                Assertions.assertEquals(readBuff[j], writeBuff[j]);
+            }
         }
     }
-
-    @AfterEach
-    public void after() throws IOException {
-        Files.walk(folder)
-                .filter(Files::isRegularFile)
-                .forEach(path -> {
-                    try {
-                        Files.delete(path);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-        Files.deleteIfExists(filePath);
-        Files.createDirectory(folder);
-    }
-
 }
