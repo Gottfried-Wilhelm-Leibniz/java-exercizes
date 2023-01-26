@@ -35,7 +35,7 @@ public class DiscController {
             throw new IllegalAccessError("Disc controller is closed");
         }
         var discNum = Integer.valueOf(num);
-        m_map.putIfAbsent(discNum, new Disc(m_path, discNum, m_numOfBlocks, m_blockSize));
+        //m_map.putIfAbsent(discNum, new Disc(m_path, discNum, m_numOfBlocks, m_blockSize));
         return m_map.get(discNum);
     }
 

@@ -1,6 +1,5 @@
 package filesystem;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
@@ -13,34 +12,39 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class Disc {
     private final int m_numBlocks;
     private final int m_blockSize;
-
-    public int getM_numBlocks() {
-        return m_numBlocks;
-    }
-
-    public int getM_blockSize() {
-        return m_blockSize;
-    }
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock m_readLock = lock.readLock();
     private final Lock m_writeLock = lock.writeLock();
     private final AtomicBoolean m_isClosed = new AtomicBoolean();
     private final SeekableByteChannel m_seekable;
-    public Disc(Path path, int discNum, int numBlocks, int blockSize) throws IOException {
+    private final int m_inodeSize;
+
+    public Disc(Path path, int magicNum, int numBlocks,  int inodesBlock, int totalInodes, int inodeSize,int blockSize) throws IOException {
         m_numBlocks = numBlocks;
         m_blockSize = blockSize;
-        Path fileName = Paths.get("disk-" + discNum + ".dsk");
-        m_seekable = Files.newByteChannel(path.resolve(fileName), StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE);
+        m_inodeSize = inodeSize;
+        m_seekable = Files.newByteChannel(path, StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE);
         ByteBuffer buffer = ByteBuffer.allocate(numBlocks * blockSize);
+        buffer.position(0);
         m_seekable.write(buffer);
+        var superByteBuffer = ByteBuffer.allocate(blockSize);
+        superByteBuffer.position(0);
+        superByteBuffer.putInt(magicNum);
+        superByteBuffer.putInt(numBlocks);
+        superByteBuffer.putInt(inodesBlock);
+        superByteBuffer.putInt(totalInodes);
+        superByteBuffer.putInt(inodeSize);
+        superByteBuffer.putInt(blockSize);
+        superByteBuffer.position(0);
+        write(0, superByteBuffer);
     }
 
-    public void read(int blockNum, byte[] buffer) throws IOException {
-        if(buffer.length < m_blockSize) {
+    public void read(int blockNum, ByteBuffer byteBuffer) throws IOException {
+        if(byteBuffer.array().length != m_blockSize) {
             throw new BufferOverflowException();
         }
         if(blockNum > m_numBlocks || blockNum < 0) {
-            throw new BlockNotExistOnFile();
+            throw new BlockNotExistOnFile(blockNum);
         }
         if (m_isClosed.get()) {
             throw new DiscIsClosedException();
@@ -48,15 +52,19 @@ public class Disc {
         m_readLock.lock();
         try {
             m_seekable.position(blockNum * m_blockSize);
-            m_seekable.read(ByteBuffer.wrap(buffer, 0, m_blockSize));
+            byteBuffer.position(0);
+            m_seekable.read(byteBuffer);
         } finally {
             m_readLock.unlock();
         }
     }
 
-    public void write(int blockNum, byte[] buffer) throws IOException {
+    public void write(int blockNum, ByteBuffer byteBuffer) throws IOException {
         if(blockNum > m_numBlocks || blockNum < 0) {
-            throw new BlockNotExistOnFile();
+            throw new BlockNotExistOnFile(blockNum);
+        }
+        if(byteBuffer.array().length != m_blockSize) {
+            throw new BufferOverflowException();
         }
         if (m_isClosed.get()) {
             throw new DiscIsClosedException();
@@ -64,12 +72,20 @@ public class Disc {
         m_writeLock.lock();
         try {
             m_seekable.position(blockNum * m_blockSize);
-            m_seekable.write(ByteBuffer.wrap(buffer));
+            byteBuffer.position(0);
+            m_seekable.write(byteBuffer);
         } finally {
             m_writeLock.lock();
         }
     }
     public void close() {
         m_isClosed.set(true);
+    }
+    public int getM_inodeSize() {
+        return m_inodeSize;
+    }
+
+    public int getM_blockSize() {
+        return m_blockSize;
     }
 }
