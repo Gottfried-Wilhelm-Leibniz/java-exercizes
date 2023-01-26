@@ -21,10 +21,8 @@ public class Disc {
     private final int m_inodeSize;
 
     public Disc(Path path, int magicNum, int numBlocks,  int inodesBlock, int totalInodes, int inodeSize,int blockSize) throws IOException {
-        System.out.println("f " + blockSize);
         m_numBlocks = numBlocks;
         m_blockSize = blockSize;
-        System.out.println("s " + m_blockSize);
         m_inodeSize = inodeSize;
         m_seekable = Files.newByteChannel(path, StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE);
         ByteBuffer buffer = ByteBuffer.allocate(numBlocks * blockSize);
@@ -38,6 +36,11 @@ public class Disc {
         superByteBuffer.putInt(blockSize);
         superByteBuffer.flip();
         write(0, superByteBuffer);
+
+        var buff = ByteBuffer.allocate(blockSize);
+        buff.putInt(1);
+        buff.rewind();
+        write(1, buff);
     }
 
 
