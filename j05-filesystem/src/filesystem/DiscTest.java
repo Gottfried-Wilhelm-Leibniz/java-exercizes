@@ -6,10 +6,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class DiscTest {
     private static final int NUMOFBLOCKS = 10;
@@ -46,7 +42,7 @@ class DiscTest {
                 });
     }
     @Test
-    void read() throws IOException, BuffersNotEqual {
+    void read() throws IOException, BufferIsNotTheSizeOfAblockException {
         var disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, BLOCKSIZE, InodesBLOCKS, INODESIZE, INODESTOTAL);
         var blockSize = disc.getM_blockSize();
         var numOfBlocks = NUMOFBLOCKS;
@@ -60,12 +56,11 @@ class DiscTest {
         }
     }
     @Test
-    void write() throws IOException, BuffersNotEqual {
+    void write() throws IOException, BufferIsNotTheSizeOfAblockException {
         var disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, BLOCKSIZE, InodesBLOCKS, INODESIZE, INODESTOTAL);
         var blockSize = disc.getM_blockSize();
         var numOfBlocks = NUMOFBLOCKS;
         ByteBuffer bufferionwrite = ByteBuffer.allocate(BLOCKSIZE);
-        //byte[] writeBuff = new byte[blockSize];
         bufferionwrite.position(0);
         bufferionwrite.putInt(3);
         disc.write(2, bufferionwrite);
@@ -74,19 +69,5 @@ class DiscTest {
         bufferionwrite.flip();
         bufferioREAD.flip();
         Assertions.assertEquals(bufferionwrite.getInt(), bufferioREAD.getInt());
-//        for (int i = 0; i < writeBuff.length; i++) {
-//            writeBuff[i] = (byte) 1;
-//        }
-//        for (int i = 0; i < NUMOFBLOCKS; i++) {
-//            disc.write(i, bufferionwrite);
-//        }
-        byte[] readBuff = new byte[blockSize];
-
-//        for (int i = 0; i < NUMOFBLOCKS; i++) {
-//            disc.read(i, bufferioREAD);
-//            for (int j = 0; j < blockSize; j++) {
-//                Assertions.assertEquals(readBuff[j], writeBuff[j]);
-//            }
-//        }
     }
 }

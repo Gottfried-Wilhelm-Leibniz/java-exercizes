@@ -25,7 +25,7 @@ public class FileSystem {
         return m_filesMap;
     }
 
-    public FileSystem(Disc disc) throws IOException, BuffersNotEqual {
+    public FileSystem(Disc disc) throws IOException, BufferIsNotTheSizeOfAblockException {
         m_disc = disc;
         var superBuffer =  ByteBuffer.allocate(BLOCKSIZE);
         MagicBlock magicBlock;
@@ -44,7 +44,7 @@ public class FileSystem {
         initializeFilesMap();
     }
 
-    private void initializeFilesMap() throws IOException, BuffersNotEqual {
+    private void initializeFilesMap() throws IOException, BufferIsNotTheSizeOfAblockException {
         var filesInodeBuffer = ByteBuffer.allocate(BLOCKSIZE);
             m_disc.read(1, filesInodeBuffer);
             List<Integer> list = getListOfBlocks( 0);
@@ -53,20 +53,20 @@ public class FileSystem {
         }
     }
 
-    public File open(String str) throws IOException, BuffersNotEqual {
+    public File open(String str) throws IOException, BufferIsNotTheSizeOfAblockException {
         for (Map.Entry<String,Integer> entry : m_filesMap.entrySet()){
             if (entry.getKey().equals(str)) {
                 var refList = getListOfBlocks(entry.getValue());
-                return new File(()-> m_disc, str, entry.getValue(), this::getNewBlock, (a)-> {
+                return new File(()-> m_disc, str, entry.getValue(), (a)-> {
                     try {
                         return getListOfBlocks(a);
-                    } catch (IOException | BuffersNotEqual e) {
+                    } catch (IOException | BufferIsNotTheSizeOfAblockException e) {
                         throw new RuntimeException(e);
                     }
                 }, m_magicBlock, (ByteBuffer b, int inode, int size) -> {
                     try {
                         saveToDisc(b, inode, size);
-                    } catch (IOException | BuffersNotEqual e) {
+                    } catch (IOException | BufferIsNotTheSizeOfAblockException e) {
                         throw new RuntimeException(e);
                     }
                 });
@@ -88,7 +88,7 @@ public class FileSystem {
         return list;
     }
 
-    private List<Integer> getListOfBlocks(int iNodeRef) throws IOException, BuffersNotEqual {
+    private List<Integer> getListOfBlocks(int iNodeRef) throws IOException, BufferIsNotTheSizeOfAblockException {
         var filesInodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         m_disc.read(m_magicBlock.m_inlodeBlocks(), filesInodeBuffer);
 //        filesInodeBuffer.flip();
@@ -102,7 +102,6 @@ public class FileSystem {
         for (int i = 0; i < dataFilesBlocks && i < 5; i++) {
             var blockRef = filesInodeBuffer.getInt();
             list.add(blockRef);
-            //addToMapFromBlock(blockRef);
         }
 
         if (dataFilesBlocks > 5) {
@@ -113,12 +112,11 @@ public class FileSystem {
             for (int i = 5; i < dataFilesBlocks; i++) {
                 var blockRef = indirectBlock.getInt();
                 list.add(blockRef);
-                //addToMapFromBlock(blockRef);
             }
         }
             return list;
     }
-    private void addToMapFromBlock(int blockRef) throws IOException, BuffersNotEqual {
+    private void addToMapFromBlock(int blockRef) throws IOException, BufferIsNotTheSizeOfAblockException {
         var dataFromBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         m_disc.read(blockRef, dataFromBlock);
         dataFromBlock.flip();
@@ -139,7 +137,7 @@ public class FileSystem {
             }
         }
     }
-    public void saveToDisc(ByteBuffer buffer, int inode, int size) throws IOException, BuffersNotEqual {
+    public void saveToDisc(ByteBuffer buffer, int inode, int size) throws IOException, BufferIsNotTheSizeOfAblockException {
         var inodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         m_disc.read(m_magicBlock.m_inlodeBlocks(), inodeBuffer);
         var inodeBlock = (int)Math.ceil((double) inode * m_magicBlock.m_inlodeBlocks() / m_magicBlock.m_totalInodes());
@@ -187,6 +185,7 @@ public class FileSystem {
         }
         inodeBuffer.rewind();
         m_disc.write(m_magicBlock.m_inlodeBlocks(), inodeBuffer);
+        initializeFilesMap();
     }
     public int getNewBlock() {
         for (int i = 2; i < NUMOFBLOCKS; i++) {

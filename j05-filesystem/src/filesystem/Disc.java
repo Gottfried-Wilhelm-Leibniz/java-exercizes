@@ -5,7 +5,6 @@ import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.*;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -43,10 +42,9 @@ public class Disc {
         write(1, buff);
     }
 
-
-    public void read(int blockNum, ByteBuffer byteBuffer) throws IOException, BuffersNotEqual {
+    public void read(int blockNum, ByteBuffer byteBuffer) throws IOException, BufferIsNotTheSizeOfAblockException {
         if(byteBuffer.array().length != m_blockSize) {
-            throw new BuffersNotEqual();
+            throw new BufferIsNotTheSizeOfAblockException();
         }
         if(blockNum > m_numBlocks || blockNum < 0) {
             throw new BlockNotExistOnFile(blockNum);

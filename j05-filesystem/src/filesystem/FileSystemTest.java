@@ -20,7 +20,7 @@ class FileSystemTest {
     private static Disc m_disc;
     private static FileSystem m_fs;
     @BeforeAll
-    static void init () throws IOException, BuffersNotEqual {
+    static void init () throws IOException, BufferIsNotTheSizeOfAblockException {
         m_disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, BLOCKSIZE);
         var buff = ByteBuffer.allocate(BLOCKSIZE);
         buff.position(0);
@@ -69,7 +69,7 @@ class FileSystemTest {
     }
 
     @Test
-    void open() throws IOException, BuffersNotEqual {
+    void open() throws IOException, BufferIsNotTheSizeOfAblockException {
         var f = m_fs.open("def");
         Assertions.assertEquals("def", f.getM_fileName());
         Assertions.assertEquals(1000, f.getM_totalSize());
@@ -84,7 +84,7 @@ class FileSystemTest {
         Assertions.assertEquals("def", list.get(1));
     }
     @Test
-    void formatTest() throws IOException, BuffersNotEqual {
+    void formatTest() throws IOException, BufferIsNotTheSizeOfAblockException {
         var disc = new Disc(Path.of("./discs"), 900, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, 200);
         var fs = new FileSystem(disc);
         var buff = ByteBuffer.allocate(BLOCKSIZE);
