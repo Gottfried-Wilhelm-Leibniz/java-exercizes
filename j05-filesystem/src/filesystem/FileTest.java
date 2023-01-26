@@ -22,7 +22,7 @@ class FileTest {
     }
 
     @BeforeAll
-    static void init () throws IOException {
+    static void init () throws IOException, BuffersNotEqual {
         m_disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, BLOCKSIZE);
         var buff = ByteBuffer.allocate(BLOCKSIZE);
         buff.position(0);
@@ -83,7 +83,7 @@ class FileTest {
     }
 
     @Test
-    void write() throws IOException {
+    void write() throws IOException, BuffersNotEqual {
         var f = m_fs.open("abc");
         f.setPos(0);
         Assertions.assertEquals("ool",f.readString());
@@ -103,14 +103,14 @@ class FileTest {
     }
 
     @Test
-    void readString() throws IOException {
+    void readString() throws IOException, BuffersNotEqual {
         var f = m_fs.open("def");
         var str = f.readString();
         Assertions.assertEquals("hel", str);
     }
 
     @Test
-    void readInt() throws IOException {
+    void readInt() throws IOException, BuffersNotEqual {
         var f = m_fs.open("def");
         f.setPos(8);
         var inti = f.readInt();
@@ -126,7 +126,7 @@ class FileTest {
     }
 
     @Test
-    void position() throws IOException {
+    void position() throws IOException, BuffersNotEqual {
         var f = m_fs.open("def");
         f.setPos(8);
         Assertions.assertEquals(8, f.getPos());
@@ -134,7 +134,7 @@ class FileTest {
 
 
     @Test
-    void addToFile() throws IOException {
+    void addToFile() throws IOException, BuffersNotEqual {
         var f = m_fs.open("abc");
         f.setPos(0);
         f.addToFile(ByteBuffer.wrap("lol".getBytes()));
@@ -143,7 +143,7 @@ class FileTest {
     }
 
     @Test
-    void saveToDisc() throws IOException {
+    void saveToDisc() throws IOException, BuffersNotEqual {
         var f = m_fs.open("abc");
         f.setPos(0);
         Assertions.assertEquals("ool", f.readString());
@@ -153,7 +153,7 @@ class FileTest {
         buff.putChar('i');
         buff.putChar('s');
         buff.putChar('\0');
-        f.saveToDisc(buff);
+        f.saveToDisc(buff, 6000);
         f.setPos(0);
         Assertions.assertEquals("this", f.readString());
         System.out.println(f.readString());

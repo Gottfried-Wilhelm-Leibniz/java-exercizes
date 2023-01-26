@@ -20,6 +20,7 @@ public class File {
     private final Function<Integer,List<Integer>> m_refList;
     private int m_totalSize;
     private final MagicBlock m_magicBlock;
+    private final SaveInterface m_save;
 
     public int getPos() {
         return m_fileBuffer.position();
@@ -29,7 +30,7 @@ public class File {
         m_fileBuffer.position(m_pos);
     }
 
-    public File(Supplier<Disc> disc, String fileName, int inodeRef, IntSupplier askFreeBlock, Function<Integer,List<Integer>> refList, MagicBlock mMagicBlock) throws IOException {
+    public File(Supplier<Disc> disc, String fileName, int inodeRef, IntSupplier askFreeBlock, Function<Integer,List<Integer>> refList, MagicBlock mMagicBlock, SaveInterface save) throws IOException, BuffersNotEqual {
         m_disc = disc;
         m_fileName = fileName;
         m_inodeRef = inodeRef;
@@ -39,6 +40,7 @@ public class File {
         m_fileBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         m_disc.get().read(1, m_fileBuffer);
         m_fileBuffer.position(inodeRef * m_magicBlock.m_inodeSize());
+        m_save = save;
         if(m_fileBuffer.getInt() == 0) {
             throw new FileNotFoundException();
         }
@@ -46,42 +48,20 @@ public class File {
         initializeFile();
     }
 
-    private void initializeFile() throws IOException {
+    private void initializeFile() throws IOException, BuffersNotEqual {
         var list = m_refList.apply(m_inodeRef);
         var fileBuffer = ByteBuffer.allocate(list.size() * m_magicBlock.m_blockSize());
+        var singleBlockBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
+        int i = 0;
         for (int dataBlock : list) {
-            m_disc.get().read(dataBlock, fileBuffer);
+            singleBlockBuffer.rewind();
+            m_disc.get().read(dataBlock, singleBlockBuffer);
+            fileBuffer.put(singleBlockBuffer.array(), i, m_magicBlock.m_blockSize());
         }
-        fileBuffer.position(0);
+        fileBuffer.rewind();
         m_fileBuffer = ByteBuffer.allocate(m_totalSize);
-        //m_fileBuffer.position(0);
         m_fileBuffer.rewind();
         m_fileBuffer.put(fileBuffer.array(), 0, m_totalSize);
-//        var inodeBuffer = ByteBuffer.allocate(BLOCKSIZE);
-//        m_disc.get().read(InodesBLOCKS, inodeBuffer);
-//        inodeBuffer.position(INODESIZE * m_inodeRef);
-//        var valid = inodeBuffer.getInt();
-//        if (valid == 0) {
-//            throw new FileNotFoundException();
-//        }
-//        m_totalSize = inodeBuffer.getInt();
-//        int dataFilesBlocks = (int) Math.ceil(m_totalSize / BLOCKSIZE);
-//
-//        for (int i = 0; i < dataFilesBlocks && i < 5; i++) {
-//            var blockRef = inodeBuffer.getInt();
-//
-//        }
-//        if (dataFilesBlocks > 5) {
-//            var indirectRef = inodeBuffer.getInt();
-//            var indirectBlock = ByteBuffer.allocate(BLOCKSIZE);
-//            indirectBlock.position(0);
-//            m_disc.get().read(indirectRef, indirectBlock);
-//            indirectBlock.position(0);
-//            for (int i = 5; i < dataFilesBlocks; i++) {
-//                var blockRef = indirectBlock.getInt();
-//                m_disc.get().read(blockRef, fileBuffer);
-//            }
-//        }
     }
 
     public void write(String str) throws IOException {
@@ -153,55 +133,13 @@ public class File {
         m_fileBuffer.put(temp);
 //        saveToDisc(m_fileBuffer);
     }
-    public void saveToDisc(ByteBuffer buffer) throws IOException {
-        var inodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-        m_disc.get().read(m_magicBlock.m_inlodeBlocks(), inodeBuffer);
-        inodeBuffer.position(m_magicBlock.m_inodeSize() * m_inodeRef);
-        inodeBuffer.putInt(1);
-        inodeBuffer.putInt(m_totalSize);
-
-        int dataFilesBlocks = (int) Math.ceil((double) m_totalSize / m_magicBlock.m_blockSize());
-        var dataSingleBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-        for (int i = 0; i < dataFilesBlocks && i < 5; i++) {
-            var blockRef = inodeBuffer.getInt();
-            if(blockRef == 0) {
-                blockRef = m_askFreeBlock.getAsInt();
-                inodeBuffer.position(inodeBuffer.position() - 4);
-                inodeBuffer.putInt(blockRef);
-            }
-            dataSingleBlock.rewind();
-            dataSingleBlock.put(buffer.array(), i * m_magicBlock.m_blockSize(), m_magicBlock.m_blockSize());
-            dataSingleBlock.flip();
-            m_disc.get().write(blockRef, dataSingleBlock);
-        }
-        if (dataFilesBlocks > 5) {
-            var indirectBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-            var indirectRef = inodeBuffer.getInt();
-            if (indirectRef == 0) {
-                indirectRef = m_askFreeBlock.getAsInt();
-                inodeBuffer.position(inodeBuffer.position() - 4);
-                inodeBuffer.putInt(indirectRef);
-            }
-                m_disc.get().read(indirectRef, indirectBlock);
-                indirectBlock.rewind();
-            for (int i = 5; i < dataFilesBlocks; i++) {
-                var blockRef = indirectBlock.getInt();
-                if (blockRef == 0) {
-                    blockRef = m_askFreeBlock.getAsInt();
-                    indirectBlock.position(indirectBlock.position() - 4);
-                    indirectBlock.putInt(blockRef);
-                }
-                dataSingleBlock.rewind();
-                dataSingleBlock.put(buffer.array(), i * m_magicBlock.m_blockSize(), m_magicBlock.m_blockSize());
-                dataSingleBlock.flip();
-                m_disc.get().write(blockRef, dataSingleBlock);
-            }
-            indirectBlock.rewind();
-            m_disc.get().write(indirectRef, indirectBlock);
-        }
-            inodeBuffer.rewind();
-            m_disc.get().write(m_magicBlock.m_inlodeBlocks(), inodeBuffer);
-            initializeFile();
+    public void saveToDisc(ByteBuffer buffer, int size) throws IOException, BuffersNotEqual {
+        int numOfBlocksNeeded = (int)Math.ceil((double) size / m_magicBlock.m_blockSize());
+        var tempBuff = ByteBuffer.allocate(numOfBlocksNeeded * m_magicBlock.m_blockSize());
+        buffer.rewind();
+        tempBuff.put(buffer);
+        m_save.saveIt(tempBuff, m_inodeRef, size);
+        initializeFile();
     }
 
     public String getM_fileName() {
@@ -216,3 +154,83 @@ public class File {
         return m_totalSize;
     }
 }
+
+
+
+
+//    var inodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
+//        m_disc.get().read(m_magicBlock.m_inlodeBlocks(), inodeBuffer);
+//                inodeBuffer.position(m_magicBlock.m_inodeSize() * m_inodeRef);
+//                inodeBuffer.putInt(1);
+//                inodeBuffer.putInt(m_totalSize);
+//
+//                int dataFilesBlocks = (int) Math.ceil((double) m_totalSize / m_magicBlock.m_blockSize());
+//                var dataSingleBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
+//                for (int i = 0; i < dataFilesBlocks && i < 5; i++) {
+//        var blockRef = inodeBuffer.getInt();
+//        if(blockRef == 0) {
+//        blockRef = m_askFreeBlock.getAsInt();
+//        inodeBuffer.position(inodeBuffer.position() - 4);
+//        inodeBuffer.putInt(blockRef);
+//        }
+//        dataSingleBlock.rewind();
+//        dataSingleBlock.put(buffer.array(), i * m_magicBlock.m_blockSize(), m_magicBlock.m_blockSize());
+//        dataSingleBlock.flip();
+//        m_disc.get().write(blockRef, dataSingleBlock);
+//        }
+//        if (dataFilesBlocks > 5) {
+//        var indirectBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
+//        var indirectRef = inodeBuffer.getInt();
+//        if (indirectRef == 0) {
+//        indirectRef = m_askFreeBlock.getAsInt();
+//        inodeBuffer.position(inodeBuffer.position() - 4);
+//        inodeBuffer.putInt(indirectRef);
+//        }
+//        m_disc.get().read(indirectRef, indirectBlock);
+//        indirectBlock.rewind();
+//        for (int i = 5; i < dataFilesBlocks; i++) {
+//        var blockRef = indirectBlock.getInt();
+//        if (blockRef == 0) {
+//        blockRef = m_askFreeBlock.getAsInt();
+//        indirectBlock.position(indirectBlock.position() - 4);
+//        indirectBlock.putInt(blockRef);
+//        }
+//        dataSingleBlock.rewind();
+//        dataSingleBlock.put(buffer.array(), i * m_magicBlock.m_blockSize(), m_magicBlock.m_blockSize());
+//        dataSingleBlock.flip();
+//        m_disc.get().write(blockRef, dataSingleBlock);
+//        }
+//        indirectBlock.rewind();
+//        m_disc.get().write(indirectRef, indirectBlock);
+//        }
+//        inodeBuffer.rewind();
+//        m_disc.get().write(m_magicBlock.m_inlodeBlocks(), inodeBuffer);
+//        initializeFile();
+
+
+
+//        var inodeBuffer = ByteBuffer.allocate(BLOCKSIZE);
+//        m_disc.get().read(InodesBLOCKS, inodeBuffer);
+//        inodeBuffer.position(INODESIZE * m_inodeRef);
+//        var valid = inodeBuffer.getInt();
+//        if (valid == 0) {
+//            throw new FileNotFoundException();
+//        }
+//        m_totalSize = inodeBuffer.getInt();
+//        int dataFilesBlocks = (int) Math.ceil(m_totalSize / BLOCKSIZE);
+//
+//        for (int i = 0; i < dataFilesBlocks && i < 5; i++) {
+//            var blockRef = inodeBuffer.getInt();
+//
+//        }
+//        if (dataFilesBlocks > 5) {
+//            var indirectRef = inodeBuffer.getInt();
+//            var indirectBlock = ByteBuffer.allocate(BLOCKSIZE);
+//            indirectBlock.position(0);
+//            m_disc.get().read(indirectRef, indirectBlock);
+//            indirectBlock.position(0);
+//            for (int i = 5; i < dataFilesBlocks; i++) {
+//                var blockRef = indirectBlock.getInt();
+//                m_disc.get().read(blockRef, fileBuffer);
+//            }
+//        }

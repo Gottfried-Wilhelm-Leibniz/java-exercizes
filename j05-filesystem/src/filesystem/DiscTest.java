@@ -46,7 +46,7 @@ class DiscTest {
                 });
     }
     @Test
-    void read() throws IOException {
+    void read() throws IOException, BuffersNotEqual {
         var disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, BLOCKSIZE, InodesBLOCKS, INODESIZE, INODESTOTAL);
         var blockSize = disc.getM_blockSize();
         var numOfBlocks = NUMOFBLOCKS;
@@ -60,7 +60,7 @@ class DiscTest {
         }
     }
     @Test
-    void write() throws IOException {
+    void write() throws IOException, BuffersNotEqual {
         var disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, BLOCKSIZE, InodesBLOCKS, INODESIZE, INODESTOTAL);
         var blockSize = disc.getM_blockSize();
         var numOfBlocks = NUMOFBLOCKS;

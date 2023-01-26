@@ -44,9 +44,9 @@ public class Disc {
     }
 
 
-    public void read(int blockNum, ByteBuffer byteBuffer) throws IOException {
+    public void read(int blockNum, ByteBuffer byteBuffer) throws IOException, BuffersNotEqual {
         if(byteBuffer.array().length != m_blockSize) {
-            throw new BufferOverflowException();
+            throw new BuffersNotEqual();
         }
         if(blockNum > m_numBlocks || blockNum < 0) {
             throw new BlockNotExistOnFile(blockNum);

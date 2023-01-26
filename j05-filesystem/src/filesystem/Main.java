@@ -9,7 +9,7 @@ public class Main {
     private static final int MAGICNUMBER = 1695609641;
     private static final int INODESIZE = 32;
     private static final int INODESTOTAL = InodesBLOCKS * BLOCKSIZE / INODESIZE;
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, BuffersNotEqual {
         //var discController = DiscController.theOne(NUMOFBLOCKS, BLOCKSIZE);
         var disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL,  INODESIZE, BLOCKSIZE);
         var fs = new filesystem.FileSystem(disc);

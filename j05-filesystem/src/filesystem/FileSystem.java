@@ -25,7 +25,7 @@ public class FileSystem {
         return m_filesMap;
     }
 
-    public FileSystem(Disc disc) throws IOException {
+    public FileSystem(Disc disc) throws IOException, BuffersNotEqual {
         m_disc = disc;
         var superBuffer =  ByteBuffer.allocate(BLOCKSIZE);
         MagicBlock magicBlock;
@@ -44,7 +44,7 @@ public class FileSystem {
         initializeFilesMap();
     }
 
-    private void initializeFilesMap() throws IOException {
+    private void initializeFilesMap() throws IOException, BuffersNotEqual {
         var filesInodeBuffer = ByteBuffer.allocate(BLOCKSIZE);
             m_disc.read(1, filesInodeBuffer);
             List<Integer> list = getListOfBlocks( 0);
@@ -53,17 +53,23 @@ public class FileSystem {
         }
     }
 
-    public File open(String str) throws IOException {
+    public File open(String str) throws IOException, BuffersNotEqual {
         for (Map.Entry<String,Integer> entry : m_filesMap.entrySet()){
             if (entry.getKey().equals(str)) {
                 var refList = getListOfBlocks(entry.getValue());
                 return new File(()-> m_disc, str, entry.getValue(), this::getNewBlock, (a)-> {
                     try {
                         return getListOfBlocks(a);
-                    } catch (IOException e) {
+                    } catch (IOException | BuffersNotEqual e) {
                         throw new RuntimeException(e);
                     }
-                }, m_magicBlock);
+                }, m_magicBlock, (ByteBuffer b, int inode, int size) -> {
+                    try {
+                        saveToDisc(b, inode, size);
+                    } catch (IOException | BuffersNotEqual e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             }
         }
         throw new FileNotFoundException("the file you searched is not on the disc");
@@ -82,7 +88,7 @@ public class FileSystem {
         return list;
     }
 
-    private List<Integer> getListOfBlocks(int iNodeRef) throws IOException {
+    private List<Integer> getListOfBlocks(int iNodeRef) throws IOException, BuffersNotEqual {
         var filesInodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         m_disc.read(m_magicBlock.m_inlodeBlocks(), filesInodeBuffer);
 //        filesInodeBuffer.flip();
@@ -112,7 +118,7 @@ public class FileSystem {
         }
             return list;
     }
-    private void addToMapFromBlock(int blockRef) throws IOException {
+    private void addToMapFromBlock(int blockRef) throws IOException, BuffersNotEqual {
         var dataFromBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         m_disc.read(blockRef, dataFromBlock);
         dataFromBlock.flip();
@@ -133,55 +139,54 @@ public class FileSystem {
             }
         }
     }
-    public void saveToDisc(ByteBuffer buffer, int inode) throws IOException {
+    public void saveToDisc(ByteBuffer buffer, int inode, int size) throws IOException, BuffersNotEqual {
         var inodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-        m_disc.get().read(m_magicBlock.m_inlodeBlocks(), inodeBuffer);
-        inodeBuffer.position(m_magicBlock.m_inodeSize() * m_inodeRef);
+        m_disc.read(m_magicBlock.m_inlodeBlocks(), inodeBuffer);
+        var inodeBlock = (int)Math.ceil((double) inode * m_magicBlock.m_inlodeBlocks() / m_magicBlock.m_totalInodes());
+        inodeBuffer.position(m_magicBlock.m_inodeSize() * inode);
         inodeBuffer.putInt(1);
-        inodeBuffer.putInt(m_totalSize);
-
-        int dataFilesBlocks = (int) Math.ceil((double) m_totalSize / m_magicBlock.m_blockSize());
+        inodeBuffer.putInt(size);
+        int dataFilesBlocks = (int) Math.ceil((double) size / m_magicBlock.m_blockSize());
         var dataSingleBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         for (int i = 0; i < dataFilesBlocks && i < 5; i++) {
             var blockRef = inodeBuffer.getInt();
             if(blockRef == 0) {
-                blockRef = m_askFreeBlock.getAsInt();
+                blockRef = getNewBlock();
                 inodeBuffer.position(inodeBuffer.position() - 4);
                 inodeBuffer.putInt(blockRef);
             }
             dataSingleBlock.rewind();
             dataSingleBlock.put(buffer.array(), i * m_magicBlock.m_blockSize(), m_magicBlock.m_blockSize());
             dataSingleBlock.flip();
-            m_disc.get().write(blockRef, dataSingleBlock);
+            m_disc.write(blockRef, dataSingleBlock);
         }
         if (dataFilesBlocks > 5) {
             var indirectBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
             var indirectRef = inodeBuffer.getInt();
             if (indirectRef == 0) {
-                indirectRef = m_askFreeBlock.getAsInt();
+                indirectRef = getNewBlock();
                 inodeBuffer.position(inodeBuffer.position() - 4);
                 inodeBuffer.putInt(indirectRef);
             }
-            m_disc.get().read(indirectRef, indirectBlock);
+            m_disc.read(indirectRef, indirectBlock);
             indirectBlock.rewind();
             for (int i = 5; i < dataFilesBlocks; i++) {
                 var blockRef = indirectBlock.getInt();
                 if (blockRef == 0) {
-                    blockRef = m_askFreeBlock.getAsInt();
+                    blockRef = getNewBlock();
                     indirectBlock.position(indirectBlock.position() - 4);
                     indirectBlock.putInt(blockRef);
                 }
                 dataSingleBlock.rewind();
                 dataSingleBlock.put(buffer.array(), i * m_magicBlock.m_blockSize(), m_magicBlock.m_blockSize());
                 dataSingleBlock.flip();
-                m_disc.get().write(blockRef, dataSingleBlock);
+                m_disc.write(blockRef, dataSingleBlock);
             }
             indirectBlock.rewind();
-            m_disc.get().write(indirectRef, indirectBlock);
+            m_disc.write(indirectRef, indirectBlock);
         }
         inodeBuffer.rewind();
-        m_disc.get().write(m_magicBlock.m_inlodeBlocks(), inodeBuffer);
-        initializeFile();
+        m_disc.write(m_magicBlock.m_inlodeBlocks(), inodeBuffer);
     }
     public int getNewBlock() {
         for (int i = 2; i < NUMOFBLOCKS; i++) {
