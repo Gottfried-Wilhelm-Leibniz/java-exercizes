@@ -193,6 +193,43 @@ public class FileSystem {
         m_disc.write(1, temp);
         initializeFilesMap();
     }
+    public void createNewFile (String name) throws IOException, BufferIsNotTheSizeOfAblockException {
+        var newDataBlock = getNewBlock();
+        var inodeAdd = getFilesList().size() + 1;
+        var inodeBlock = (int)Math.ceil((double) inodeAdd * m_magicBlock.m_inlodeBlocks() / m_magicBlock.m_totalInodes());
+        var firstBlocKCopy = ByteBuffer.allocate(m_magicBlock.m_blockSize());
+        m_disc.read(inodeBlock, firstBlocKCopy);
+        firstBlocKCopy.position(inodeAdd % m_magicBlock.m_blockSize() * m_magicBlock.m_inodeSize());
+        firstBlocKCopy.putInt(1);
+        firstBlocKCopy.putInt(m_magicBlock.m_blockSize());
+        firstBlocKCopy.putInt(newDataBlock);
+        firstBlocKCopy.rewind();
+        m_disc.write(inodeBlock, firstBlocKCopy);
+
+        List<Integer> list = getListOfBlocks( 0);
+        var filesBlock = list.get(list.size() - 1);
+        firstBlocKCopy.rewind();
+        m_disc.read(filesBlock, firstBlocKCopy);
+        firstBlocKCopy.rewind();
+        char nextChar = firstBlocKCopy.getChar();
+        while (firstBlocKCopy.position() < m_magicBlock.m_blockSize() && nextChar != (byte) 0) {
+            nextChar = firstBlocKCopy.getChar();
+        }
+        if (m_magicBlock.m_blockSize() - firstBlocKCopy.position() < name.length() * 2 + 4) {
+            var numOfFilesData = list.size();
+            ///////////////////////////////////////////// never ending
+            filesBlock = getNewBlock();
+            firstBlocKCopy.rewind();
+        }
+            for (int i = 0; i < name.length(); i++) {
+                firstBlocKCopy.putChar(name.charAt(i));
+            }
+            firstBlocKCopy.putChar('\0');
+            firstBlocKCopy.putInt(inodeAdd);
+            firstBlocKCopy.rewind();
+            m_disc.write(filesBlock, firstBlocKCopy);
+
+    }
     public int getNewBlock() throws IOException, BufferIsNotTheSizeOfAblockException {
         var list = new ArrayList<Integer>();
         for(Map.Entry<String, Integer> entry : m_filesMap.entrySet()) {
