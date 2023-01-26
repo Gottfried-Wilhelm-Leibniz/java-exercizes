@@ -17,13 +17,8 @@ public class FileSystem {
     private static final int INODESIZE = 32;
     private static final int INODESTOTAL = InodesBLOCKS * BLOCKSIZE / INODESIZE;
     private Disc m_disc;
-
     private MagicBlock m_magicBlock;
     private ConcurrentHashMap<String, Integer> m_filesMap = new ConcurrentHashMap<>();
-
-    public ConcurrentHashMap<String, Integer> getM_filesMap() {
-        return m_filesMap;
-    }
 
     public FileSystem(Disc disc) throws IOException, BufferIsNotTheSizeOfAblockException {
         m_disc = disc;
@@ -35,7 +30,7 @@ public class FileSystem {
             magicBlock = new MagicBlock(superBuffer);
         } catch (BufferOverflowException | IllegalArgumentException e) {
             format();
-            //superBuffer.position(0);
+            superBuffer.rewind();
             m_disc.read(0, superBuffer);
             superBuffer.flip();
             magicBlock = new MagicBlock(superBuffer);
@@ -45,18 +40,17 @@ public class FileSystem {
     }
 
     private void initializeFilesMap() throws IOException, BufferIsNotTheSizeOfAblockException {
-        var filesInodeBuffer = ByteBuffer.allocate(BLOCKSIZE);
-            m_disc.read(1, filesInodeBuffer);
+//            var filesInodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
+//            m_disc.read(1, filesInodeBuffer);
             List<Integer> list = getListOfBlocks( 0);
-        for (int refBlock : list) {
-            addToMapFromBlock(refBlock);
-        }
+            for (int refBlock : list) {
+                addToMapFromBlock(refBlock);
+            }
     }
 
     public File open(String str) throws IOException, BufferIsNotTheSizeOfAblockException {
         for (Map.Entry<String,Integer> entry : m_filesMap.entrySet()){
             if (entry.getKey().equals(str)) {
-                var refList = getListOfBlocks(entry.getValue());
                 return new File(()-> m_disc, str, entry.getValue(), (a)-> {
                     try {
                         return getListOfBlocks(a);
@@ -77,7 +71,6 @@ public class FileSystem {
 
     private void format() throws IOException {
         m_disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS , INODESIZE , INODESTOTAL, BLOCKSIZE);
-
     }
 
     public List<String> getFilesList() {
@@ -89,8 +82,9 @@ public class FileSystem {
     }
 
     private List<Integer> getListOfBlocks(int iNodeRef) throws IOException, BufferIsNotTheSizeOfAblockException {
+        var inodeBlock = (int)Math.ceil((double) iNodeRef * m_magicBlock.m_inlodeBlocks() / m_magicBlock.m_totalInodes());
         var filesInodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-        m_disc.read(m_magicBlock.m_inlodeBlocks(), filesInodeBuffer);
+        m_disc.read(inodeBlock, filesInodeBuffer);
 //        filesInodeBuffer.flip();
         List<Integer> list = new ArrayList<>();
         filesInodeBuffer.position(iNodeRef * m_magicBlock.m_inodeSize());
@@ -138,9 +132,9 @@ public class FileSystem {
         }
     }
     public void saveToDisc(ByteBuffer buffer, int inode, int size) throws IOException, BufferIsNotTheSizeOfAblockException {
-        var inodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-        m_disc.read(m_magicBlock.m_inlodeBlocks(), inodeBuffer);
         var inodeBlock = (int)Math.ceil((double) inode * m_magicBlock.m_inlodeBlocks() / m_magicBlock.m_totalInodes());
+        var inodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
+        m_disc.read(inodeBlock, inodeBuffer);
         inodeBuffer.position(m_magicBlock.m_inodeSize() * inode);
         inodeBuffer.putInt(1);
         inodeBuffer.putInt(size);
@@ -184,7 +178,7 @@ public class FileSystem {
             m_disc.write(indirectRef, indirectBlock);
         }
         inodeBuffer.rewind();
-        m_disc.write(m_magicBlock.m_inlodeBlocks(), inodeBuffer);
+        m_disc.write(inodeBlock, inodeBuffer);
         initializeFilesMap();
     }
     public int getNewBlock() {
@@ -198,5 +192,8 @@ public class FileSystem {
     }
     public MagicBlock getM_magicBlock() {
         return m_magicBlock;
+    }
+    public ConcurrentHashMap<String, Integer> getM_filesMap() {
+        return m_filesMap;
     }
 }
