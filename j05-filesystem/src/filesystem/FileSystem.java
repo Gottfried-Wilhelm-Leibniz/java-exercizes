@@ -5,7 +5,6 @@ import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,39 +17,61 @@ public class FileSystem {
     private static final int INODESIZE = 32;
     private static final int INODESTOTAL = InodesBLOCKS * BLOCKSIZE / INODESIZE;
     private Disc m_disc;
+
     private MagicBlock m_magicBlock;
     private ConcurrentHashMap<String, Integer> m_filesMap = new ConcurrentHashMap<>();
+
+    public ConcurrentHashMap<String, Integer> getM_filesMap() {
+        return m_filesMap;
+    }
 
     public FileSystem(Disc disc) throws IOException {
         m_disc = disc;
         var superBuffer =  ByteBuffer.allocate(BLOCKSIZE);
         MagicBlock magicBlock;
         try {
-            disc.read(0, superBuffer);
+            m_disc.read(0, superBuffer);
             superBuffer.flip();
             magicBlock = new MagicBlock(superBuffer);
         } catch (BufferOverflowException | IllegalArgumentException e) {
             format();
-            superBuffer.position(0);
-            disc.read(0, superBuffer);
+            //superBuffer.position(0);
+            m_disc.read(0, superBuffer);
+            superBuffer.flip();
             magicBlock = new MagicBlock(superBuffer);
         }
         m_magicBlock = magicBlock;
-        var filesInodeBuffer = ByteBuffer.allocate(BLOCKSIZE);
-        disc.read(InodesBLOCKS, filesInodeBuffer);
-        fileInitialize(filesInodeBuffer);
+        initializeFilesMap();
     }
+
+    private void initializeFilesMap() throws IOException {
+        var filesInodeBuffer = ByteBuffer.allocate(BLOCKSIZE);
+            m_disc.read(1, filesInodeBuffer);
+            List<Integer> list = getListOfBlocks( 0);
+        for (int refBlock : list) {
+            addToMapFromBlock(refBlock);
+        }
+    }
+
     public File open(String str) throws IOException {
         for (Map.Entry<String,Integer> entry : m_filesMap.entrySet()){
             if (entry.getKey().equals(str)) {
-                return new File(()-> m_disc, str, entry.getValue(), this::getNewBlock);
+                var refList = getListOfBlocks(entry.getValue());
+                return new File(()-> m_disc, str, entry.getValue(), this::getNewBlock, (a)-> {
+                    try {
+                        return getListOfBlocks(a);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }, m_magicBlock);
             }
         }
         throw new FileNotFoundException("the file you searched is not on the disc");
     }
 
     private void format() throws IOException {
-        m_disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, BLOCKSIZE, InodesBLOCKS, INODESIZE, INODESTOTAL);
+        m_disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS , INODESIZE , INODESTOTAL, BLOCKSIZE);
+
     }
 
     public List<String> getFilesList() {
@@ -61,36 +82,39 @@ public class FileSystem {
         return list;
     }
 
-    private void fileInitialize(ByteBuffer filesInodeBuffer) throws IOException {
-        filesInodeBuffer.position(0);
+    private List<Integer> getListOfBlocks(int iNodeRef) throws IOException {
+        var filesInodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
+        List<Integer> list = new ArrayList<>();
+        filesInodeBuffer.position(iNodeRef * m_magicBlock.m_inodeSize());
         if (filesInodeBuffer.getInt() == 0) {
-            return;
+            throw new FileNotFoundException();
         }
         int totalSize = filesInodeBuffer.getInt();
-        int dataFilesBlocks = (int)Math.ceil((double)totalSize/ BLOCKSIZE);
+        int dataFilesBlocks = (int)Math.ceil((double)totalSize/ m_magicBlock.m_blockSize());
         for (int i = 0; i < dataFilesBlocks && i < 5; i++) {
             var blockRef = filesInodeBuffer.getInt();
-            addToMapFromBlock(blockRef);
+            list.add(blockRef);
+            //addToMapFromBlock(blockRef);
         }
 
         if (dataFilesBlocks > 5) {
             var indirectRef = filesInodeBuffer.getInt();
-            var indirectBlock = ByteBuffer.allocate(BLOCKSIZE);
-            indirectBlock.position(0);
+            var indirectBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
             m_disc.read(indirectRef, indirectBlock);
+            indirectBlock.flip();
             for (int i = 5; i < dataFilesBlocks; i++) {
                 var blockRef = indirectBlock.getInt();
-                addToMapFromBlock(blockRef);
+                list.add(blockRef);
+                //addToMapFromBlock(blockRef);
             }
         }
-
+            return list;
     }
     private void addToMapFromBlock(int blockRef) throws IOException {
-        var dataFromBlock = ByteBuffer.allocate(BLOCKSIZE);
-        dataFromBlock.position(0);
+        var dataFromBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         m_disc.read(blockRef, dataFromBlock);
-        dataFromBlock.position(0);
-        while (dataFromBlock.position() < BLOCKSIZE) {
+        dataFromBlock.flip();
+        while (dataFromBlock.position() < m_magicBlock.m_blockSize()) {
             try {
                 var strName = new StringBuilder(14);
                 char nextChar = dataFromBlock.getChar();
@@ -101,9 +125,7 @@ public class FileSystem {
                     strName.append(nextChar);
                     nextChar = dataFromBlock.getChar();
                 }
-                //dataFromBlock.getChar();
                 m_filesMap.put(strName.toString(), dataFromBlock.getInt());
-                System.out.println(strName);
             } catch (IndexOutOfBoundsException e) {
                 break;
             }
@@ -117,5 +139,8 @@ public class FileSystem {
         }
         throw new NoSpaceOnDiscException();
 
+    }
+    public MagicBlock getM_magicBlock() {
+        return m_magicBlock;
     }
 }

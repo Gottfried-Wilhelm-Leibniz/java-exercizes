@@ -5,6 +5,7 @@ import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -20,24 +21,25 @@ public class Disc {
     private final int m_inodeSize;
 
     public Disc(Path path, int magicNum, int numBlocks,  int inodesBlock, int totalInodes, int inodeSize,int blockSize) throws IOException {
+        System.out.println("f " + blockSize);
         m_numBlocks = numBlocks;
         m_blockSize = blockSize;
+        System.out.println("s " + m_blockSize);
         m_inodeSize = inodeSize;
         m_seekable = Files.newByteChannel(path, StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE);
         ByteBuffer buffer = ByteBuffer.allocate(numBlocks * blockSize);
-        buffer.position(0);
         m_seekable.write(buffer);
         var superByteBuffer = ByteBuffer.allocate(blockSize);
-        superByteBuffer.position(0);
         superByteBuffer.putInt(magicNum);
         superByteBuffer.putInt(numBlocks);
         superByteBuffer.putInt(inodesBlock);
         superByteBuffer.putInt(totalInodes);
         superByteBuffer.putInt(inodeSize);
         superByteBuffer.putInt(blockSize);
-        superByteBuffer.position(0);
+        superByteBuffer.flip();
         write(0, superByteBuffer);
     }
+
 
     public void read(int blockNum, ByteBuffer byteBuffer) throws IOException {
         if(byteBuffer.array().length != m_blockSize) {

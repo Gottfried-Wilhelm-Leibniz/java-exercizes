@@ -29,16 +29,17 @@ class MagicBlockTest {
         buff.putInt(125);
         buff.putInt(32);
         buff.putInt(4000);
-        buff.position(0);
+        System.out.println(buff.position());
+        buff.flip();
         disc.write(0, buff);
+        buff.flip();
         var magicBlock = new MagicBlock(buff);
-        Assertions.assertEquals(1000, magicBlock.getM_magicNumber());
-        Assertions.assertEquals(10, magicBlock.getM_numBlocks());
-        Assertions.assertEquals(1, magicBlock.getM_inodesBlocks());
-        Assertions.assertEquals(125, magicBlock.getM_totalInodes());
-        Assertions.assertEquals(32, magicBlock.getM_inodeSize());
-        Assertions.assertEquals(4000, magicBlock.getM_blockSize());
-
+        Assertions.assertEquals(1000, magicBlock.m_magicNum());
+        Assertions.assertEquals(10, magicBlock.m_numBlocks());
+        Assertions.assertEquals(1, magicBlock.m_inlodeBlocks());
+        Assertions.assertEquals(125, magicBlock.m_totalInodes());
+        Assertions.assertEquals(32, magicBlock.m_inodeSize());
+        Assertions.assertEquals(4000, magicBlock.m_blockSize());
     }
 
 }
