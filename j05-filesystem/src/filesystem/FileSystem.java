@@ -28,7 +28,7 @@ public class FileSystem {
             m_disc.read(0, superBuffer);
             superBuffer.flip();
             magicBlock = new MagicBlock(superBuffer);
-        } catch (BufferOverflowException | IllegalArgumentException e) {
+        } catch (BufferOverflowException | IllegalArgumentException | BufferIsNotTheSizeOfAblockException e) {
             format();
             superBuffer.rewind();
             m_disc.read(0, superBuffer);
@@ -40,9 +40,8 @@ public class FileSystem {
     }
 
     private void initializeFilesMap() throws IOException, BufferIsNotTheSizeOfAblockException {
-//            var filesInodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-//            m_disc.read(1, filesInodeBuffer);
             List<Integer> list = getListOfBlocks( 0);
+            m_filesMap.clear();
             for (int refBlock : list) {
                 addToMapFromBlock(refBlock);
             }
@@ -82,17 +81,18 @@ public class FileSystem {
     }
 
     private List<Integer> getListOfBlocks(int iNodeRef) throws IOException, BufferIsNotTheSizeOfAblockException {
-        var inodeBlock = (int)Math.ceil((double) iNodeRef * m_magicBlock.m_inlodeBlocks() / m_magicBlock.m_totalInodes());
+        var inodeBlock = iNodeRef * m_magicBlock.m_inodeSize() / m_magicBlock.m_blockSize() + 1;//(int)Math.ceil((double) iNodeRef * m_magicBlock.m_inlodeBlocks() / m_magicBlock.m_totalInodes());
         var filesInodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         m_disc.read(inodeBlock, filesInodeBuffer);
 //        filesInodeBuffer.flip();
         List<Integer> list = new ArrayList<>();
-        filesInodeBuffer.position(iNodeRef * m_magicBlock.m_inodeSize());
+        filesInodeBuffer.position(iNodeRef % (m_magicBlock.m_blockSize()/m_magicBlock.m_inodeSize()) * m_magicBlock.m_inodeSize());
         if (filesInodeBuffer.getInt() == 0) {
             throw new FileNotFoundException();
         }
         int totalSize = filesInodeBuffer.getInt();
         int dataFilesBlocks = (int)Math.ceil((double)totalSize/ m_magicBlock.m_blockSize());
+        //int blockRef = filesInodeBuffer.getInt();
         for (int i = 0; i < dataFilesBlocks && i < 5; i++) {
             var blockRef = filesInodeBuffer.getInt();
             list.add(blockRef);
@@ -181,14 +181,29 @@ public class FileSystem {
         m_disc.write(inodeBlock, inodeBuffer);
         initializeFilesMap();
     }
-    public int getNewBlock() {
+    public void removeFile(String name) throws IOException, BufferIsNotTheSizeOfAblockException {
+        int iNodeDel = m_filesMap.get(name);
+        var firstBlocKCopy = ByteBuffer.allocate(m_magicBlock.m_blockSize());
+        m_disc.read(1, firstBlocKCopy);
+        var temp = ByteBuffer.allocate(m_magicBlock.m_blockSize());
+
+        temp.put(firstBlocKCopy.array(), 0, iNodeDel * m_magicBlock.m_inodeSize());
+        temp.put(firstBlocKCopy.array(), iNodeDel * m_magicBlock.m_inodeSize() + m_magicBlock.m_inodeSize(), firstBlocKCopy.array().length - (iNodeDel + 1) * m_magicBlock.m_inodeSize());
+        temp.flip();
+        m_disc.write(1, temp);
+        initializeFilesMap();
+    }
+    public int getNewBlock() throws IOException, BufferIsNotTheSizeOfAblockException {
+        var list = new ArrayList<Integer>();
+        for(Map.Entry<String, Integer> entry : m_filesMap.entrySet()) {
+            list.addAll(getListOfBlocks(entry.getValue()));
+        }
         for (int i = 2; i < NUMOFBLOCKS; i++) {
-            if(!m_filesMap.containsValue(i)) {
+            if(!list.contains(i)) {
                 return i;
             }
         }
         throw new NoSpaceOnDiscException();
-
     }
     public MagicBlock getM_magicBlock() {
         return m_magicBlock;

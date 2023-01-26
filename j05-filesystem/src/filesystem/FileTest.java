@@ -38,14 +38,18 @@ class FileTest {
         buff.putInt(1);
         buff.putInt(1000);
         buff.putInt(3);
-        buff.position(4 * INODESIZE);
+        buff.position(5 * INODESIZE);
         buff.putInt(1);
         buff.putInt(1000);
         buff.putInt(7);
-        buff.position(5 * INODESIZE);
+        buff.position(6 * INODESIZE);
         buff.putInt(1);
         buff.putInt(2000);
         buff.putInt(8);
+        buff.position(7 * INODESIZE);
+        buff.putInt(1);
+        buff.putInt(2000);
+        buff.putInt(9);
         buff.flip();
         m_disc.write(1, buff);
         buff = ByteBuffer.allocate(BLOCKSIZE);
@@ -58,7 +62,12 @@ class FileTest {
         buff.putChar('e');
         buff.putChar('f');
         buff.putChar('\0');
-        buff.putInt(4);
+        buff.putInt(6);
+        buff.putChar('o');
+        buff.putChar('o');
+        buff.putChar('p');
+        buff.putChar('\0');
+        buff.putInt(7);
         buff.flip();
         m_disc.write(3, buff);
 
@@ -71,14 +80,14 @@ class FileTest {
         buff.putInt(4);
         buff.putInt(5);
         buff.flip();
-        m_disc.write(7, buff);
+        m_disc.write(8, buff);
         buff.rewind();
         buff.putChar('o');
         buff.putChar('o');
         buff.putChar('l');
         buff.putChar('\0');
         buff.flip();
-        m_disc.write(8, buff);
+        m_disc.write(9, buff);
         m_fs = new FileSystem(m_disc);
     }
 

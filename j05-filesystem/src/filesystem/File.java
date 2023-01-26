@@ -29,6 +29,7 @@ public class File {
         m_fileBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         m_disc.get().read(1, m_fileBuffer);
         m_fileBuffer.position(inodeRef * m_magicBlock.m_inodeSize());
+        System.out.println("hell " + inodeRef);
         m_save = save;
         if(m_fileBuffer.getInt() == 0) {
             throw new FileNotFoundException();
