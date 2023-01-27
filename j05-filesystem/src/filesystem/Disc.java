@@ -33,6 +33,7 @@ public class Disc {
         superByteBuffer.putInt(totalInodes);
         superByteBuffer.putInt(inodeSize);
         superByteBuffer.putInt(blockSize);
+        superByteBuffer.putInt(blockSize / inodeSize);
         superByteBuffer.flip();
         write(0, superByteBuffer);
 

@@ -27,9 +27,9 @@ public class File {
         m_refList = refList;
         m_magicBlock = mMagicBlock;
         m_fileBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-        m_disc.get().read(1, m_fileBuffer);
+        var inodeBlock = (int)Math.ceil((double) inodeRef * m_magicBlock.m_inlodeBlocks() / m_magicBlock.m_totalInodes());
+        m_disc.get().read(inodeBlock, m_fileBuffer);
         m_fileBuffer.position(inodeRef * m_magicBlock.m_inodeSize());
-        System.out.println("hell " + inodeRef);
         m_save = save;
         if(m_fileBuffer.getInt() == 0) {
             throw new FileNotFoundException();
@@ -39,14 +39,21 @@ public class File {
     }
 
     private void initializeFile() throws IOException, BufferIsNotTheSizeOfAblockException {
+        System.out.println(m_inodeRef);
         var list = m_refList.apply(m_inodeRef);
+        System.out.println(list);
         var fileBuffer = ByteBuffer.allocate(list.size() * m_magicBlock.m_blockSize());
         var singleBlockBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-        int i = 0;
+//        for (int i = 0; i < list.size(); i++) {
+//            singleBlockBuffer.rewind();
+//            m_disc.get().read(list.get(i), singleBlockBuffer);
+//            fileBuffer.put(singleBlockBuffer.array(), i * m_magicBlock.m_blockSize() , m_magicBlock.m_blockSize());
+//        }
         for (int dataBlock : list) {
             singleBlockBuffer.rewind();
+            System.out.println("data block: " + dataBlock);
             m_disc.get().read(dataBlock, singleBlockBuffer);
-            fileBuffer.put(singleBlockBuffer.array(), i, m_magicBlock.m_blockSize());
+            fileBuffer.put(singleBlockBuffer.array(), 0, m_magicBlock.m_blockSize());
         }
         fileBuffer.rewind();
         m_fileBuffer = ByteBuffer.allocate(m_totalSize);

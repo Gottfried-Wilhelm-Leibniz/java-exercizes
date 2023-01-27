@@ -24,31 +24,38 @@ class FileTest {
     @BeforeAll
     static void init () throws IOException, BufferIsNotTheSizeOfAblockException {
         m_disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, BLOCKSIZE);
+//        superByteBuffer.putInt(magicNum);
+//        superByteBuffer.putInt(numBlocks);
+//        superByteBuffer.putInt(inodesBlock);
+//        superByteBuffer.putInt(totalInodes);
+//        superByteBuffer.putInt(inodeSize);
+//        superByteBuffer.putInt(blockSize);
+//        superByteBuffer.putInt(blockSize / inodeSize);
+//        var buff = ByteBuffer.allocate(BLOCKSIZE);
+//        buff.position(0);
+//        buff.putInt(1000);
+//        buff.putInt(10);
+//        buff.putInt(1);
+//        buff.putInt(32);
+//        buff.putInt(4000);
+//        buff.putInt(4000/32);
+//        buff.flip();
+//        m_disc.write(0, buff);
         var buff = ByteBuffer.allocate(BLOCKSIZE);
-        buff.position(0);
-        buff.putInt(1000);
-        buff.putInt(10);
-        buff.putInt(1);
-        buff.putInt(125);
-        buff.putInt(32);
-        buff.putInt(4000);
-        buff.flip();
-        m_disc.write(0, buff);
-        buff = ByteBuffer.allocate(BLOCKSIZE);
         buff.putInt(1);
         buff.putInt(1000);
         buff.putInt(3);
-        buff.position(5 * INODESIZE);
+        buff.position(INODESIZE);
         buff.putInt(1);
         buff.putInt(1000);
         buff.putInt(7);
-        buff.position(6 * INODESIZE);
+        buff.position(2 * INODESIZE);
         buff.putInt(1);
         buff.putInt(2000);
         buff.putInt(8);
-        buff.position(7 * INODESIZE);
+        buff.position(3 * INODESIZE);
         buff.putInt(1);
-        buff.putInt(2000);
+        buff.putInt(6000);
         buff.putInt(9);
         buff.flip();
         m_disc.write(1, buff);
@@ -57,17 +64,17 @@ class FileTest {
         buff.putChar('b');
         buff.putChar('c');
         buff.putChar('\0');
-        buff.putInt(5);
+        buff.putInt(1);
         buff.putChar('d');
         buff.putChar('e');
         buff.putChar('f');
         buff.putChar('\0');
-        buff.putInt(6);
+        buff.putInt(2);
         buff.putChar('o');
         buff.putChar('o');
         buff.putChar('p');
         buff.putChar('\0');
-        buff.putInt(7);
+        buff.putInt(3);
         buff.flip();
         m_disc.write(3, buff);
 
@@ -90,10 +97,9 @@ class FileTest {
         m_disc.write(9, buff);
         m_fs = new FileSystem(m_disc);
     }
-
     @Test
     void write() throws IOException, BufferIsNotTheSizeOfAblockException {
-        var f = m_fs.open("abc");
+        var f = m_fs.open("oop");
         f.setPos(0);
         Assertions.assertEquals("ool",f.readString());
         f.setPos(0);
@@ -153,15 +159,9 @@ class FileTest {
 
     @Test
     void saveToDisc() throws IOException, BufferIsNotTheSizeOfAblockException {
-        var f = m_fs.open("abc");
+        var f = m_fs.open("oop");
         f.setPos(0);
         Assertions.assertEquals("ool", f.readString());
-//        var buff = ByteBuffer.allocate(6000);
-//        buff.putChar('t');
-//        buff.putChar('h');
-//        buff.putChar('i');
-//        buff.putChar('s');
-//        buff.putChar('\0');
         f.setPos(0);
         f.write("this");
         f.saveToDisc();
