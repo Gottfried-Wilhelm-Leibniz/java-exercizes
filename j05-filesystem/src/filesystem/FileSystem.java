@@ -186,14 +186,47 @@ public class FileSystem {
         var firstBlocKCopy = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         m_disc.read(1, firstBlocKCopy);
         var temp = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-
         temp.put(firstBlocKCopy.array(), 0, iNodeDel * m_magicBlock.m_inodeSize());
         temp.put(firstBlocKCopy.array(), iNodeDel * m_magicBlock.m_inodeSize() + m_magicBlock.m_inodeSize(), firstBlocKCopy.array().length - (iNodeDel + 1) * m_magicBlock.m_inodeSize());
         temp.flip();
         m_disc.write(1, temp);
+        var listOfFilesBlock = getListOfBlocks(0);
+        for (int fileBlock : listOfFilesBlock) {
+            var singleFilesBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
+            m_disc.read(fileBlock, singleFilesBlock);
+            singleFilesBlock.rewind();
+            while (singleFilesBlock.position() < m_magicBlock.m_blockSize()) {
+                try {
+                    var strName = new StringBuilder(14);
+                    var startPos = singleFilesBlock.position();
+                    char nextChar = singleFilesBlock.getChar();
+                    if(nextChar == (byte) 0) {
+                        break;
+                    }
+                    while (nextChar != '\0') {
+                        strName.append(nextChar);
+                        nextChar = singleFilesBlock.getChar();
+                    }
+                    singleFilesBlock.getInt();
+                    if(strName.toString().equals(name)) {
+                        var endPos = singleFilesBlock.position();
+                        temp = ByteBuffer.allocate(m_magicBlock.m_blockSize());
+                        temp.put(singleFilesBlock.array(), 0, startPos);
+                        temp.put(firstBlocKCopy.array(), endPos, firstBlocKCopy.array().length - startPos - (endPos - startPos));
+                        temp.flip();
+                        m_disc.write(fileBlock, temp);
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    break;
+                }
+            }
+        }
         initializeFilesMap();
     }
-    public void createNewFile (String name) throws IOException, BufferIsNotTheSizeOfAblockException {
+    public void createNewFile (String name) throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
+        if (m_filesMap.containsKey(name)) {
+            throw new FilesNameIsAlreadyOnDiscEcxeption("there is already a file with this name on system");
+        }
         var newDataBlock = getNewBlock();
         var inodeAdd = getFilesList().size() + 1;
         var inodeBlock = (int)Math.ceil((double) inodeAdd * m_magicBlock.m_inlodeBlocks() / m_magicBlock.m_totalInodes());
@@ -215,10 +248,10 @@ public class FileSystem {
         while (firstBlocKCopy.position() < m_magicBlock.m_blockSize() && nextChar != (byte) 0) {
             nextChar = firstBlocKCopy.getChar();
         }
-        if (m_magicBlock.m_blockSize() - firstBlocKCopy.position() < name.length() * 2 + 4) {
+        if (m_magicBlock.m_blockSize() - firstBlocKCopy.position() < name.length() * 2 + 6) {
             var numOfFilesData = list.size();
-            ///////////////////////////////////////////// never ending
             filesBlock = getNewBlock();
+
             firstBlocKCopy.rewind();
         }
             for (int i = 0; i < name.length(); i++) {

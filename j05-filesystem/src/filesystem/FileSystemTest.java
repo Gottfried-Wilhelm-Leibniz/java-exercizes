@@ -127,7 +127,10 @@ class FileSystemTest {
         Assertions.assertEquals("oop", f.getM_fileName());
         Assertions.assertEquals(6000, f.getM_totalSize());
         Assertions.assertEquals(3, f.getM_inodeRef());
+        var oldListSize = m_fs.getFilesList().size();
         m_fs.removeFile("oop");
         Assertions.assertThrowsExactly(FileNotFoundException.class, () -> {var s = m_fs.open("oop");});
+        var newListSize = m_fs.getFilesList().size();
+        Assertions.assertEquals(newListSize + 1, oldListSize);
     }
 }
