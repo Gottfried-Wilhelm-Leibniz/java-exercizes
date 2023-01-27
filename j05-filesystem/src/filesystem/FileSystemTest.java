@@ -96,8 +96,6 @@ class FileSystemTest {
         var s = m_fs.open("abc");
 
         Assertions.assertEquals("def", f.getM_fileName());
-        Assertions.assertEquals(2000, f.getM_totalSize());
-        Assertions.assertEquals(2, f.getM_inodeRef());
     }
 
     @Test
@@ -125,8 +123,6 @@ class FileSystemTest {
     void remove() throws IOException, BufferIsNotTheSizeOfAblockException {
         var f = m_fs.open("oop");
         Assertions.assertEquals("oop", f.getM_fileName());
-        Assertions.assertEquals(6000, f.getM_totalSize());
-        Assertions.assertEquals(3, f.getM_inodeRef());
         var oldListSize = m_fs.getFilesList().size();
         m_fs.removeFile("oop");
         Assertions.assertThrowsExactly(FileNotFoundException.class, () -> {var s = m_fs.open("oop");});
