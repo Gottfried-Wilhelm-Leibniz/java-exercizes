@@ -41,6 +41,7 @@ public class FileSystem {
 
     private void initializeFilesMap() throws IOException, BufferIsNotTheSizeOfAblockException {
             List<Integer> list = getListOfBlocks( 0);
+        System.out.println(list);
             m_filesMap.clear();
             for (int refBlock : list) {
                 addToMapFromBlock(refBlock);
@@ -50,15 +51,8 @@ public class FileSystem {
     public File open(String str) throws IOException, BufferIsNotTheSizeOfAblockException {
         for (Map.Entry<String,Integer> entry : m_filesMap.entrySet()){
             if (entry.getKey().equals(str)) {
-                var list = getListOfBlocks(entry.getValue());
-                var totalFile = ByteBuffer.allocate(list.size() * m_magicBlock.m_blockSize());
-                var singleBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-                for (int dataBlock : list) {
-                    singleBlock.rewind();
-                    m_disc.read(dataBlock, singleBlock);
-                    totalFile.put(singleBlock.array(), 0, m_magicBlock.m_blockSize());
-                }
-                return new File(entry.getKey(), totalFile, (ByteBuffer b, String name) -> {
+                var fileBuff = openDoc(entry.getValue());
+                return new File(entry.getKey(), fileBuff, (ByteBuffer b, String name) -> {
                     try {
                         saveToDisc(b, name);
                     } catch (IOException e) {
@@ -67,29 +61,35 @@ public class FileSystem {
                         throw new RuntimeException(e);
                     }
                 });
-//                m_fileBuffer = ByteBuffer.allocate(m_totalSize);
-//                m_fileBuffer.rewind();
-//                m_fileBuffer.put(totalFile.array(), 0, m_totalSize);
-//                return new File(()-> m_disc, str, entry.getValue(), (a)-> {
-//                    try {
-//                        return getListOfBlocks(a);
-//                    } catch (IOException | BufferIsNotTheSizeOfAblockException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                }, m_magicBlock, (ByteBuffer b, int inode, int size) -> {
-//                    try {
-//                        saveToDisc(b, inode, size);
-//                    } catch (IOException | BufferIsNotTheSizeOfAblockException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                });
             }
         }
         throw new FileNotFoundException("the file you searched is not on the disc");
     }
-
+    private File getDataFile() throws IOException, BufferIsNotTheSizeOfAblockException {
+        var fileDoc = openDoc(0);
+        return new File(".", fileDoc, (ByteBuffer b, String name) -> {
+            try {
+                saveToDisc(b, name);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (BufferIsNotTheSizeOfAblockException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+    private ByteBuffer openDoc(int inode) throws IOException, BufferIsNotTheSizeOfAblockException {
+        var list = getListOfBlocks(inode);
+        var totalFile = ByteBuffer.allocate(list.size() * m_magicBlock.m_blockSize());
+        var singleBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
+        for (int dataBlock : list) {
+            singleBlock.rewind();
+            m_disc.read(dataBlock, singleBlock);
+            totalFile.put(singleBlock.array(), 0, m_magicBlock.m_blockSize());
+        }
+        return totalFile;
+    }
     private void format() throws IOException {
-        m_disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS , INODESIZE , INODESTOTAL, BLOCKSIZE);
+        m_disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS , INODESTOTAL, INODESIZE,  BLOCKSIZE);
     }
 
     public List<String> getFilesList() {
@@ -101,20 +101,18 @@ public class FileSystem {
     }
 
     private List<Integer> getListOfBlocks(int iNodeRef) throws IOException, BufferIsNotTheSizeOfAblockException {
-        var inodeBlock = (int)(Math.round((double) iNodeRef / m_magicBlock.m_inodesPerBlock())) + 1;//iNodeRef * m_magicBlock.m_inodeSize() / m_magicBlock.m_blockSize() + 1;//(int)Math.ceil((double) iNodeRef * m_magicBlock.m_inlodeBlocks() / m_magicBlock.m_totalInodes());
-        System.out.println(" inode blq for " + iNodeRef + " is " + inodeBlock);
+        var inodeBlock = (int)(Math.round((double) iNodeRef / m_magicBlock.m_inodesPerBlock())) + 1;
+        System.out.println("inode block isss " + inodeBlock);
         var filesInodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         m_disc.read(inodeBlock, filesInodeBuffer);
         List<Integer> list = new ArrayList<>();
         filesInodeBuffer.position(iNodeRef % m_magicBlock.m_inodesPerBlock() * m_magicBlock.m_inodeSize());
-        System.out.println(" pos for " + iNodeRef + " is " + iNodeRef % m_magicBlock.m_inodesPerBlock());
+        System.out.println("poss isss " + filesInodeBuffer.position());
         if (filesInodeBuffer.getInt() == 0) {
             throw new FileNotFoundException();
         }
         int totalSize = filesInodeBuffer.getInt();
-        System.out.println(totalSize + "for " + iNodeRef);
-        int dataFilesBlocks = (int)Math.ceil((double)totalSize/ m_magicBlock.m_blockSize());
-        //int blockRef = filesInodeBuffer.getInt();
+        int dataFilesBlocks = (int)Math.ceil((double)totalSize / m_magicBlock.m_blockSize());
         for (int i = 0; i < dataFilesBlocks && i < 5; i++) {
             var blockRef = filesInodeBuffer.getInt();
             list.add(blockRef);
@@ -134,6 +132,7 @@ public class FileSystem {
     }
     private void addToMapFromBlock(int blockRef) throws IOException, BufferIsNotTheSizeOfAblockException {
         var dataFromBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
+        System.out.println("the is blck ref = " + blockRef);
         m_disc.read(blockRef, dataFromBlock);
         dataFromBlock.flip();
         while (dataFromBlock.position() < m_magicBlock.m_blockSize()) {
@@ -153,13 +152,18 @@ public class FileSystem {
             }
         }
     }
-    public ByteBuffer loadFromDisc(String name) {
-        return null;
-    }
 
     public void saveToDisc(ByteBuffer buffer, String name) throws IOException, BufferIsNotTheSizeOfAblockException {
-        var inode = m_filesMap.get(name);
+        int inode;
+        if (name.equals(".")) {
+            inode = 0;
+        }
+        else {
+            inode = m_filesMap.get(name);
+        }
+        System.out.println(inode + " iam");
         var size = buffer.array().length;
+        System.out.println("buf array leng is " + buffer.array().length);
         var inodeBlock = (int)Math.ceil((double) inode * m_magicBlock.m_inlodeBlocks() / m_magicBlock.m_totalInodes());
         var inodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         m_disc.read(inodeBlock, inodeBuffer);
@@ -175,10 +179,11 @@ public class FileSystem {
                 inodeBuffer.position(inodeBuffer.position() - 4);
                 inodeBuffer.putInt(blockRef);
             }
-            dataSingleBlock.rewind();
             var howMuch = buffer.array().length - i * m_magicBlock.m_blockSize() > m_magicBlock.m_blockSize() ? m_magicBlock.m_blockSize() : buffer.array().length - i * m_magicBlock.m_blockSize();
+            dataSingleBlock.rewind();
             dataSingleBlock.put(buffer.array(), i * m_magicBlock.m_blockSize(), howMuch);
-            dataSingleBlock.flip();
+            dataSingleBlock.rewind();
+            System.out.println(dataSingleBlock.array().length);
             m_disc.write(blockRef, dataSingleBlock);
         }
         if (dataFilesBlocks > 5) {
@@ -213,14 +218,15 @@ public class FileSystem {
     }
 
     public void removeFile(String name) throws IOException, BufferIsNotTheSizeOfAblockException {
-        int iNodeDel = m_filesMap.get(name);
+        int inodeDel = m_filesMap.get(name);
         var firstBlocKCopy = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-        m_disc.read(1, firstBlocKCopy);
+        var inodeBlock = (int)Math.ceil((double) inodeDel * m_magicBlock.m_inlodeBlocks() / m_magicBlock.m_totalInodes());
+        m_disc.read(inodeDel, firstBlocKCopy);
         var temp = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-        temp.put(firstBlocKCopy.array(), 0, iNodeDel * m_magicBlock.m_inodeSize());
-        temp.put(firstBlocKCopy.array(), iNodeDel * m_magicBlock.m_inodeSize() + m_magicBlock.m_inodeSize(), firstBlocKCopy.array().length - (iNodeDel + 1) * m_magicBlock.m_inodeSize());
+        temp.put(firstBlocKCopy.array(), 0, inodeDel * m_magicBlock.m_inodeSize());
+        temp.put(firstBlocKCopy.array(), inodeDel * m_magicBlock.m_inodeSize() + m_magicBlock.m_inodeSize(), firstBlocKCopy.array().length - (inodeDel + 1) * m_magicBlock.m_inodeSize());
         temp.flip();
-        m_disc.write(1, temp);
+        m_disc.write(inodeBlock, temp);
         var listOfFilesBlock = getListOfBlocks(0);
         for (int fileBlock : listOfFilesBlock) {
             var singleFilesBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
@@ -270,36 +276,43 @@ public class FileSystem {
         firstBlocKCopy.rewind();
         m_disc.write(inodeBlock, firstBlocKCopy);
 
-        List<Integer> list = getListOfBlocks( 0);
-        var filesBlock = list.get(list.size() - 1);
-        firstBlocKCopy.rewind();
-        m_disc.read(filesBlock, firstBlocKCopy);
-        firstBlocKCopy.rewind();
-        char nextChar = firstBlocKCopy.getChar();
-        while (firstBlocKCopy.position() < m_magicBlock.m_blockSize() && nextChar != (byte) 0) {
-            nextChar = firstBlocKCopy.getChar();
-        }
-        if (m_magicBlock.m_blockSize() - firstBlocKCopy.position() < name.length() * 2 + 6) {
-            var numOfFilesData = list.size();
-            filesBlock = getNewBlock();
+        var dataFile = getDataFile();
+        dataFile.position(dataFile.getSize());
+        dataFile.write(name);
+        dataFile.write(inodeAdd);
+        dataFile.saveToDisc();
 
-            firstBlocKCopy.rewind();
-        }
-            for (int i = 0; i < name.length(); i++) {
-                firstBlocKCopy.putChar(name.charAt(i));
-            }
-            firstBlocKCopy.putChar('\0');
-            firstBlocKCopy.putInt(inodeAdd);
-            firstBlocKCopy.rewind();
-            m_disc.write(filesBlock, firstBlocKCopy);
-
+//        List<Integer> list = getListOfBlocks( 0);
+//        var filesBlock = list.get(list.size() - 1);
+//        firstBlocKCopy.rewind();
+//        m_disc.read(filesBlock, firstBlocKCopy);
+//        firstBlocKCopy.rewind();
+//        char nextChar = firstBlocKCopy.getChar();
+//        while (firstBlocKCopy.position() < m_magicBlock.m_blockSize() && nextChar != (byte) 0) {
+//            nextChar = firstBlocKCopy.getChar();
+//        }
+//        if (m_magicBlock.m_blockSize() - firstBlocKCopy.position() < name.length() * 2 + 6) {
+//            var numOfFilesData = list.size();
+//            filesBlock = getNewBlock();
+//
+//            firstBlocKCopy.rewind();
+//        }
+//            for (int i = 0; i < name.length(); i++) {
+//                firstBlocKCopy.putChar(name.charAt(i));
+//            }
+//            firstBlocKCopy.putChar('\0');
+//            firstBlocKCopy.putInt(inodeAdd);
+//            firstBlocKCopy.rewind();
+//            m_disc.write(filesBlock, firstBlocKCopy);
     }
     public int getNewBlock() throws IOException, BufferIsNotTheSizeOfAblockException {
         var list = new ArrayList<Integer>();
         for(Map.Entry<String, Integer> entry : m_filesMap.entrySet()) {
+            System.out.println("list for " + entry.getKey() + " is " + getListOfBlocks(entry.getValue()));
             list.addAll(getListOfBlocks(entry.getValue()));
         }
-        for (int i = 2; i < NUMOFBLOCKS; i++) {
+        System.out.println("list all is " + list);
+        for (int i = m_magicBlock.m_inlodeBlocks() + 1; i <= NUMOFBLOCKS; i++) {
             if(!list.contains(i)) {
                 return i;
             }
