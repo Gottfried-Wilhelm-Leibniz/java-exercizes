@@ -27,16 +27,6 @@ class FileTest {
     @BeforeAll
     static void init () throws IOException, BufferIsNotTheSizeOfAblockException {
         m_disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, BLOCKSIZE);
-//        var buff = ByteBuffer.allocate(BLOCKSIZE);
-//        buff.position(0);
-//        buff.putInt(1000);
-//        buff.putInt(10);
-//        buff.putInt(1);
-//        buff.putInt(32);
-//        buff.putInt(4000);
-//        buff.putInt(4000/32);
-//        buff.flip();
-//        m_disc.write(0, buff);
         var buff = ByteBuffer.allocate(BLOCKSIZE);
         buff.putInt(1);
         buff.putInt(1000);

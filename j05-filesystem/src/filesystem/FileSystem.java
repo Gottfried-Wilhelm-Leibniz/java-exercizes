@@ -2,7 +2,6 @@ package filesystem;
 import filesystem.Exceptions.BufferIsNotTheSizeOfAblockException;
 import filesystem.Exceptions.FilesNameIsAlreadyOnDiscEcxeption;
 import filesystem.Exceptions.NoSpaceOnDiscException;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.BufferOverflowException;
@@ -22,6 +21,7 @@ public class FileSystem {
     private static final int INODESTOTAL = InodesBLOCKS * BLOCKSIZE / INODESIZE;
     private Disc m_disc;
     private final MagicBlock m_magicBlock;
+    private FileOptions m_fileOptions;
     private final ConcurrentHashMap<String, Integer> m_filesMap = new ConcurrentHashMap<>();
 
     public FileSystem(Disc disc) throws IOException, BufferIsNotTheSizeOfAblockException {
@@ -40,7 +40,20 @@ public class FileSystem {
             magicBlock = new MagicBlock(superBuffer);
         }
         m_magicBlock = magicBlock;
+        initializeFilesOptions();
         initializeFilesMap();
+    }
+
+    private void initializeFilesOptions() {
+        m_fileOptions = new FileOptions((ByteBuffer b, String name,int size) -> {
+            try {
+                saveToDisc(b, name, size);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (BufferIsNotTheSizeOfAblockException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     private void initializeFilesMap() throws IOException, BufferIsNotTheSizeOfAblockException {
@@ -67,23 +80,7 @@ public class FileSystem {
             if (entry.getKey().equals(str)) {
                 var fileBuff = openDoc(entry.getValue());
                 var fileSize = getFileSize(entry.getValue());
-                return new File(entry.getKey(), fileSize, fileBuff, (ByteBuffer b, String name,int size) -> {
-                    try {
-                        saveToDisc(b, name, size);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    } catch (BufferIsNotTheSizeOfAblockException e) {
-                        throw new RuntimeException(e);
-                    }
-                }, (String oldName, String newName) -> {
-                    try {
-                        renameFile(oldName, newName);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    } catch (BufferIsNotTheSizeOfAblockException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+                return new File(entry.getKey(), fileSize, fileBuff, m_fileOptions);
             }
         }
         throw new FileNotFoundException("the file you searched is not on the disc");
@@ -92,23 +89,7 @@ public class FileSystem {
     private File getDataFile() throws IOException, BufferIsNotTheSizeOfAblockException {
         var fileDoc = openDoc(0);
         var fileSize = getFileSize(0);
-        return new File(".", fileSize, fileDoc, (ByteBuffer b, String name, int size) -> {
-            try {
-                saveToDisc(b, name, size);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (BufferIsNotTheSizeOfAblockException e) {
-                throw new RuntimeException(e);
-            }
-        }, (String oldName, String newName) -> {
-            try {
-                renameFile(oldName, newName);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (BufferIsNotTheSizeOfAblockException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        return new File(".", fileSize, fileDoc, m_fileOptions);
     }
 
     private int getFileSize(int blockRef) throws IOException, BufferIsNotTheSizeOfAblockException {
@@ -124,7 +105,7 @@ public class FileSystem {
     }
 
     private ByteBuffer openDoc(int inode) throws IOException, BufferIsNotTheSizeOfAblockException {
-        var list = getListOfBlocks(inode);
+        var list = getListOfDataBlocks(inode);
         var totalFile = ByteBuffer.allocate(list.size() * m_magicBlock.m_blockSize());
         var singleBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         for (int dataBlock : list) {
@@ -143,7 +124,7 @@ public class FileSystem {
         return list;
     }
 
-    private List<Integer> getListOfBlocks(int iNodeRef) throws IOException, BufferIsNotTheSizeOfAblockException {
+    private List<Integer> getListOfDataBlocks(int iNodeRef) throws IOException, BufferIsNotTheSizeOfAblockException {
         var inodeBlock = (int)(Math.round((double) iNodeRef / m_magicBlock.m_inodesPerBlock())) + 1;
         var filesInodeBuffer = ByteBuffer.allocate(m_magicBlock.m_blockSize());
         m_disc.read(inodeBlock, filesInodeBuffer);
@@ -316,9 +297,9 @@ public class FileSystem {
     public int getNewDataBlock() throws IOException, BufferIsNotTheSizeOfAblockException {
         var list = new ArrayList<Integer>();
         for(Map.Entry<String, Integer> entry : m_filesMap.entrySet()) {
-            list.addAll(getListOfBlocks(entry.getValue()));
+            list.addAll(getListOfDataBlocks(entry.getValue()));
         }
-        list.addAll(getListOfBlocks(0));
+        list.addAll(getListOfDataBlocks(0));
 
         for (int i = m_magicBlock.m_inlodeBlocks() + 1; i <= NUMOFBLOCKS; i++) {
             if(!list.contains(i)) {

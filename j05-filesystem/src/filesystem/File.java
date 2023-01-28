@@ -6,16 +6,14 @@ public class File {
     private String m_fileName;
     private ByteBuffer m_fileBuffer;
     private int m_totalSize;
-    private final SaveFile m_save;
     private int m_size;
-    private final RenameFile m_rename;
+    private final FileOptions m_options;
 
-    public File(String fileName, int size, ByteBuffer b, SaveFile saveFile, RenameFile renameFile) {
+    public File(String fileName, int size, ByteBuffer b, FileOptions filesOptions) {
         m_fileName = fileName;
         m_size = size;
         m_fileBuffer = b;
-        m_save = saveFile;
-        m_rename = renameFile;
+        m_options = filesOptions;
         m_totalSize = m_fileBuffer.array().length;
         m_fileBuffer.rewind();
     }
@@ -106,14 +104,15 @@ public class File {
         m_fileBuffer.position(offset);
     }
     public void saveToDisc() {
-        m_save.saveIt(m_fileBuffer, m_fileName, m_size);
+        //m_save.saveIt(m_fileBuffer, m_fileName, m_size);
+        m_options.saveToDisc(m_fileBuffer, m_fileName, m_size);
     }
 
-    public void renameFile(String newName) {
-        saveToDisc();
-        m_rename.renameIt(m_fileName, newName);
-        m_fileName = newName;
-    }
+//    public void renameFile(String newName) {
+//        saveToDisc();
+//        m_rename.renameIt(m_fileName, newName);
+//        m_fileName = newName;
+//    }
 
     public String getFileName() {
         return m_fileName;
