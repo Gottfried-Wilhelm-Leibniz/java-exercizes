@@ -1,5 +1,9 @@
-package filesystem;
+package filesystem.Tests;
 
+import filesystem.Disc;
+import filesystem.Exceptions.BufferIsNotTheSizeOfAblockException;
+import filesystem.Exceptions.FilesNameIsAlreadyOnDiscEcxeption;
+import filesystem.FileSystem;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -126,4 +130,30 @@ class FileSystemTest {
         Assertions.assertEquals("hello", str);
     }
 
+    @Test
+    void rename() throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
+        m_fs.createNewFile("christa");
+        var nf = m_fs.open("christa");
+        nf.position(0);
+        nf.write("hello");
+        nf.position(0);
+        String d = nf.readString();
+        Assertions.assertEquals("hello", d);
+        nf.renameFile("washington");
+        Assertions.assertThrowsExactly(FileNotFoundException.class, () -> {m_fs.open("christa");});
+        nf = m_fs.open("washington");
+        nf.position(0);
+        String s = nf.readString();
+        Assertions.assertEquals("hello", s);
+    }
+
+    @Test
+    void newFs() throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
+        var nfs = new FileSystem(new Disc(Path.of("./discTry"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, BLOCKSIZE));
+        Assertions.assertEquals(0, nfs.getFilesList().size());
+        nfs.createNewFile("alon");
+        Assertions.assertEquals(1, nfs.getFilesList().size());
+        nfs.removeFile("alon");
+        Assertions.assertEquals(0, nfs.getFilesList().size());
+    }
 }

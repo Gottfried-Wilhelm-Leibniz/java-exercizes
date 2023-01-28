@@ -3,17 +3,19 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class File {
-    private final String m_fileName;
+    private String m_fileName;
     private ByteBuffer m_fileBuffer;
     private int m_totalSize;
     private final SaveFile m_save;
     private int m_size;
+    private final RenameFile m_rename;
 
-    public File(String fileName, int size, ByteBuffer b, SaveFile saveFile) {
+    public File(String fileName, int size, ByteBuffer b, SaveFile saveFile, RenameFile renameFile) {
         m_fileName = fileName;
         m_size = size;
         m_fileBuffer = b;
         m_save = saveFile;
+        m_rename = renameFile;
         m_totalSize = m_fileBuffer.array().length;
         m_fileBuffer.rewind();
     }
@@ -105,6 +107,12 @@ public class File {
     }
     public void saveToDisc() {
         m_save.saveIt(m_fileBuffer, m_fileName, m_size);
+    }
+
+    public void renameFile(String newName) {
+        saveToDisc();
+        m_rename.renameIt(m_fileName, newName);
+        m_fileName = newName;
     }
 
     public String getFileName() {

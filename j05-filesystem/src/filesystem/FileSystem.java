@@ -1,4 +1,8 @@
 package filesystem;
+import filesystem.Exceptions.BufferIsNotTheSizeOfAblockException;
+import filesystem.Exceptions.FilesNameIsAlreadyOnDiscEcxeption;
+import filesystem.Exceptions.NoSpaceOnDiscException;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.BufferOverflowException;
@@ -71,6 +75,14 @@ public class FileSystem {
                     } catch (BufferIsNotTheSizeOfAblockException e) {
                         throw new RuntimeException(e);
                     }
+                }, (String oldName, String newName) -> {
+                    try {
+                        renameFile(oldName, newName);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    } catch (BufferIsNotTheSizeOfAblockException e) {
+                        throw new RuntimeException(e);
+                    }
                 });
             }
         }
@@ -83,6 +95,14 @@ public class FileSystem {
         return new File(".", fileSize, fileDoc, (ByteBuffer b, String name, int size) -> {
             try {
                 saveToDisc(b, name, size);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (BufferIsNotTheSizeOfAblockException e) {
+                throw new RuntimeException(e);
+            }
+        }, (String oldName, String newName) -> {
+            try {
+                renameFile(oldName, newName);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (BufferIsNotTheSizeOfAblockException e) {
@@ -235,7 +255,6 @@ public class FileSystem {
         dataFile.readInt();
         dataFile.removeInt();
         dataFile.removeFromFile(sizeString * 2 + 2);
-        dataFile.position(0);
         dataFile.saveToDisc();
         initializeFilesMap();
     }
@@ -253,7 +272,7 @@ public class FileSystem {
         m_disc.read(inodeBlock, buff);
         buff.position(inodeAdd % m_magicBlock.m_inodesPerBlock() * m_magicBlock.m_inodeSize());
         buff.putInt(1);
-        buff.putInt(m_magicBlock.m_blockSize());
+        buff.putInt(0);
         buff.putInt(newDataBlock);
         buff.rewind();
         m_disc.write(inodeBlock, buff);
@@ -261,6 +280,22 @@ public class FileSystem {
         dataFile.position(dataFile.getSize());
         dataFile.write(name);
         dataFile.write(inodeAdd);
+        dataFile.saveToDisc();
+        initializeFilesMap();
+    }
+
+    public void renameFile(String oldName, String newName) throws IOException, BufferIsNotTheSizeOfAblockException {
+        var dataFile = getDataFile();
+        dataFile.position(0);
+        String nameFromData = dataFile.readString();
+        var sizeString = nameFromData.length();
+        while (!nameFromData.equals(oldName)) {
+            dataFile.readInt();
+            nameFromData = dataFile.readString();
+            sizeString = nameFromData.length();
+        }
+        dataFile.removeFromFile(sizeString * 2 + 2);
+        dataFile.write(newName);
         dataFile.saveToDisc();
         initializeFilesMap();
     }
@@ -296,110 +331,3 @@ public class FileSystem {
         m_disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS , INODESTOTAL, INODESIZE,  BLOCKSIZE);
     }
 }
-
-
-
-//--------------old initialize map------------------
-//private void initializeFilesMap() throws IOException, BufferIsNotTheSizeOfAblockException {
-//    List<Integer> list = getListOfBlocks( 0);
-//    m_filesMap.clear();
-//    for (int refBlock : list) {
-//        addToMapFromBlock(refBlock);
-//    }
-//}
-//-------------------------------------------------
-
-//----------old add to map from block -------------------
-//private void addToMapFromBlock(int blockRef) throws IOException, BufferIsNotTheSizeOfAblockException {
-//    var dataFromBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-//    m_disc.read(blockRef, dataFromBlock);
-//    dataFromBlock.flip();
-//    while (dataFromBlock.position() < m_magicBlock.m_blockSize()) {
-//        try {
-//            var strName = new StringBuilder(14);
-//            char nextChar = dataFromBlock.getChar();
-//            if(nextChar == (byte) 0) {
-//                break;
-//            }
-//            while (nextChar != '\0') {
-//                strName.append(nextChar);
-//                nextChar = dataFromBlock.getChar();
-//            }
-//            m_filesMap.put(strName.toString(), dataFromBlock.getInt());
-//        } catch (IndexOutOfBoundsException e) {
-//            break;
-//        }
-//    }
-//}
-
-//-------------------------------------------------------------
-
-
-
-
-//---------------old remove-----------------------
-//        var inodeBlock = (int)Math.ceil((double) inodeDel * m_magicBlock.m_inlodeBlocks() / m_magicBlock.m_totalInodes());
-//        m_disc.read(inodeDel, blocKCopy);
-//        var temp = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-//        temp.put(blocKCopy.array(), 0, inodeDel * m_magicBlock.m_inodeSize());
-//        temp.put(blocKCopy.array(), inodeDel * m_magicBlock.m_inodeSize() + m_magicBlock.m_inodeSize(), blocKCopy.array().length - (inodeDel + 1) * m_magicBlock.m_inodeSize());
-//        temp.flip();
-//        m_disc.write(inodeBlock, temp);
-
-//        var listOfFilesBlock = getListOfBlocks(0);
-//        for (int fileBlock : listOfFilesBlock) {
-//            var singleFilesBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-//            m_disc.read(fileBlock, singleFilesBlock);
-//            singleFilesBlock.rewind();
-//            while (singleFilesBlock.position() < m_magicBlock.m_blockSize()) {
-//                try {
-//                    var strName = new StringBuilder(14);
-//                    var startPos = singleFilesBlock.position();
-//                    char nextChar = singleFilesBlock.getChar();
-//                    if(nextChar == (byte) 0) {
-//                        break;
-//                    }
-//                    while (nextChar != '\0') {
-//                        strName.append(nextChar);
-//                        nextChar = singleFilesBlock.getChar();
-//                    }
-//                    singleFilesBlock.getInt();
-//                    if(strName.toString().equals(name)) {
-//                        var endPos = singleFilesBlock.position();
-//                        temp = ByteBuffer.allocate(m_magicBlock.m_blockSize());
-//                        temp.put(singleFilesBlock.array(), 0, startPos);
-//                        temp.put(blocKCopy.array(), endPos, blocKCopy.array().length - startPos - (endPos - startPos));
-//                        temp.flip();
-//                        m_disc.write(fileBlock, temp);
-//                    }
-//                } catch (IndexOutOfBoundsException e) {
-//                    break;
-//                }
-//            }
-//        }
-// --------------------------------------------------------
-
-//---------------------old create new file------------------------------
-//        List<Integer> list = getListOfBlocks( 0);
-//        var filesBlock = list.get(list.size() - 1);
-//        firstBlocKCopy.rewind();
-//        m_disc.read(filesBlock, firstBlocKCopy);
-//        firstBlocKCopy.rewind();
-//        char nextChar = firstBlocKCopy.getChar();
-//        while (firstBlocKCopy.position() < m_magicBlock.m_blockSize() && nextChar != (byte) 0) {
-//            nextChar = firstBlocKCopy.getChar();
-//        }
-//        if (m_magicBlock.m_blockSize() - firstBlocKCopy.position() < name.length() * 2 + 6) {
-//            var numOfFilesData = list.size();
-//            filesBlock = getNewBlock();
-//
-//            firstBlocKCopy.rewind();
-//        }
-//            for (int i = 0; i < name.length(); i++) {
-//                firstBlocKCopy.putChar(name.charAt(i));
-//            }
-//            firstBlocKCopy.putChar('\0');
-//            firstBlocKCopy.putInt(inodeAdd);
-//            firstBlocKCopy.rewind();
-//            m_disc.write(filesBlock, firstBlocKCopy);
-//-----------------------------------------------------------------

@@ -1,5 +1,8 @@
-package filesystem;
+package filesystem.Tests;
 
+import filesystem.Disc;
+import filesystem.FileSystem;
+import filesystem.MagicBlock;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -1,5 +1,9 @@
 package filesystem;
 
+import filesystem.Exceptions.BlockNotExistOnFileException;
+import filesystem.Exceptions.BufferIsNotTheSizeOfAblockException;
+import filesystem.Exceptions.DiscIsClosedException;
+
 import java.io.IOException;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
@@ -17,29 +21,29 @@ public class Disc {
     private final Lock m_writeLock = lock.writeLock();
     private final AtomicBoolean m_isClosed = new AtomicBoolean();
     private final SeekableByteChannel m_seekable;
-    private final int m_inodeSize;
 
-    public Disc(Path path, int magicNum, int numBlocks,  int inodesBlock, int totalInodes, int inodeSize,int blockSize) throws IOException {
+    public Disc(Path path, int magicNum, int numBlocks,  int inodeBlocks, int totalInodes, int inodeSize,int blockSize) throws IOException {
         m_numBlocks = numBlocks;
         m_blockSize = blockSize;
-        m_inodeSize = inodeSize;
         m_seekable = Files.newByteChannel(path, StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE);
         ByteBuffer buffer = ByteBuffer.allocate(numBlocks * blockSize);
         m_seekable.write(buffer);
         var superByteBuffer = ByteBuffer.allocate(blockSize);
         superByteBuffer.putInt(magicNum);
         superByteBuffer.putInt(numBlocks);
-        superByteBuffer.putInt(inodesBlock);
+        superByteBuffer.putInt(inodeBlocks);
         superByteBuffer.putInt(totalInodes);
         superByteBuffer.putInt(inodeSize);
         superByteBuffer.putInt(blockSize);
         superByteBuffer.putInt(blockSize / inodeSize);
         superByteBuffer.flip();
         write(0, superByteBuffer);
-        var buff = ByteBuffer.allocate(blockSize);
-        buff.putInt(1);
-        buff.rewind();
-        write(1, buff);
+        var firstInodeBuff = ByteBuffer.allocate(blockSize);
+        firstInodeBuff.putInt(1);
+        firstInodeBuff.putInt(0);
+        firstInodeBuff.putInt(inodeBlocks + 1);
+        firstInodeBuff.rewind();
+        write(1, firstInodeBuff);
     }
 
     public void read(int blockNum, ByteBuffer byteBuffer) throws IOException, BufferIsNotTheSizeOfAblockException {
@@ -47,7 +51,7 @@ public class Disc {
             throw new BufferIsNotTheSizeOfAblockException();
         }
         if(blockNum > m_numBlocks || blockNum < 0) {
-            throw new BlockNotExistOnFile(blockNum);
+            throw new BlockNotExistOnFileException(blockNum);
         }
         if (m_isClosed.get()) {
             throw new DiscIsClosedException();
@@ -64,7 +68,7 @@ public class Disc {
 
     public void write(int blockNum, ByteBuffer byteBuffer) throws IOException {
         if(blockNum > m_numBlocks || blockNum < 0) {
-            throw new BlockNotExistOnFile(blockNum);
+            throw new BlockNotExistOnFileException(blockNum);
         }
         if(byteBuffer.array().length != m_blockSize) {
             throw new BufferOverflowException();
@@ -84,11 +88,8 @@ public class Disc {
     public void close() {
         m_isClosed.set(true);
     }
-    public int getM_inodeSize() {
-        return m_inodeSize;
-    }
-
     public int getM_blockSize() {
         return m_blockSize;
     }
+
 }
