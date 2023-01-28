@@ -36,14 +36,9 @@ public class Disc {
         superByteBuffer.putInt(inodeSize);
         superByteBuffer.putInt(blockSize);
         superByteBuffer.putInt(blockSize / inodeSize);
+        superByteBuffer.putInt(inodeBlocks + 1);
         superByteBuffer.flip();
         write(0, superByteBuffer);
-        var firstInodeBuff = ByteBuffer.allocate(blockSize);
-        firstInodeBuff.putInt(1);
-        firstInodeBuff.putInt(0);
-        firstInodeBuff.putInt(inodeBlocks + 1);
-        firstInodeBuff.rewind();
-        write(1, firstInodeBuff);
     }
 
     public void read(int blockNum, ByteBuffer byteBuffer) throws IOException, BufferIsNotTheSizeOfAblockException {
