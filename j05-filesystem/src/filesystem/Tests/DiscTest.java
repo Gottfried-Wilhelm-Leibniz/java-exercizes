@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 class DiscTest {
+    // --------------------------OUT OF USE -------------------------------------------//
     private static final int NUMOFBLOCKS = 10;
     private static final int InodesBLOCKS = 1;
     private static final int BLOCKSIZE = 4000;
