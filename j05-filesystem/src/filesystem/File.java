@@ -131,4 +131,12 @@ public class File {
         }
         m_fileBuffer.position(m_pos);
     }
+
+    public void setSize(int size) {
+        m_size = size;
+    }
+
+    public void setM_fileBuffer(ByteBuffer m_fileBuffer) {
+        this.m_fileBuffer = m_fileBuffer;
+    }
 }

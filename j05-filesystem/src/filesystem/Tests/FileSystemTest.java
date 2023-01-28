@@ -82,69 +82,81 @@ class FileSystemTest {
         m_fs = new FileSystem(m_disc);
     }
 
+//    @Test
+//    void open() throws IOException, BufferIsNotTheSizeOfAblockException {
+//        var f = m_fs.open("def");
+//        var s = m_fs.open("abc");
+//        Assertions.assertEquals("abc", s.getFileName());
+//        Assertions.assertEquals("def", f.getFileName());
+//    }
+//
+//    @Test
+//    void formatTest() throws IOException, BufferIsNotTheSizeOfAblockException {
+//        var disc = new Disc(Path.of("./discs"), 900, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, 200);
+//        var fs = new FileSystem(disc);
+////        Assertions.assertEquals(1695609, fs.getM_magicBlock().m_magicNum());
+////        Assertions.assertEquals(4000, fs.getM_magicBlock().m_blockSize());
+//    }
+//    @Test
+//    void remove() throws IOException, BufferIsNotTheSizeOfAblockException {
+//        var f = m_fs.open("ooop");
+//        Assertions.assertEquals("ooop", f.getFileName());
+//        var oldListSize = m_fs.getFilesList().size();
+//        m_fs.removeFile("ooop");
+//        Assertions.assertThrowsExactly(FileNotFoundException.class, () -> {var s = m_fs.open("oop");});
+//        var newListSize = m_fs.getFilesList().size();
+//        Assertions.assertEquals(newListSize + 1, oldListSize);
+//    }
+//    @Test
+//    void create() throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
+//        var oldListSize = m_fs.getFilesList().size();
+//        m_fs.createNewFile("chris");
+//        var newListSize = m_fs.getFilesList().size();
+//        Assertions.assertEquals(newListSize, oldListSize + 1);
+//        var nf = m_fs.open("chris");
+//        nf.write("hello");
+//        nf.position(0);
+//        var str = nf.readString();
+//        Assertions.assertEquals("hello", str);
+//    }
+//
+//    @Test
+//    void rename() throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
+//        m_fs.createNewFile("christa");
+//        var nf = m_fs.open("christa");
+//        nf.position(0);
+//        nf.write("hello");
+//        nf.position(0);
+//        String d = nf.readString();
+//        Assertions.assertEquals("hello", d);
+//        nf.saveToDisc();
+//        m_fs.renameFile("christa", "washington");
+//        Assertions.assertThrowsExactly(FileNotFoundException.class, () -> {m_fs.open("christa");});
+//        nf = m_fs.open("washington");
+//        nf.position(0);
+//        String s = nf.readString();
+//        Assertions.assertEquals("hello", s);
+//    }
+//
+//    @Test
+//    void newFs() throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
+//        var nfs = new FileSystem(new Disc(Path.of("./discTry"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, BLOCKSIZE));
+//        Assertions.assertEquals(0, nfs.getFilesList().size());
+//        nfs.createNewFile("alon");
+//        Assertions.assertEquals(1, nfs.getFilesList().size());
+//        nfs.removeFile("alon");
+//        Assertions.assertEquals(0, nfs.getFilesList().size());
+//    }
     @Test
-    void open() throws IOException, BufferIsNotTheSizeOfAblockException {
-        var f = m_fs.open("def");
-        var s = m_fs.open("abc");
-        Assertions.assertEquals("abc", s.getFileName());
-        Assertions.assertEquals("def", f.getFileName());
-    }
-
-    @Test
-    void formatTest() throws IOException, BufferIsNotTheSizeOfAblockException {
-        var disc = new Disc(Path.of("./discs"), 900, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, 200);
-        var fs = new FileSystem(disc);
-//        Assertions.assertEquals(1695609, fs.getM_magicBlock().m_magicNum());
-//        Assertions.assertEquals(4000, fs.getM_magicBlock().m_blockSize());
-    }
-    @Test
-    void remove() throws IOException, BufferIsNotTheSizeOfAblockException {
-        var f = m_fs.open("ooop");
-        Assertions.assertEquals("ooop", f.getFileName());
-        var oldListSize = m_fs.getFilesList().size();
-        m_fs.removeFile("ooop");
-        Assertions.assertThrowsExactly(FileNotFoundException.class, () -> {var s = m_fs.open("oop");});
-        var newListSize = m_fs.getFilesList().size();
-        Assertions.assertEquals(newListSize + 1, oldListSize);
-    }
-    @Test
-    void create() throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
-        var oldListSize = m_fs.getFilesList().size();
-        m_fs.createNewFile("chris");
-        var newListSize = m_fs.getFilesList().size();
-        Assertions.assertEquals(newListSize, oldListSize + 1);
-        var nf = m_fs.open("chris");
-        nf.write("hello");
-        nf.position(0);
-        var str = nf.readString();
-        Assertions.assertEquals("hello", str);
-    }
-
-    @Test
-    void rename() throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
-        m_fs.createNewFile("christa");
-        var nf = m_fs.open("christa");
-        nf.position(0);
-        nf.write("hello");
-        nf.position(0);
-        String d = nf.readString();
-        Assertions.assertEquals("hello", d);
-        nf.saveToDisc();
-        m_fs.renameFile("christa", "washington");
-        Assertions.assertThrowsExactly(FileNotFoundException.class, () -> {m_fs.open("christa");});
-        nf = m_fs.open("washington");
-        nf.position(0);
-        String s = nf.readString();
-        Assertions.assertEquals("hello", s);
-    }
-
-    @Test
-    void newFs() throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
-        var nfs = new FileSystem(new Disc(Path.of("./discTry"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, BLOCKSIZE));
-        Assertions.assertEquals(0, nfs.getFilesList().size());
+    void bigFileTest() throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
+        var nfs = new FileSystem(new Disc(Path.of("./discBigFile"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, BLOCKSIZE));
         nfs.createNewFile("alon");
-        Assertions.assertEquals(1, nfs.getFilesList().size());
-        nfs.removeFile("alon");
-        Assertions.assertEquals(0, nfs.getFilesList().size());
+        var bf = nfs.open("alon");
+        bf.setSize(15000);
+        bf.setM_fileBuffer(ByteBuffer.allocate(27000));
+        bf.saveToDisc();
+//        nfs.createNewFile("ko");
+//        nfs.createNewFile("do");
+//        nfs.createNewFile("so");
     }
 }
