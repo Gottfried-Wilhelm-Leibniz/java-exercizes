@@ -34,10 +34,8 @@ public class Disc {
         superByteBuffer.putInt(inodeSize);
         superByteBuffer.putInt(blockSize);
         superByteBuffer.putInt(blockSize / inodeSize);
-//        superByteBuffer.putInt(inodesBlock + 1);
         superByteBuffer.flip();
         write(0, superByteBuffer);
-
         var buff = ByteBuffer.allocate(blockSize);
         buff.putInt(1);
         buff.rewind();

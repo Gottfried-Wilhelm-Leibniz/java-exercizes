@@ -8,8 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
 
 class FileSystemTest {
     private static final int NUMOFBLOCKS = 10;
@@ -23,23 +21,23 @@ class FileSystemTest {
     @BeforeAll
     static void init () throws IOException, BufferIsNotTheSizeOfAblockException {
         m_disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, BLOCKSIZE);
+//        var buff = ByteBuffer.allocate(BLOCKSIZE);
+//        buff.position(0);
+//        buff.putInt(1000);
+//        buff.putInt(10);
+//        buff.putInt(1);
+//        buff.putInt(32);
+//        buff.putInt(4000);
+//        buff.putInt(4000/32);
+//        buff.flip();
+//        m_disc.write(0, buff);
         var buff = ByteBuffer.allocate(BLOCKSIZE);
-        buff.position(0);
-        buff.putInt(1000);
-        buff.putInt(10);
         buff.putInt(1);
-        buff.putInt(125);
-        buff.putInt(32);
-        buff.putInt(4000);
-        buff.flip();
-        m_disc.write(0, buff);
-        buff = ByteBuffer.allocate(BLOCKSIZE);
-        buff.putInt(1);
-        buff.putInt(1000);
+        buff.putInt(38);
         buff.putInt(3);
-        buff.position(INODESIZE);
+        buff.position(1 * INODESIZE);
         buff.putInt(1);
-        buff.putInt(1000);
+        buff.putInt(38);
         buff.putInt(7);
         buff.position(2 * INODESIZE);
         buff.putInt(1);
@@ -47,7 +45,7 @@ class FileSystemTest {
         buff.putInt(8);
         buff.position(3 * INODESIZE);
         buff.putInt(1);
-        buff.putInt(6000);
+        buff.putInt(3000);
         buff.putInt(9);
         buff.flip();
         m_disc.write(1, buff);
@@ -64,12 +62,12 @@ class FileSystemTest {
         buff.putInt(2);
         buff.putChar('o');
         buff.putChar('o');
+        buff.putChar('o');
         buff.putChar('p');
         buff.putChar('\0');
         buff.putInt(3);
         buff.flip();
         m_disc.write(3, buff);
-
         buff = ByteBuffer.allocate(BLOCKSIZE);
         buff.putChar('h');
         buff.putChar('e');
@@ -94,39 +92,38 @@ class FileSystemTest {
     void open() throws IOException, BufferIsNotTheSizeOfAblockException {
         var f = m_fs.open("def");
         var s = m_fs.open("abc");
-
-        Assertions.assertEquals("def", f.getM_fileName());
+        Assertions.assertEquals("abc", s.getFileName());
+        Assertions.assertEquals("def", f.getFileName());
     }
 
-    @Test
-    void getFilesList() {
-        List<String> list = m_fs.getFilesList();
-        System.out.println(list);
-        Assertions.assertTrue(list.size() == 3);
-    }
     @Test
     void formatTest() throws IOException, BufferIsNotTheSizeOfAblockException {
         var disc = new Disc(Path.of("./discs"), 900, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, 200);
         var fs = new FileSystem(disc);
-        var buff = ByteBuffer.allocate(BLOCKSIZE);
-        Assertions.assertEquals(1695609, fs.getM_magicBlock().m_magicNum());
-        Assertions.assertEquals(4000, fs.getM_magicBlock().m_blockSize());
-    }
-    @Test
-    void refListTest () {
-        Map<String,Integer> map = m_fs.getM_filesMap();
-        List<String> list = m_fs.getFilesList();
-//        Assertions.assertEquals(map.get(list.get(0)), 5);
-//        Assertions.assertEquals(map.get(list.get(1)), 4);
+//        Assertions.assertEquals(1695609, fs.getM_magicBlock().m_magicNum());
+//        Assertions.assertEquals(4000, fs.getM_magicBlock().m_blockSize());
     }
     @Test
     void remove() throws IOException, BufferIsNotTheSizeOfAblockException {
-        var f = m_fs.open("oop");
-        Assertions.assertEquals("oop", f.getM_fileName());
+        var f = m_fs.open("ooop");
+        Assertions.assertEquals("ooop", f.getFileName());
         var oldListSize = m_fs.getFilesList().size();
-        m_fs.removeFile("oop");
+        m_fs.removeFile("ooop");
         Assertions.assertThrowsExactly(FileNotFoundException.class, () -> {var s = m_fs.open("oop");});
         var newListSize = m_fs.getFilesList().size();
         Assertions.assertEquals(newListSize + 1, oldListSize);
     }
+    @Test
+    void create() throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
+        var oldListSize = m_fs.getFilesList().size();
+        m_fs.createNewFile("chris");
+        var newListSize = m_fs.getFilesList().size();
+        Assertions.assertEquals(newListSize, oldListSize + 1);
+        var nf = m_fs.open("chris");
+        nf.write("hello");
+        nf.position(0);
+        var str = nf.readString();
+        Assertions.assertEquals("hello", str);
+    }
+
 }
