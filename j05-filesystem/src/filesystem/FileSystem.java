@@ -336,9 +336,6 @@ public class FileSystem {
                 }
                 if (dataBlocks > 5) {
                     var indirectRef = buffInodeBlock.getInt();
-                    if (indirectRef == 0) {
-                        break;
-                    }
                     blockList.add(indirectRef);
                     var buffIndirectBlock = ByteBuffer.allocate(m_magicBlock.m_blockSize());
                     m_disc.read(indirectRef, buffIndirectBlock);

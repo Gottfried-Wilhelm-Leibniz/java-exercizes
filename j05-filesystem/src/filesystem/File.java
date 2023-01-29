@@ -25,7 +25,7 @@ public class File {
         addToFile(addStringBuffer);
     }
     public void removeInt() {
-        removeFromFile(4);
+        removeFromFile(4);  // int is 4 bytes
     }
     public void removeInt(int howMany) {
         removeFromFile(howMany * 4);

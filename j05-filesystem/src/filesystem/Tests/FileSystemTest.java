@@ -97,7 +97,7 @@ class FileSystemTest {
     void formatTest() throws IOException, BufferIsNotTheSizeOfAblockException {
         var disc = new Disc(Path.of("./discs"), 900, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, 200);
         var fs = new FileSystem(disc);
-//        Assertions.assertEquals(1695609, fs.getM_magicBlock().m_magicNum());
+//        Assertions.assertEquals(1695609, fs.getM_magicBlock().magic());
 //        Assertions.assertEquals(4000, fs.getM_magicBlock().m_blockSize());
     }
     @Test

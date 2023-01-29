@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class MagicBlockTest {
     private static final int NUMOFBLOCKS = 10;
     private static final int InodesBLOCKS = 1;
@@ -37,7 +35,7 @@ class MagicBlockTest {
         disc.write(0, buff);
         buff.flip();
         var magicBlock = new MagicBlock(buff);
-        Assertions.assertEquals(1000, magicBlock.m_magicNum());
+        Assertions.assertEquals(1000, magicBlock.magic());
         Assertions.assertEquals(10, magicBlock.m_numBlocks());
         Assertions.assertEquals(1, magicBlock.m_inlodeBlocks());
         Assertions.assertEquals(125, magicBlock.m_totalInodes());

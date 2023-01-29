@@ -11,22 +11,28 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class DiscController {
 
-    private final int m_numOfBlocks;
-    private final int m_blockSize;
-    private static AtomicReference<DiscController> discControllerAtomicReference = new AtomicReference<>();
+//    private final int m_numOfBlocks;
+//    private final int m_blockSize;
+    private static final int NUMOFBLOCKS = 10;
+    private static final int InodesBLOCKS = 1;
+    private static final int BLOCKSIZE = 4000;
+    private static final int MAGICNUMBER = 1695609;
+    private static final int INODESIZE = 32;
+    private static final int INODESTOTAL = InodesBLOCKS * BLOCKSIZE / INODESIZE;
+    private static final AtomicReference<DiscController> discControllerAtomicReference = new AtomicReference<>();
     private final ConcurrentHashMap<Integer, Disc> m_map = new ConcurrentHashMap<>();
     private final Path m_path;
     private final AtomicBoolean isClosed = new AtomicBoolean();
     private final ReentrantLock mutex = new ReentrantLock();
 
-    private DiscController(int numOfBlocks, int blockSize) {
+    private DiscController() {//int numOfBlocks, int blockSize) {
         m_path = Paths.get("disk");
-        m_blockSize = blockSize;
-        m_numOfBlocks = numOfBlocks;
+//        m_blockSize = blockSize;
+//        m_numOfBlocks = numOfBlocks;
     }
 
     public static DiscController theOne(int numOfBlocks, int blockSize) {
-        discControllerAtomicReference.compareAndSet(null, new DiscController(numOfBlocks, blockSize));
+        discControllerAtomicReference.compareAndSet(null, new DiscController());//numOfBlocks, blockSize));
         return discControllerAtomicReference.get();
     }
 
@@ -35,16 +41,22 @@ public class DiscController {
             throw new IllegalAccessError("Disc controller is closed");
         }
         var discNum = Integer.valueOf(num);
-        //m_map.putIfAbsent(discNum, new Disc(m_path, discNum, m_numOfBlocks, m_blockSize));
-        return m_map.get(discNum);
+        return m_map.computeIfAbsent(discNum, (dn) ->
+        {
+            try {
+                return new Disc(m_path.resolve(Path.of("disc" + dn.toString() + ".sdk")), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS , INODESTOTAL, INODESIZE,  BLOCKSIZE);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void shutdown() {
         mutex.lock();
         try {
             isClosed.set(true);
-            for (Map.Entry<Integer, Disc> entry : m_map.entrySet()) {
-                entry.getValue().close();
+            for (var disk : m_map.values()) {
+                disk.close();
             }
             m_map.clear();
         } finally {
