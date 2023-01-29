@@ -133,7 +133,7 @@ class FileSystemTest {
         nf.position(0);
         String d = nf.readString();
         Assertions.assertEquals("hello", d);
-        nf.saveToDisc();
+        nf.save();
         m_fs.renameFile("christa", "washington");
         Assertions.assertThrowsExactly(FileNotFoundException.class, () -> {m_fs.open("christa");});
         nf = m_fs.open("washington");
@@ -159,7 +159,7 @@ class FileSystemTest {
         var bf = nfs.open("alon");
         bf.setSize(27000);
         bf.setFileBuffer(ByteBuffer.allocate(27000));
-        bf.saveToDisc();
+        bf.save();
         var fileOp = nfs.open("alon");
         Assertions.assertEquals(bf.getSize() ,fileOp.getSize());
         Assertions.assertThrowsExactly(NoSpaceOnDiscException.class, () -> {nfs.createNewFile("ko");});

@@ -28,29 +28,32 @@ public class File {
         for (int i = 0; i < writeBuff.array().length; i++) {
             writeByte(writeBuff.get());
         }
+        save();
     }
     public void removeInt() {
         // @TODO put in data file only
         removeFromFile(4);  // int is 4 bytes
     }
-    public void write(int intToAdd) throws IOException {
+    public void write(int intToAdd) {
         var writeBuff = ByteBuffer.allocate(4);
         writeBuff.putInt(intToAdd);
         writeBuff.rewind();
         for (int i = 0; i < writeBuff.array().length; i++) {
-            writeByte(writeBuff.get());
+            edgeCheck();
+            m_fileBuffer.put(writeBuff.get());
         }
+        save();
     }
-    public void write(byte[] bytes) throws IOException {
-        addToFile(ByteBuffer.wrap(bytes));
-    }
+
     public String readString() {
         var strName = new StringBuilder(14);
-            var nextByte = readByte();
-            while(nextByte != 13) {
-                strName.append(nextByte);
-                nextByte = readByte();
-            }
+        edgeCheck();
+        var nextByte = readByte();
+        while(nextByte != 13) {
+            strName.append(nextByte);
+            edgeCheck();
+            nextByte = readByte();
+        }
         return strName.toString();
     }
     public void writeByte(byte byteToWrite) {
@@ -66,12 +69,12 @@ public class File {
                 throw new IndexOutOfBoundsException("the file reach the end");
             }
         if (position() + 1 > m_fileBuffer.array().length) {
-                moveBlock(1);
+                nextBlock();
             }
     }
-    private void moveBlock(int to) {
-        m_dataBlock = to;
-        // TODO fix here
+    private void nextBlock() {
+        save();
+        m_dataBlock++;
         m_fileBuffer = m_options.openBlock(m_inode, m_dataBlock);
         m_fileBuffer.rewind();
     }
@@ -129,8 +132,8 @@ public class File {
         m_size = m_fileBuffer.array().length;
     }
 
-    public void saveToDisc() {
-        m_options.saveToDisc(m_fileBuffer, m_inode, m_size);
+    public void save() {
+        m_options.saveToDisc(m_fileBuffer, m_inode, m_dataBlock, m_size);
     }
 
     public String getFileName() {
@@ -151,6 +154,10 @@ public class File {
     }
     public byte[] readBytes() {
         return m_fileBuffer.array();
+    }
+
+    public void write(byte[] bytes) throws IOException {
+        addToFile(ByteBuffer.wrap(bytes));
     }
 
     //        if (howMuch > 0) {

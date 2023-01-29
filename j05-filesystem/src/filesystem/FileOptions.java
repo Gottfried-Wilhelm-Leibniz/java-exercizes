@@ -11,9 +11,8 @@ public class FileOptions {
         save = s;
         openBlock = o;
     }
-
-    public void saveToDisc(ByteBuffer fileBuffer, String fileName, int size) {
-        save.saveIt(fileBuffer, fileName, size);
+    public void saveToDisc(ByteBuffer fileBuffer, int inode, int dataBlock, int size) {
+        save.saveIt(fileBuffer, inode, dataBlock, size);
     }
 
     public ByteBuffer openBlock(int inode, int blockData) {
