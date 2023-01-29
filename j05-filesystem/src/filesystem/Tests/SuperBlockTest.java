@@ -21,7 +21,7 @@ class SuperBlockTest {
     private static FileSystem fs;
     @Test
     void magicBlockTest() throws IOException {
-        disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, BLOCKSIZE);
+        disc = new Disc(Path.of("./discs"), NUMOFBLOCKS, BLOCKSIZE);
         var buff = ByteBuffer.allocate(BLOCKSIZE);
         buff.position(0);
         buff.putInt(1000);

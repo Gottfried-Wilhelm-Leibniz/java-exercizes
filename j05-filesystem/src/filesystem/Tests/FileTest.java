@@ -1,10 +1,9 @@
 package filesystem.Tests;
 
 import filesystem.Disc;
+import filesystem.Exceptions.DiscNotValidException;
 import filesystem.Exceptions.BufferIsNotTheSizeOfAblockException;
-import filesystem.Exceptions.FilesNameIsAlreadyOnDiscEcxeption;
 import filesystem.FileSystem;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -29,8 +28,8 @@ class FileTest {
     }
 
     @BeforeAll
-    static void init () throws IOException, BufferIsNotTheSizeOfAblockException {
-        m_disc = new Disc(Path.of("./discsA"), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, BLOCKSIZE);
+    static void init () throws IOException, BufferIsNotTheSizeOfAblockException, DiscNotValidException {
+        m_disc = new Disc(Path.of("./discsA"), NUMOFBLOCKS, BLOCKSIZE);
         var buff = ByteBuffer.allocate(BLOCKSIZE);
         buff.putInt(1);
         buff.putInt(1000);

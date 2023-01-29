@@ -24,15 +24,17 @@ public class DiscController {
     private final Path m_path;
     private final AtomicBoolean isClosed = new AtomicBoolean();
     private final ReentrantLock mutex = new ReentrantLock();
+    private final int m_blockSize;
+    private final int m_numOfBlocks;
 
-    private DiscController() {//int numOfBlocks, int blockSize) {
+    private DiscController(int numOfBlocks, int blockSize) {
         m_path = Paths.get("disk");
-//        blockSize = blockSize;
-//        m_numOfBlocks = numOfBlocks;
+        m_blockSize = blockSize;
+        m_numOfBlocks = numOfBlocks;
     }
 
     public static DiscController theOne(int numOfBlocks, int blockSize) {
-        discControllerAtomicReference.compareAndSet(null, new DiscController());//numOfBlocks, blockSize));
+        discControllerAtomicReference.compareAndSet(null, new DiscController(numOfBlocks, blockSize));//numOfBlocks, blockSize));
         return discControllerAtomicReference.get();
     }
 
@@ -44,7 +46,7 @@ public class DiscController {
         return m_map.computeIfAbsent(discNum, (dn) ->
         {
             try {
-                return new Disc(m_path.resolve(Path.of("disc" + dn.toString() + ".sdk")), MAGICNUMBER, NUMOFBLOCKS, InodesBLOCKS , INODESTOTAL, INODESIZE,  BLOCKSIZE);
+                return new Disc(Path.of("disc" + dn + ".sdk"), m_numOfBlocks, m_blockSize);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

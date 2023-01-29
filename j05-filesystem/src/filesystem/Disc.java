@@ -22,23 +22,12 @@ public class Disc {
     private final AtomicBoolean m_isClosed = new AtomicBoolean();
     private final SeekableByteChannel m_seekable;
 
-    public Disc(Path path, int magicNum, int numBlocks,  int inodeBlocks, int totalInodes, int inodeSize,int blockSize) throws IOException {
+    public Disc(Path path,int numBlocks, int blockSize) throws IOException {
         m_numBlocks = numBlocks;
         m_blockSize = blockSize;
         m_seekable = Files.newByteChannel(path, StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE);
         ByteBuffer buffer = ByteBuffer.allocate(numBlocks * blockSize);
         m_seekable.write(buffer);
-        var superByteBuffer = ByteBuffer.allocate(blockSize);
-        superByteBuffer.putInt(magicNum);
-        superByteBuffer.putInt(numBlocks);
-        superByteBuffer.putInt(inodeBlocks);
-        superByteBuffer.putInt(totalInodes);
-        superByteBuffer.putInt(inodeSize);
-        superByteBuffer.putInt(blockSize);
-        superByteBuffer.putInt(blockSize / inodeSize);
-        superByteBuffer.putInt(inodeBlocks + 1);
-        superByteBuffer.flip();
-        write(0, superByteBuffer);
     }
 
     public void read(int blockNum, ByteBuffer byteBuffer) throws IOException, BufferIsNotTheSizeOfAblockException {
@@ -83,8 +72,11 @@ public class Disc {
     public void close() {
         m_isClosed.set(true);
     }
-    public int getM_blockSize() {
+    public int getBlockSize() {
         return m_blockSize;
+    }
+    public int getNumBlocks() {
+        return m_numBlocks;
     }
 
 }

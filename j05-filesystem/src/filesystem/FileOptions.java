@@ -1,7 +1,5 @@
 package filesystem;
-
 import java.nio.ByteBuffer;
-import java.util.function.Function;
 
 public class FileOptions {
     private final SaveFile save;
@@ -16,6 +14,6 @@ public class FileOptions {
     }
 
     public ByteBuffer openBlock(int inode, int blockData) {
-        return openBlock(inode, blockData);
+        return openBlock.get(inode, blockData);
     }
 }

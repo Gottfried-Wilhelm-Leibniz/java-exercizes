@@ -5,72 +5,82 @@ import java.nio.charset.StandardCharsets;
 
 public class File {
     private String m_fileName;
-    private ByteBuffer m_fileBuffer;
-    private int m_size;
+    protected ByteBuffer m_fileBuffer;
+    protected int m_size;
     private final FileOptions m_options;
     private final int m_inode;
     private int m_dataBlock;
+    private final int m_blockSize;
 
-    public File(String fileName, int size, int inode, FileOptions filesOptions) {
+    public File(String fileName, int size, int inode, FileOptions filesOptions, int blockSize) {
         m_fileName = fileName;
         m_size = size;
         m_inode = inode;
         m_options = filesOptions;
+        m_blockSize = blockSize;
         m_dataBlock = 0;
         m_fileBuffer = m_options.openBlock(m_inode, m_dataBlock);
         m_fileBuffer.rewind();
     }
 
-    public void write(String str) throws IOException {
-        var writeBuff = ByteBuffer.allocate(str.length() * 2);
-        writeBuff.put(str.getBytes(StandardCharsets.UTF_8));
-        writeBuff.rewind();
-        for (int i = 0; i < writeBuff.array().length; i++) {
-            writeByte(writeBuff.get());
+    public void write(String str) {
+        var buff = ByteBuffer.allocate(str.length() * 2);
+        buff.put(str.getBytes(StandardCharsets.UTF_8));
+
+        buff.rewind();
+        for (int i = 0; i < buff.array().length; i++) {
+            writeByte(buff.get());
         }
+        writeByte((byte)13);
         save();
     }
-    public void removeInt() {
-        // @TODO put in data file only
-        removeFromFile(4);  // int is 4 bytes
-    }
+
     public void write(int intToAdd) {
         var writeBuff = ByteBuffer.allocate(4);
         writeBuff.putInt(intToAdd);
         writeBuff.rewind();
         for (int i = 0; i < writeBuff.array().length; i++) {
-            edgeCheck();
+            writeEdgeCheck();
             m_fileBuffer.put(writeBuff.get());
         }
         save();
     }
 
     public String readString() {
-        var strName = new StringBuilder(14);
-        edgeCheck();
+        //var strName = new StringBuilder(14);
+        var strName = "";
+        readEdgeCheck();
         var nextByte = readByte();
         while(nextByte != 13) {
-            strName.append(nextByte);
-            edgeCheck();
+            strName += nextByte;
+            //strName.append(nextByte);
+            readEdgeCheck();
             nextByte = readByte();
         }
-        return strName.toString();
+        System.out.println(strName);
+        return strName;
+//        return strName.toString();
     }
     public void writeByte(byte byteToWrite) {
-        edgeCheck();
+        writeEdgeCheck();
         m_fileBuffer.put(byteToWrite);
     }
     public byte readByte() {
-        edgeCheck();
+        readEdgeCheck();
         return m_fileBuffer.get();
     }
-    private void edgeCheck() {
+    private void readEdgeCheck() {
         if (position() + 1 > m_size) {
                 throw new IndexOutOfBoundsException("the file reach the end");
             }
         if (position() + 1 > m_fileBuffer.array().length) {
                 nextBlock();
             }
+    }
+    private void writeEdgeCheck() {
+        if (position() + 1 > m_size) {
+            nextBlock();
+        }
     }
     private void nextBlock() {
         save();
@@ -98,12 +108,12 @@ public class File {
         if(newPos < 0) {
             newPos = 0;
         }
-        m_dataBlock = newPos / blockSize;
-        m_fileBuffer.position(newPos % blockSize);
+        m_dataBlock = newPos / m_blockSize;
+        m_fileBuffer.position(newPos % m_blockSize);
     }
 
     public int getPos() {
-        var pos = m_dataBlock * blockSize + position();
+        var pos = m_dataBlock * m_blockSize + position();
         return pos;
     }
 
@@ -120,15 +130,6 @@ public class File {
         temp.put(toAdd.array(),0, toAdd.array().length);
         temp.put(m_fileBuffer.array(), m_fileBuffer.position(), temp.array().length - m_fileBuffer.position() - toAdd.array().length);
         m_fileBuffer = temp;
-        m_size = m_fileBuffer.array().length;
-    }
-    public void removeFromFile(int remSize) {
-        int pos = position();
-        var temp = ByteBuffer.allocate(m_size - remSize);
-        temp.put(m_fileBuffer.array(), 0, pos - remSize);
-        temp.put(m_fileBuffer.array(), pos, m_size - pos);
-        m_fileBuffer = temp;
-        position(pos - remSize);
         m_size = m_fileBuffer.array().length;
     }
 

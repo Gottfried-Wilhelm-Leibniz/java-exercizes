@@ -5,10 +5,5 @@ public record SuperBlock(int magic, int numBlocks, int inodeBlocks, int totalIno
 
     public SuperBlock(ByteBuffer superBuffer) {
         this(superBuffer.getInt(), superBuffer.getInt(), superBuffer.getInt(), superBuffer.getInt(), superBuffer.getInt(), superBuffer.getInt(), superBuffer.getInt(), superBuffer.getInt());
-        if (magic != 0xC0DEBABE) {
-            throw new IllegalArgumentException();
-        }
     }
 }
-
-// @TODO SET RIGHT THE NAGIC BLOCK

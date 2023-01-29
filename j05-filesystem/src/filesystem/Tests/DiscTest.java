@@ -46,8 +46,8 @@ class DiscTest {
     }
     @Test
     void read() throws IOException, BufferIsNotTheSizeOfAblockException {
-        var disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, BLOCKSIZE, InodesBLOCKS, INODESIZE, INODESTOTAL);
-        var blockSize = disc.getM_blockSize();
+        var disc = new Disc(Path.of("./discs"), NUMOFBLOCKS, BLOCKSIZE);
+        var blockSize = disc.getBlockSize();
         var numOfBlocks = NUMOFBLOCKS;
         ByteBuffer bufferion = ByteBuffer.allocate(BLOCKSIZE);
         byte[] buffer = new byte[blockSize];
@@ -60,8 +60,8 @@ class DiscTest {
     }
     @Test
     void write() throws IOException, BufferIsNotTheSizeOfAblockException {
-        var disc = new Disc(Path.of("./discs"), MAGICNUMBER, NUMOFBLOCKS, BLOCKSIZE, InodesBLOCKS, INODESIZE, INODESTOTAL);
-        var blockSize = disc.getM_blockSize();
+        var disc = new Disc(Path.of("./discs"), NUMOFBLOCKS, BLOCKSIZE);
+        var blockSize = disc.getBlockSize();
         var numOfBlocks = NUMOFBLOCKS;
         ByteBuffer bufferionwrite = ByteBuffer.allocate(BLOCKSIZE);
         bufferionwrite.position(0);
