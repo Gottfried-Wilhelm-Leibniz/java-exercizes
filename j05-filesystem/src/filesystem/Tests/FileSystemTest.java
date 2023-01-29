@@ -98,7 +98,7 @@ class FileSystemTest {
         var disc = new Disc(Path.of("./discs"), 900, NUMOFBLOCKS, InodesBLOCKS, INODESTOTAL, INODESIZE, 200);
         var fs = new FileSystem(disc);
 //        Assertions.assertEquals(1695609, fs.getM_magicBlock().magic());
-//        Assertions.assertEquals(4000, fs.getM_magicBlock().m_blockSize());
+//        Assertions.assertEquals(4000, fs.getM_magicBlock().blockSize());
     }
     @Test
     void remove() throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
@@ -158,7 +158,7 @@ class FileSystemTest {
 
         var bf = nfs.open("alon");
         bf.setSize(27000);
-        bf.setM_fileBuffer(ByteBuffer.allocate(27000));
+        bf.setFileBuffer(ByteBuffer.allocate(27000));
         bf.saveToDisc();
         var fileOp = nfs.open("alon");
         Assertions.assertEquals(bf.getSize() ,fileOp.getSize());

@@ -12,7 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class DiscController {
 
 //    private final int m_numOfBlocks;
-//    private final int m_blockSize;
+//    private final int blockSize;
     private static final int NUMOFBLOCKS = 10;
     private static final int InodesBLOCKS = 1;
     private static final int BLOCKSIZE = 4000;
@@ -27,7 +27,7 @@ public class DiscController {
 
     private DiscController() {//int numOfBlocks, int blockSize) {
         m_path = Paths.get("disk");
-//        m_blockSize = blockSize;
+//        blockSize = blockSize;
 //        m_numOfBlocks = numOfBlocks;
     }
 

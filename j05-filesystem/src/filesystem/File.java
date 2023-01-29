@@ -1,83 +1,116 @@
 package filesystem;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 public class File {
     private String m_fileName;
     private ByteBuffer m_fileBuffer;
     private int m_size;
     private final FileOptions m_options;
+    private final int m_inode;
+    private int m_dataBlock;
 
-    public File(String fileName, int size, ByteBuffer buffer, FileOptions filesOptions) {
+    public File(String fileName, int size, int inode, FileOptions filesOptions) {
         m_fileName = fileName;
         m_size = size;
-        m_fileBuffer = buffer;
+        m_inode = inode;
         m_options = filesOptions;
+        m_dataBlock = 0;
+        m_fileBuffer = m_options.openBlock(m_inode, m_dataBlock);
         m_fileBuffer.rewind();
     }
 
     public void write(String str) throws IOException {
-        var addStringBuffer = ByteBuffer.allocate(str.length() * 2 + 2);
-        for (int i = 0; i < str.length(); i++) {
-            addStringBuffer.putChar(str.charAt(i));
+        var writeBuff = ByteBuffer.allocate(str.length() * 2);
+        writeBuff.put(str.getBytes(StandardCharsets.UTF_8));
+        writeBuff.rewind();
+        for (int i = 0; i < writeBuff.array().length; i++) {
+            writeByte(writeBuff.get());
         }
-        addStringBuffer.putChar('\0');
-        addToFile(addStringBuffer);
     }
     public void removeInt() {
+        // @TODO put in data file only
         removeFromFile(4);  // int is 4 bytes
     }
-    public void removeInt(int howMany) {
-        removeFromFile(howMany * 4);
-    }
-    public void write(int inti) throws IOException {
-        var intBuff = ByteBuffer.allocate(4);
-        intBuff.position(0);
-        intBuff.putInt(inti);
-        addToFile(intBuff);
+    public void write(int intToAdd) throws IOException {
+        var writeBuff = ByteBuffer.allocate(4);
+        writeBuff.putInt(intToAdd);
+        writeBuff.rewind();
+        for (int i = 0; i < writeBuff.array().length; i++) {
+            writeByte(writeBuff.get());
+        }
     }
     public void write(byte[] bytes) throws IOException {
         addToFile(ByteBuffer.wrap(bytes));
     }
     public String readString() {
         var strName = new StringBuilder(14);
-        try {
-            int originalLimit = m_fileBuffer.limit();
-            int position = m_fileBuffer.position();
-            int limit = position + 1;
-            if ((limit < position) || (limit > originalLimit)) {
-                setPos(0);
+            var nextByte = readByte();
+            while(nextByte != 13) {
+                strName.append(nextByte);
+                nextByte = readByte();
             }
-            if(position() + 2 > m_size) {
-                throw new IndexOutOfBoundsException("the file reach the end");
-            }
-            char nextChar = m_fileBuffer.getChar();
-            while (nextChar != '\0') {
-                strName.append(nextChar);
-                nextChar = m_fileBuffer.getChar();
-                if(position() > m_size) {
-                    return strName.toString();
-                }
-            }
-        } catch (IndexOutOfBoundsException e) {}
         return strName.toString();
     }
-    public int readInt() {
-        if(position() + 4 > m_size) {
-            throw new IndexOutOfBoundsException("the file reach the end");
-        }
-        int originalLimit = m_fileBuffer.limit();
-        int position = m_fileBuffer.position();
-        int limit = position + 1;
-        if ((limit < position) || (limit > originalLimit)) {
-            setPos(0);
-        }
-        return m_fileBuffer.getInt();
+    public void writeByte(byte byteToWrite) {
+        edgeCheck();
+        m_fileBuffer.put(byteToWrite);
     }
-    public byte[] readBytes() {
-        return m_fileBuffer.array();
+    public byte readByte() {
+        edgeCheck();
+        return m_fileBuffer.get();
+    }
+    private void edgeCheck() {
+        if (position() + 1 > m_size) {
+                throw new IndexOutOfBoundsException("the file reach the end");
+            }
+        if (position() + 1 > m_fileBuffer.array().length) {
+                moveBlock(1);
+            }
+    }
+    private void moveBlock(int to) {
+        m_dataBlock = to;
+        // TODO fix here
+        m_fileBuffer = m_options.openBlock(m_inode, m_dataBlock);
+        m_fileBuffer.rewind();
+    }
+    public int readInt() {
+        var buffer = ByteBuffer.allocate(Integer.BYTES);
+        for (int i = 0; i < 4; i++) {
+            buffer.put(readByte());
+        }
+        buffer.rewind();
+        return buffer.getInt();
     }
 
+    public int position() {
+        return m_fileBuffer.position();
+    }
+    public void position(int offset) {
+        var newPos = position() + offset;
+        if(newPos > m_size) {
+            newPos = m_size;
+        }
+        if(newPos < 0) {
+            newPos = 0;
+        }
+        m_dataBlock = newPos / blockSize;
+        m_fileBuffer.position(newPos % blockSize);
+    }
+
+    public int getPos() {
+        var pos = m_dataBlock * blockSize + position();
+        return pos;
+    }
+
+    public void setPos(int m_pos) {
+        if(m_pos > m_size) {
+            m_pos = m_size;
+        }
+        m_fileBuffer.position(m_pos);
+    }
+// ------------- deprecated ----------------//
     public void addToFile(ByteBuffer toAdd) throws IOException {
         var temp = ByteBuffer.allocate(m_size + toAdd.array().length);
         temp.put(m_fileBuffer.array(), 0, m_fileBuffer.position());
@@ -95,39 +128,45 @@ public class File {
         position(pos - remSize);
         m_size = m_fileBuffer.array().length;
     }
-    public int position() {
-        return m_fileBuffer.position();
-    }
-    public void position(int offset) {
-        m_fileBuffer.position(offset);
-    }
+
     public void saveToDisc() {
-        m_options.saveToDisc(m_fileBuffer, m_fileName, m_size);
+        m_options.saveToDisc(m_fileBuffer, m_inode, m_size);
     }
 
     public String getFileName() {
         return m_fileName;
     }
 
-    public int getPos() {
-        return m_fileBuffer.position();
-    }
+
     public int getSize() {
         return m_size;
-    }
-
-    public void setPos(int m_pos) {
-        if(m_pos > m_size) {
-            m_pos = m_size;
-        }
-        m_fileBuffer.position(m_pos);
     }
 
     public void setSize(int size) {
         m_size = size;
     }
 
-    public void setM_fileBuffer(ByteBuffer m_fileBuffer) {
+    public void setFileBuffer(ByteBuffer m_fileBuffer) {
         this.m_fileBuffer = m_fileBuffer;
     }
+    public byte[] readBytes() {
+        return m_fileBuffer.array();
+    }
+
+    //        if (howMuch > 0) {
+//            if (position() + howMuch > m_size) {
+//                throw new IndexOutOfBoundsException("the file reach the end");
+//            }
+//            if (position() + howMuch > m_fileBuffer.array().length) {
+//                moveBlock(1);
+//            }
+//        }
+//        else {
+//            if (position() + howMuch < 0) {
+//                if (m_dataBlock == 0) {
+//                    throw new IndexOutOfBoundsException("the file reach the begining");
+//                }
+//                moveBlock(-1);
+//            }
+//        }
 }
