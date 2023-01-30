@@ -10,27 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
 
 public class FileSystem {
-    private static final int NUMOFBLOCKS = 10;
-    private static final int InodesBLOCKS = 1;
-    private static final int BLOCKSIZE = 4000;
-    private static final int MAGICNUMBER = 1695609;
-    private static final int INODESIZE = 32;
-    private static final int INODESTOTAL = InodesBLOCKS * BLOCKSIZE / INODESIZE;
     private Disc m_disc;
     private SuperBlock m_superBlock;
     private FileOptions m_fileOptions;
-    private final DataFile m_dataFile;
     private final ConcurrentHashMap<String, Integer> m_filesMap = new ConcurrentHashMap<>();
 
     public FileSystem(Disc disc) throws IOException, BufferIsNotTheSizeOfAblockException, DiscNotValidException {
         m_disc = disc;
-        initializeFilesOptions();
         initializeSuperBlock();
         initializeData();
-        m_dataFile = new DataFile(".", 0, 0, m_fileOptions, m_superBlock.blockSize());
+        initializeFilesOptions();
         initializeFilesMap();
     }
 
@@ -94,19 +85,20 @@ public class FileSystem {
     }
 
     private void initializeFilesMap() throws IOException, BufferIsNotTheSizeOfAblockException {
+        var dataFile = getDataFile();
         m_filesMap.clear();
-        m_dataFile.position(0);
+        dataFile.position(0);
         String nameFromData;
         int refInt;
         try {
-            nameFromData = m_dataFile.readString();
-            refInt = m_dataFile.readInt();
+            nameFromData = dataFile.readString();
+            refInt = dataFile.readInt();
         } catch (IndexOutOfBoundsException e) {return;}
         while(!nameFromData.equals("")) {
             try {
                 m_filesMap.put(nameFromData, refInt);
-                nameFromData = m_dataFile.readString();
-                refInt = m_dataFile.readInt();
+                nameFromData = dataFile.readString();
+                refInt = dataFile.readInt();
             } catch (IndexOutOfBoundsException e) {break;}
         }
     }
@@ -176,6 +168,11 @@ public class FileSystem {
         return list;
     }
 
+    private DataFile getDataFile() throws IOException, BufferIsNotTheSizeOfAblockException {
+        var fileSize = getFileSize(0);
+        return new DataFile(m_disc, fileSize, m_fileOptions, m_superBlock);
+    }
+
     private List<Integer> getListOfBlocks(int iNodeRef) throws IOException, BufferIsNotTheSizeOfAblockException {
         var inodeBlock = (int)(Math.round((double) iNodeRef / m_superBlock.inodesPerBlock())) + 1;
         var buffInodeBlock = ByteBuffer.allocate(m_superBlock.blockSize());
@@ -226,7 +223,11 @@ public class FileSystem {
             buffInodeBlock.position(pos);
         }
         var blockRefToSave = buffInodeBlock.getInt();
-        m_disc.write(blockRefToSave, buffer);
+        var fullSizeBuff = ByteBuffer.allocate(4096);
+        buffer.rewind();
+        fullSizeBuff.put(buffer);
+        fullSizeBuff.rewind();
+        m_disc.write(blockRefToSave, fullSizeBuff);
         initializeFilesMap();
     }
 
@@ -240,18 +241,19 @@ public class FileSystem {
         buffInodeBlock.putInt(0);
         buffInodeBlock.rewind();
         m_disc.write(inodeBlock, buffInodeBlock);
-        m_dataFile.position(0);
-        String nameFromData = m_dataFile.readString();
+        var dataFile = getDataFile();
+        dataFile.position(0);
+        String nameFromData = dataFile.readString();
         var sizeString = nameFromData.length();
         while (!nameFromData.equals(name)) {
-            m_dataFile.readInt();
-            nameFromData = m_dataFile.readString();
+            dataFile.readInt();
+            nameFromData = dataFile.readString();
             sizeString = nameFromData.length();
         }
-        m_dataFile.readInt();
-        m_dataFile.removeInt();
-        m_dataFile.removeFromFile(sizeString * 2 + 2);
-        m_dataFile.save();
+        dataFile.readInt();
+        dataFile.removeInt();
+        dataFile.removeFromFile(sizeString * 2 + 2);
+        dataFile.save();
         initializeFilesMap();
     }
     public void createNewFile (String name) throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
@@ -272,26 +274,27 @@ public class FileSystem {
         buffInodeBlock.putInt(newDataBlock);
         buffInodeBlock.rewind();
         m_disc.write(inodeBlock, buffInodeBlock);
-        m_dataFile.position(m_dataFile.getSize());
-        m_dataFile.write(name);
-        m_dataFile.writeByte((byte)13);
-        m_dataFile.write(inodeAdd);
-        m_dataFile.save();
+        var dataFile = getDataFile();
+        dataFile.position(dataFile.getSize());
+        dataFile.write(name);
+        dataFile.write(inodeAdd);
+        dataFile.save();
         initializeFilesMap();
     }
 
     public void renameFile(String oldName, String newName) throws IOException, BufferIsNotTheSizeOfAblockException {
-        m_dataFile.position(0);
-        String nameFromData = m_dataFile.readString();
+        var dataFile = getDataFile();
+        dataFile.position(0);
+        String nameFromData = dataFile.readString();
         var sizeString = nameFromData.length();
         while (!nameFromData.equals(oldName)) {
-            m_dataFile.readInt();
-            nameFromData = m_dataFile.readString();
+            dataFile.readInt();
+            nameFromData = dataFile.readString();
             sizeString = nameFromData.length();
         }
-        m_dataFile.removeFromFile(sizeString * 2 + 2);
-        m_dataFile.write(newName);
-        m_dataFile.save();
+        dataFile.removeFromFile(sizeString * 2 + 2);
+        dataFile.write(newName);
+        dataFile.save();
         initializeFilesMap();
     }
 

@@ -10,15 +10,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class DiscController {
-
-//    private final int m_numOfBlocks;
-//    private final int blockSize;
-    private static final int NUMOFBLOCKS = 10;
-    private static final int InodesBLOCKS = 1;
-    private static final int BLOCKSIZE = 4000;
-    private static final int MAGICNUMBER = 1695609;
-    private static final int INODESIZE = 32;
-    private static final int INODESTOTAL = InodesBLOCKS * BLOCKSIZE / INODESIZE;
     private static final AtomicReference<DiscController> discControllerAtomicReference = new AtomicReference<>();
     private final ConcurrentHashMap<Integer, Disc> m_map = new ConcurrentHashMap<>();
     private final Path m_path;
