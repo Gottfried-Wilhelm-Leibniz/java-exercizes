@@ -1,40 +1,46 @@
 package game.ships;
 import enums.Position;
 import enums.Status;
-import game.Part;
+import game.Cell;
 import game.Point;
-
 import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Ship {
-    private final Set<Part> parts;
+    private final Set<Cell> cells;
+
     protected Ship(Position p, int x, int y, int size) {
-        parts = makeBody(p, x, y,size);
+        cells = makeBody(p, x, y,size);
     }
 
-    private Set<Part> makeBody(Position p, int x, int y, int size) {
-        var set = new HashSet<Part>();
+    private Set<Cell> makeBody(Position p, int x, int y, int size) {
+        var set = new HashSet<Cell>();
         for (int i = 0; i < size; i++) {
-            set.add(p == Position.HORIZONTAL ? new Part(x, y + i) : new Part(x + i, y));
+            var cell = p == Position.HORIZONTAL ? new Cell(x, y + i) : new Cell(x + i, y);
+            cell.setStatus(Status.SHIP);
+            set.add(cell);
         }
         return set;
     }
 
     public Status fire(Point shot){
         Status status = Status.WATER;
-        Part part = null;
-        for (var p : parts) {
-            if(p.getPoint().equals(shot)) {
+        Cell cell = null;
+        for (var p : cells) {
+            if(p.equals(shot)) {
                 status = Status.HIT;
                 p.setStatus(status);
-                part = p;
+                cell = p;
                 break;
             }
         }
-        if (part != null) {
-            parts.remove(part);
+        if (cell != null) {
+            cells.remove(cell);
         }
-        return parts.size() == 0 ? Status.SUNK : status;
+        return cells.size() == 0 ? Status.SUNK : status;
+    }
+
+    public Set<Cell> getCells() {
+        return cells;
     }
 }

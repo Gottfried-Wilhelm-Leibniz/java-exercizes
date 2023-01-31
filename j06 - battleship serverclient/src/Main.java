@@ -1,3 +1,4 @@
+import enums.Status;
 import game.Player;
 import game.Point;
 
@@ -67,7 +68,7 @@ public class Main {
             return buffer;
         }
         if (sign == 1) {
-            var response = player.takeHit(new Point(buffer.getInt(), buffer.getInt(), "0"));
+            var response = player.takeHit(new Point(buffer.getInt(), buffer.getInt()));
             buffer.clear();
             buffer.putInt(0);
             buffer.putInt(response);

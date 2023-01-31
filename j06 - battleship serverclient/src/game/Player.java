@@ -1,9 +1,7 @@
 package game;
-
 import enums.Position;
 import enums.Status;
 import game.ships.*;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.HashSet;
@@ -13,65 +11,47 @@ public class Player {
     private final Set<Ship> fleet = new HashSet<>(5);
     private final Board myBoard;
     private final Board hisBoard;
-    private Point lastShoot;
+    private Cell lastCellShot;
 
     public Player(int size) {
         myBoard = new Board(size);
         hisBoard = new Board(size);
         myBoard.putShips(buildFleet());
+        myBoard.initializeBoard();
+        hisBoard.initializeBoard();
     }
-    public Board getMyBoard() {
-        return myBoard;
-    }
+
     public Point shot() throws NoSuchAlgorithmException {
-        var possibleShot = hisBoard.getPoints().stream().filter(p -> p.toString().equals("0")).toList();
-        lastShoot = possibleShot.get(SecureRandom.getInstanceStrong().nextInt(0,possibleShot.size() - 1));
-        return lastShoot;
+        var cells = hisBoard.getCells().stream().filter(p -> p.getStatus().equals(Status.WATER)).toList();
+        lastCellShot = cells.get(SecureRandom.getInstanceStrong().nextInt(0,cells.size() - 1));
+        return lastCellShot.getPoint();
     }
 
-    public int takeHit(Point point) {
+    public Status takeHit(Point point) {
         Ship sunk = null;
-        Status r = Status.WATER;
-        for (var ship : ships) {
-            r = ship.takeHit(point);
-            if (r == Status.WATER) {
+        Status response = Status.WATER;
+        for (var ship : fleet) {
+            response = ship.fire(point);
+            if (response == Status.WATER) {
                 continue;
-                ;
             }
-
-            if (r == Status.SUNK) {
+            if (response == Status.SUNK) {
                 sunk = ship;
                 break;
-            } else if (r == Status.HIT) {
+            } else if (response == Status.HIT) {
                 break;
             }
         }
-
-        if (r == Status.SUNK) {
-            ships.remove(sunk);
+        if (sunk != null) {
+            fleet.remove(sunk);
         }
-        return ships.size() == 0 ? Status.LOST : Status.SUNK;
+        return fleet.size() == 0 ? Status.LOST : response;
     }
 
-        var isSunk = false;
-        for (var s : ships) {
-            var checkHit = s.getPoints().stream().filter((p) -> p.equals(point)).toList();
-            if (checkHit.size() > 0) {
-                isSunk = s.setHit(point);
-            }
-            if (isSunk == true) {
-                if (all sunk) {
-                    return 3;
-                }
-                return 2;
-            }
-            return 1;
+    public void updateHisBoard(Status response) {
+        if(response == Status.WATER) {
+
         }
-        return 0;
-    }
-
-    public void getAnswer(int answer) {
-
     }
 
     public Set<Ship> buildFleet() {
