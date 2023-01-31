@@ -2,6 +2,7 @@ package game.ships;
 import enums.Position;
 import enums.Status;
 import game.Cell;
+import game.GetCell;
 import game.Point;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,7 +41,9 @@ public abstract class Ship {
         return cells.size() == 0 ? Status.SUNK : status;
     }
 
-    public Set<Cell> getCells() {
-        return cells;
+    public void putShip(GetCell getCell) {
+        for (var part : cells) {
+            getCell.get(part.getPoint()).setStatus(Status.SHIP);
+        }
     }
 }

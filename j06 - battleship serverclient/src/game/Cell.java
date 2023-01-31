@@ -21,16 +21,15 @@ public class Cell {
         return point;
     }
 
-    public boolean equals(Cell p) {
-        if(p.point.equals(point)) {
-            return true;
-        }
-        return false;
-    }
     public boolean equals(Point p) {
         if(p.equals(point)) {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return status.toString();
     }
 }

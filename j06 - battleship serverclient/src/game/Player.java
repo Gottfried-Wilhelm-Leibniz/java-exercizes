@@ -3,28 +3,40 @@ import enums.Position;
 import enums.Status;
 import game.ships.*;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 
 public class Player {
     private final Set<Ship> fleet = new HashSet<>(5);
     private final Board myBoard;
     private final Board hisBoard;
-    private Cell lastCellShot;
+    private Point lastShot;
+    private final int size;
+    private final Scanner scanner = new Scanner(System.in);
 
-    public Player(int size) {
+    public Player(int s) {
+        size = s;
         myBoard = new Board(size);
         hisBoard = new Board(size);
-        myBoard.putShips(buildFleet());
-        myBoard.initializeBoard();
-        hisBoard.initializeBoard();
+        myBoard.putFleet(buildFleet());
     }
 
-    public Point shot() throws NoSuchAlgorithmException {
-        var cells = hisBoard.getCells().stream().filter(p -> p.getStatus().equals(Status.WATER)).toList();
-        lastCellShot = cells.get(SecureRandom.getInstanceStrong().nextInt(0,cells.size() - 1));
-        return lastCellShot.getPoint();
+    public Point shot() {
+        System.out.println("his Board:");
+        System.out.println(hisBoard);
+        var isLeggale = true;
+        Point shot = null;
+        do {
+            System.out.println("pick your next shot: x,y");
+            var nextShot = scanner.nextLine();
+            var idx = nextShot.split(",");
+            try {
+                shot = new Point(Integer.parseInt(idx[0]), Integer.parseInt(idx[1]));
+            } catch (IllegalArgumentException e){ isLeggale = false; }
+        } while (!isLeggale);
+        lastShot = shot;
+        return shot;
     }
 
     public Status takeHit(Point point) {
@@ -49,9 +61,16 @@ public class Player {
     }
 
     public void updateHisBoard(Status response) {
-        if(response == Status.WATER) {
-
+        if (response == Status.LOST) {
+            System.out.println("i won !");
+            System.exit(0);
         }
+
+        if (response == Status.WATER) {
+            response = Status.SHOT;
+        }
+
+        hisBoard.putShot(lastShot, response);
     }
 
     public Set<Ship> buildFleet() {

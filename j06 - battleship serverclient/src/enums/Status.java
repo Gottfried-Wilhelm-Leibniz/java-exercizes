@@ -3,7 +3,7 @@ package enums;
 public enum Status {
     WATER,
     SHIP,
-    Shot,
+    SHOT,
     HIT,
     SUNK,
     LOST

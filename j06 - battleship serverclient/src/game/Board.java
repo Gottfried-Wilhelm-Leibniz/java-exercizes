@@ -1,8 +1,8 @@
 package game;
+import enums.Status;
 import game.ships.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Board {
     private final Cell[][] cells;
@@ -11,37 +11,55 @@ public class Board {
     public Board(int s) {
         size = s;
         cells = new Cell[size][size];
+        initializeBoard();
     }
 
     public void initializeBoard() {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                var p = new Cell(i * size, j);
-                if(cells.contains(p)) {
-                    continue;
-                }
-                cells.add(p);
+                cells[i][j] = new Cell(i, j);
             }
         }
     }
 
-    public void putShips(Set<Ship> fleet) {
+    public void putFleet(Set<Ship> fleet) {
         for (var ship : fleet) {
-            cells.addAll(ship.getCells());
+            ship.putShip(this::getCell);
         }
     }
+    public void putShot(Point shot, Status status) {
+        try {
+            if (status == Status.SUNK) {
+                markSunk(shot);
+                return;
+        }
+            cells[shot.x()][shot.y()].setStatus(status);
+        } catch (ArrayIndexOutOfBoundsException e) {}
+    }
 
-    public void print() {
-        for (int i = 0; i < size * size; i++) {
-            if (i % size == 0) {
-                System.out.println();
+    private void markSunk(Point shot) {
+        cells[shot.x()][shot.y()].setStatus(Status.SUNK);
+        for (int i = shot.x() - 1; i <= shot.x() + 1; i++) {
+            for (int j = shot.y() - 1; j <= shot.y() + 1; j++) {
+                if (cells[i][j].getStatus() == Status.SHIP) {
+                    markSunk(cells[i][j].getPoint());
+                }
             }
-            // not by order any more
-            System.out.print(cells.get(i) + " ");
         }
     }
+    @Override
+    public String toString() {
+        var sb = new StringBuilder(2 * size * size + size);
+        for (int i = 0; i < size; i++) {
+            sb.append("\n");
+            for (int j = 0; j < size; j++) {
+                sb.append(cells[i][j]).append(" ");
+            }
+        }
+        return sb.toString();
+    }
 
-    public Set<Cell> getCells() {
-        return cells;
+    private Cell getCell(Point point) {
+        return cells[point.x()][point.y()];
     }
 }

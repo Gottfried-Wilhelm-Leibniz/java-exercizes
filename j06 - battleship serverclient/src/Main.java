@@ -1,9 +1,10 @@
+import enums.Order;
 import enums.Status;
 import game.Player;
 import game.Point;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
@@ -27,13 +28,37 @@ public class Main {
         try (var serverSocket = ServerSocketChannel.open()) {
             serverSocket.socket().bind(new InetSocketAddress(5252));
             try (SocketChannel client = serverSocket.accept()) {
-                var buff = ByteBuffer.allocate(1024);
+                var buff = ByteBuffer.allocate(64);
                 buff.putInt(100);
-                while (client.read(buff) > 0) {
+                while (true) {
 
 
                 }
             }
+        }
+    }
+
+    private static void play(Player player, SocketChannel socket, ByteBuffer buff) throws IOException {
+        while (true) {
+            if (socket.read(buff) >= 0 && buff.position() >= 8) {
+                buff.limit(buff.position());
+                buff.mark();
+                var sign = buff.rewind().getInt();
+                buff.reset();
+                if (sign == 1) {
+                    buff.position(4);
+                    var data = buff.getInt();
+                    updateBoard(player, data);
+                } else if (sign == 2 && buff.position() >= 12) {
+                    buff.position(4);
+                    var response = response(player, buff.getInt(), buff.getInt());
+                    socket.write(response);
+                    var shot = shot((player));
+                    socket.write(shot);
+                }
+            }
+            buff.compact();
+            buff.limit(64);
         }
     }
 
@@ -42,117 +67,74 @@ public class Main {
         try (SocketChannel socket = SocketChannel.open()) {
             var address = new InetSocketAddress("localhost", 5252);
             socket.connect(address);
-
-            var buff = ByteBuffer.allocate(1024);
-            buff.putInt(2);
-            buff = play(player, buff);
-            socket.write(buff);
-            do {
-
+            var buff = ByteBuffer.allocate(64);
+            while (true) {
+                if (socket.read(buff) >= 0 && buff.position() >= 8) {
+                    buff.limit(buff.position());
+                    buff.mark();
+                    var sign = buff.rewind().getInt();
+                    buff.reset();
+                    if (sign == 1) {
+                        buff.position(4);
+                        var data = buff.getInt();
+                        updateBoard(player, data);
+                    }
+                    else if (sign == 2 && buff.position() >= 12) {
+                        buff.position(4);
+                        var response = response(player, buff.getInt(), buff.getInt());
+                        socket.write(response);
+                        var shot = shot((player));
+                        socket.write(shot);
+                    }
+                }
+                buff.compact();
+                buff.limit(64);
             }
-            while (true);
         }
     }
 
-    private static ByteBuffer play(Player player, ByteBuffer buffer) throws IOException, NoSuchAlgorithmException {
-        buffer.flip();
-        var sign = buffer.getInt();
-        if (sign == 0) {
-            var message = buffer.getInt();
-            player.getAnswer(message);
-            var point = player.shot();
-            buffer.clear();
-            buffer.putInt(1);
-            buffer.putInt(point.x);
-            buffer.putInt(point.y);
-            return buffer;
+    private static void updateBoard(Player player, int data) {
+        var status = Status.WATER;
+        switch(data) {
+            case 1:
+                status = Status.HIT;
+                break;
+            case 2:
+                status = Status.SUNK;
+                break;
+            case 3:
+                status = Status.LOST;
+                break;
         }
-        if (sign == 1) {
-            var response = player.takeHit(new Point(buffer.getInt(), buffer.getInt()));
-            buffer.clear();
-            buffer.putInt(0);
-            buffer.putInt(response);
-            return buffer;
-        }
-        if (sign == 2) {
-            var buff = ByteBuffer.allocate(1024);
-            var point = player.shot();
-            buff.putInt(point.x);
-            buff.putInt(point.y);
-            return buff;
-        }
-        if (sign == 3) {
-            System.exit(0);
-        }
-        return null;
+        player.updateHisBoard(status);
     }
 
-//    private static void operateClient() throws IOException, NoSuchAlgorithmException {
-//        var player = new Player(10);
-//        try (SocketChannel socket = SocketChannel.open()) {
-//            var address = new InetSocketAddress("localhost", 5252);
-//            socket.connect(address);
-//
-//            var buff = ByteBuffer.allocate(1024);
-//            buff.putInt(2);
-//            buff = play(player, buff);
-//            socket.write(buff);
-//            do {
-//                buff = play(player, buff);
-//                socket.read(buff);
-//                buff.flip();
-//                var stat = buff.getInt();
-//                if (stat == 0) {
-//                    buff = play(player, buff);
-//                    socket.write(buff);
-//                }
-//                else {
-//                    buff = play(player, buff);
-//
-//                }
-//                socket.read(buff);
-//                if (buff == null) {
-//                    socket.read(buff);
-//                    buff = play(player, buff);
-//                } else {
-//                    buff.flip();
-//                    socket.write(buff);
-//                }
-//            }
-//            while (true);
-//        }
-//    }
-//
-//    private static ByteBuffer play(Player player, ByteBuffer buffer) throws IOException, NoSuchAlgorithmException {
-//        buffer.flip();
-//        var sign = buffer.getInt();
-//        if (sign == 0) {
-//            var message = buffer.getInt();
-//            player.getAnswer(message);
-//            var point = player.shot();
-//            buffer.clear();
-//            buffer.putInt(1);
-//            buffer.putInt(point.x);
-//            buffer.putInt(point.y);
-//            return buffer;
-//        }
-//        if (sign == 1) {
-//            var response = player.takeHit(new Point(buffer.getInt(), buffer.getInt(), "0"));
-//            buffer.clear();
-//            buffer.putInt(0);
-//            buffer.putInt(response);
-//            return buffer;
-//        }
-//        if (sign == 2) {
-//            var buff = ByteBuffer.allocate(1024);
-//            var point = player.shot();
-//            buff.putInt(point.x);
-//            buff.putInt(point.y);
-//            return buff;
-//        }
-//        if (sign == 3) {
-//            System.exit(0);
-//        }
-//        return null;
-//    }
+    private static ByteBuffer response(Player player, int x, int y) {
+        var status = player.takeHit(new Point(x, y));
+        var response = 0;
+        switch(status) {
+            case HIT:
+                response = 1;
+                break;
+            case SUNK:
+                response = 2;
+                break;
+            case LOST:
+                response = 3;
+                break;
+        }
+        var resBuff = ByteBuffer.allocate(64);
+        resBuff.putInt(1);
+        resBuff.putInt(response);
+        resBuff.flip();
+        return resBuff;
+    }
+
+    private static ByteBuffer shot(Player player) {
+        var shot = player.shot();
+        var shotBuff = ByteBuffer.allocate(64);
+        shotBuff.putInt(shot.x(), shot.y());
+        shotBuff.flip();
+        return shotBuff;
+    }
 }
