@@ -2,7 +2,6 @@ package game;
 import enums.Position;
 import enums.Status;
 import game.ships.*;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -13,17 +12,22 @@ public class Player {
     private final Board hisBoard;
     private Point lastShot;
     private final int size;
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner; //= new Scanner(System.in);
+    private final String myName;
+    private final String hisName;
 
-    public Player(int s) {
+    public Player(int s, String my, String his, Scanner sc) {
         size = s;
+        myName = my;
+        hisName = his;
+        scanner = sc;
         myBoard = new Board(size);
         hisBoard = new Board(size);
         myBoard.putFleet(buildFleet());
     }
 
     public Point shot() {
-        System.out.println("Enemy before your shot:");
+        System.out.println(hisName + " board");
         System.out.println(hisBoard);
         var isLeggale = true;
         Point shot = null;
@@ -58,10 +62,10 @@ public class Player {
             fleet.remove(sunk);
         }
         if (fleet.size() == 0) {
-            System.out.println("You lose");
+            System.out.println(hisName + " Wins You lose");
         }
         myBoard.putShot(point, status);
-        System.out.println("Enemy shoted !!!");
+        System.out.println(hisName + " Shot you !!!");
         System.out.println("My Board:");
         System.out.println(myBoard);
         return fleet.size() == 0 ? Status.LOST : status;
@@ -70,9 +74,9 @@ public class Player {
     public void updateHisBoard(Status response) {
         if (response == Status.LOST) {
             hisBoard.putShot(lastShot, Status.SHIP.SUNK);
-            System.out.println("Enemys Board:");
+            System.out.println(hisName + " Board:");
             System.out.println(hisBoard);
-            System.out.println("you win !");
+            System.out.println("You win !");
             System.exit(0);
         }
 
@@ -80,9 +84,9 @@ public class Player {
             response = Status.SHOT;
         }
         hisBoard.putShot(lastShot, response);
-        System.out.println("Enemy after your shot:");
+        System.out.println(hisName + " Board:");
         System.out.println(hisBoard);
-        System.out.println("Enemys turn...");
+        System.out.println(hisName + " turn...");
     }
 
     public Set<Ship> buildFleet() {

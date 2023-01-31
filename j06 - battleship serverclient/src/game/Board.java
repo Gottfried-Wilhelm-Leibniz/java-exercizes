@@ -1,7 +1,6 @@
 package game;
 import enums.Status;
 import game.ships.*;
-
 import java.util.*;
 
 public class Board {
