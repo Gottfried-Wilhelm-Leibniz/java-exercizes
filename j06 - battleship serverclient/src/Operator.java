@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 public class Operator {
-    public Operator() {
+    private Operator() {
     }
 
     public static void play(Player player, SocketChannel socket, ByteBuffer buff) throws IOException {

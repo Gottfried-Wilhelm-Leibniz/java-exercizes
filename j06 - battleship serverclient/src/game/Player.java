@@ -1,5 +1,6 @@
 package game;
 import enums.Position;
+import enums.Print;
 import enums.Status;
 import game.ships.*;
 import java.util.HashSet;
@@ -27,12 +28,10 @@ public class Player {
     }
 
     public Point shot() {
-        System.out.println(hisName + " board");
-        System.out.println(hisBoard);
+        print(Print.PUTSHOT);
         var isLeggale = true;
         Point shot = null;
         do {
-            System.out.println("Pick your next shot: x,y");
             var nextShot = scanner.nextLine();
             var idx = nextShot.split(",");
             try {
@@ -62,21 +61,16 @@ public class Player {
             fleet.remove(sunk);
         }
         if (fleet.size() == 0) {
-            System.out.println(hisName + " Wins You lose");
         }
         myBoard.putShot(point, status);
-        System.out.println(hisName + " Shot you !!!");
-        System.out.println("My Board:");
-        System.out.println(myBoard);
+        print(Print.SHOTYOU);
         return fleet.size() == 0 ? Status.LOST : status;
     }
 
     public void updateHisBoard(Status response) {
         if (response == Status.LOST) {
             hisBoard.putShot(lastShot, Status.SHIP.SUNK);
-            System.out.println(hisName + " Board:");
-            System.out.println(hisBoard);
-            System.out.println("You win !");
+            print(Print.YOUWIN);
             System.exit(0);
         }
 
@@ -84,9 +78,7 @@ public class Player {
             response = Status.SHOT;
         }
         hisBoard.putShot(lastShot, response);
-        System.out.println(hisName + " Board:");
-        System.out.println(hisBoard);
-        System.out.println(hisName + " turn...");
+        print(Print.RESULT);
     }
 
     public Set<Ship> buildFleet() {
@@ -98,4 +90,13 @@ public class Player {
         return fleet;
     }
 
+    private void print(Print print) {
+        switch (print) {
+            case PUTSHOT -> System.out.println(hisName + " board" + hisBoard + "\n" + "Pick your next shot: x,y");
+            case SHOTYOU -> System.out.println(hisName + " Shot you !!!" + "\n" + "My Board:" + "\n" + myBoard);
+            case YOUWIN -> System.out.println(hisName + " Board:" + hisBoard + "\n" + "You win !");
+            case RESULT -> System.out.println(hisName + " Board:" + hisBoard + "\n" + hisName + " turn...");
+
+        }
+    }
 }
