@@ -1,10 +1,9 @@
-import enums.Order;
+
 import enums.Status;
 import game.Player;
 import game.Point;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
@@ -14,26 +13,21 @@ import java.security.NoSuchAlgorithmException;
 public class Main {
     private static Charset charset = Charset.defaultCharset();
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-
     if (args.length == 1) {
-        operateServer();
+        operateServer(Integer.parseInt(args[0]));
     }
     else {
-        operateClient();
+        operateClient(Integer.parseInt(args[0]), args[1]);
     }
     }
 
-    private static void operateServer() throws IOException {
+    private static void operateServer(int port) throws IOException {
         var player = new Player(10);
         try (var serverSocket = ServerSocketChannel.open()) {
-            serverSocket.socket().bind(new InetSocketAddress(5252));
+            serverSocket.socket().bind(new InetSocketAddress(port));
             try (SocketChannel client = serverSocket.accept()) {
                 var buff = ByteBuffer.allocate(64);
-                buff.putInt(100);
-                while (true) {
-
-
-                }
+                play(player, client, buff);
             }
         }
     }
@@ -42,15 +36,15 @@ public class Main {
         while (true) {
             if (socket.read(buff) >= 0 && buff.position() >= 8) {
                 buff.limit(buff.position());
-                buff.mark();
+                //var a = buff.position();
                 var sign = buff.rewind().getInt();
-                buff.reset();
+                //buff.position(a);
                 if (sign == 1) {
-                    buff.position(4);
+                    //buff.position(4);
                     var data = buff.getInt();
                     updateBoard(player, data);
-                } else if (sign == 2 && buff.position() >= 12) {
-                    buff.position(4);
+                } else if (sign == 2 && buff.limit() >= 12) {
+                    //buff.position(4);
                     var response = response(player, buff.getInt(), buff.getInt());
                     socket.write(response);
                     var shot = shot((player));
@@ -62,49 +56,24 @@ public class Main {
         }
     }
 
-    private static void operateClient() throws IOException, NoSuchAlgorithmException {
+    private static void operateClient(int port, String host) throws IOException, NoSuchAlgorithmException {
         var player = new Player(10);
         try (SocketChannel socket = SocketChannel.open()) {
-            var address = new InetSocketAddress("localhost", 5252);
+            var address = new InetSocketAddress(host, port);
             socket.connect(address);
             var buff = ByteBuffer.allocate(64);
-            while (true) {
-                if (socket.read(buff) >= 0 && buff.position() >= 8) {
-                    buff.limit(buff.position());
-                    buff.mark();
-                    var sign = buff.rewind().getInt();
-                    buff.reset();
-                    if (sign == 1) {
-                        buff.position(4);
-                        var data = buff.getInt();
-                        updateBoard(player, data);
-                    }
-                    else if (sign == 2 && buff.position() >= 12) {
-                        buff.position(4);
-                        var response = response(player, buff.getInt(), buff.getInt());
-                        socket.write(response);
-                        var shot = shot((player));
-                        socket.write(shot);
-                    }
-                }
-                buff.compact();
-                buff.limit(64);
-            }
+            var shot = shot((player));
+            socket.write(shot);
+            play(player, socket, buff);
         }
     }
 
     private static void updateBoard(Player player, int data) {
-        var status = Status.WATER;
-        switch(data) {
-            case 1:
-                status = Status.HIT;
-                break;
-            case 2:
-                status = Status.SUNK;
-                break;
-            case 3:
-                status = Status.LOST;
-                break;
+        var status = Status.SHOT;
+        switch (data) {
+            case 1 -> status = Status.HIT;
+            case 2 -> status = Status.SUNK;
+            case 3 -> status = Status.LOST;
         }
         player.updateHisBoard(status);
     }
@@ -112,16 +81,10 @@ public class Main {
     private static ByteBuffer response(Player player, int x, int y) {
         var status = player.takeHit(new Point(x, y));
         var response = 0;
-        switch(status) {
-            case HIT:
-                response = 1;
-                break;
-            case SUNK:
-                response = 2;
-                break;
-            case LOST:
-                response = 3;
-                break;
+        switch (status) {
+            case HIT -> response = 1;
+            case SUNK -> response = 2;
+            case LOST -> response = 3;
         }
         var resBuff = ByteBuffer.allocate(64);
         resBuff.putInt(1);
@@ -133,7 +96,9 @@ public class Main {
     private static ByteBuffer shot(Player player) {
         var shot = player.shot();
         var shotBuff = ByteBuffer.allocate(64);
-        shotBuff.putInt(shot.x(), shot.y());
+        shotBuff.putInt(2);
+        shotBuff.putInt(shot.x());
+        shotBuff.putInt(shot.y());
         shotBuff.flip();
         return shotBuff;
     }

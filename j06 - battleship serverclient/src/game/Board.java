@@ -28,22 +28,24 @@ public class Board {
         }
     }
     public void putShot(Point shot, Status status) {
-        try {
-            if (status == Status.SUNK) {
-                markSunk(shot);
-                return;
+        cells[shot.x()][shot.y()].setStatus(status);
+        if (status == Status.SUNK) {
+            markSunk(shot);
         }
-            cells[shot.x()][shot.y()].setStatus(status);
-        } catch (ArrayIndexOutOfBoundsException e) {}
+        System.out.println("Enemy after your shot:");
+        System.out.println(this);
+        System.out.println("Enemys turn...");
     }
 
     private void markSunk(Point shot) {
         cells[shot.x()][shot.y()].setStatus(Status.SUNK);
         for (int i = shot.x() - 1; i <= shot.x() + 1; i++) {
             for (int j = shot.y() - 1; j <= shot.y() + 1; j++) {
-                if (cells[i][j].getStatus() == Status.SHIP) {
-                    markSunk(cells[i][j].getPoint());
-                }
+                try {
+                    if (cells[i][j].getStatus() == Status.HIT) {
+                        markSunk(cells[i][j].getPoint());
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {}
             }
         }
     }

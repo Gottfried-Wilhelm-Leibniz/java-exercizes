@@ -23,7 +23,7 @@ public class Player {
     }
 
     public Point shot() {
-        System.out.println("his Board:");
+        System.out.println("Enemy before shot:");
         System.out.println(hisBoard);
         var isLeggale = true;
         Point shot = null;
@@ -57,19 +57,19 @@ public class Player {
         if (sunk != null) {
             fleet.remove(sunk);
         }
+        System.out.println(fleet.size() == 0 ? "GameOverLooser" : "Me after shoted:" + "\n" + myBoard);
         return fleet.size() == 0 ? Status.LOST : response;
     }
 
     public void updateHisBoard(Status response) {
         if (response == Status.LOST) {
-            System.out.println("i won !");
+            System.out.println("you win !");
             System.exit(0);
         }
 
         if (response == Status.WATER) {
             response = Status.SHOT;
         }
-
         hisBoard.putShot(lastShot, response);
     }
 

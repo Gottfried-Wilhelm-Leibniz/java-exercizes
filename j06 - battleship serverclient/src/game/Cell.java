@@ -30,6 +30,13 @@ public class Cell {
 
     @Override
     public String toString() {
-        return status.toString();
+        String str = "~";
+        switch (status) {
+            case HIT -> str = "h";
+            case SHOT -> str = "x";
+            case SHIP -> str = "#";
+            case SUNK -> str = "s";
+        }
+        return str;
     }
 }
