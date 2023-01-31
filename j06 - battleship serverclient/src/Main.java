@@ -47,12 +47,21 @@ public class Main {
                     //buff.position(4);
                     var response = response(player, buff.getInt(), buff.getInt());
                     socket.write(response);
+                    isDead(response);
                     var shot = shot((player));
                     socket.write(shot);
                 }
             }
             buff.compact();
             buff.limit(64);
+        }
+    }
+
+    private static void isDead(ByteBuffer response) {
+        response.position(4);
+        if(response.getInt() == 3) {
+            System.out.println("You lose !");
+            System.exit(0);
         }
     }
 

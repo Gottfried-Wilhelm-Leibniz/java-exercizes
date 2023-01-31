@@ -23,12 +23,12 @@ public class Player {
     }
 
     public Point shot() {
-        System.out.println("Enemy before shot:");
+        System.out.println("Enemy before your shot:");
         System.out.println(hisBoard);
         var isLeggale = true;
         Point shot = null;
         do {
-            System.out.println("pick your next shot: x,y");
+            System.out.println("Pick your next shot: x,y");
             var nextShot = scanner.nextLine();
             var idx = nextShot.split(",");
             try {
@@ -41,28 +41,37 @@ public class Player {
 
     public Status takeHit(Point point) {
         Ship sunk = null;
-        Status response = Status.WATER;
+        Status status = Status.WATER;
         for (var ship : fleet) {
-            response = ship.fire(point);
-            if (response == Status.WATER) {
+            status = ship.fire(point);
+            if (status == Status.WATER) {
                 continue;
             }
-            if (response == Status.SUNK) {
+            if (status == Status.SUNK) {
                 sunk = ship;
                 break;
-            } else if (response == Status.HIT) {
+            } else if (status == Status.HIT) {
                 break;
             }
         }
         if (sunk != null) {
             fleet.remove(sunk);
         }
-        System.out.println(fleet.size() == 0 ? "GameOverLooser" : "Me after shoted:" + "\n" + myBoard);
-        return fleet.size() == 0 ? Status.LOST : response;
+        if (fleet.size() == 0) {
+            System.out.println("You lose");
+        }
+        myBoard.putShot(point, status);
+        System.out.println("Enemy shoted !!!");
+        System.out.println("My Board:");
+        System.out.println(myBoard);
+        return fleet.size() == 0 ? Status.LOST : status;
     }
 
     public void updateHisBoard(Status response) {
         if (response == Status.LOST) {
+            hisBoard.putShot(lastShot, Status.SHIP.SUNK);
+            System.out.println("Enemys Board:");
+            System.out.println(hisBoard);
             System.out.println("you win !");
             System.exit(0);
         }
@@ -71,6 +80,9 @@ public class Player {
             response = Status.SHOT;
         }
         hisBoard.putShot(lastShot, response);
+        System.out.println("Enemy after your shot:");
+        System.out.println(hisBoard);
+        System.out.println("Enemys turn...");
     }
 
     public Set<Ship> buildFleet() {
@@ -78,7 +90,7 @@ public class Player {
         fleet.add(new Carrier(Position.HORIZONTAL, 8, 0));
         fleet.add(new Cruiser(Position.VERTICAL, 3, 0));
         fleet.add(new Destroyer(Position.VERTICAL, 5, 8));
-        fleet.add(new Submarine(Position.HORIZONTAL, 9, 5));
+        fleet.add(new Submarine(Position.HORIZONTAL, 9, 7));
         return fleet;
     }
 

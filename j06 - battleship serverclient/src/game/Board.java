@@ -32,9 +32,6 @@ public class Board {
         if (status == Status.SUNK) {
             markSunk(shot);
         }
-        System.out.println("Enemy after your shot:");
-        System.out.println(this);
-        System.out.println("Enemys turn...");
     }
 
     private void markSunk(Point shot) {
