@@ -4,6 +4,8 @@ import game.Point;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
+import java.util.Scanner;
 
 public class Operator {
     private Operator() {
@@ -70,5 +72,45 @@ public class Operator {
         shotBuff.putInt(shot.y());
         shotBuff.flip();
         return shotBuff;
+    }
+
+    public static void firstMove(SocketChannel socket, Charset charset, Scanner sc, int size) throws IOException {
+        System.out.println("What is your name ?");
+        var myName = sc.hasNextLine() ? sc.nextLine() : "Anonimos";
+        System.out.println("Wait for response");
+        var buffer = charset.encode(myName);
+        socket.write(buffer);
+        buffer = ByteBuffer.allocate(64);
+        socket.read(buffer);
+        buffer.flip();
+        var hisName = charset.decode(buffer).toString();
+        System.out.println("You play against " + hisName);
+        System.out.println("You start");
+        var player = new Player(size, myName, hisName, sc);
+        var shot = shot((player));
+        socket.write(shot);
+        var buff = ByteBuffer.allocate(64);
+        play(player, socket,  buff);
+//        buff.clear();
+//        buff = shot((player));
+//        socket.write(buff);
+//        buff.clear();
+    }
+    public static void secondMove(SocketChannel socket, Charset charset, Scanner sc, int size) throws IOException {
+        var buffer = ByteBuffer.allocate(1024);
+        if(socket.read(buffer) > 0) {
+            buffer.flip();
+            var hisName = charset.decode(buffer).toString();
+            System.out.println("what is your name ?");
+            var myName = sc.hasNextLine() ? sc.nextLine() : "Anonimus";
+            System.out.println("You play against " + hisName);
+            buffer.clear();
+            buffer = charset.encode(myName);
+            socket.write(buffer);
+            System.out.println(hisName + " turn");
+            var player = new Player(size, myName, hisName, sc);
+            var buff = ByteBuffer.allocate(64);
+            play(player, socket,  buff);
+        }
     }
 }
