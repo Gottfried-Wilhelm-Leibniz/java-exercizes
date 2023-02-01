@@ -97,7 +97,9 @@ public class Player {
             case YOUWIN -> System.out.println(hisName + " Board:" + hisBoard + "\n" + "You win !");
             //case RESULT -> System.out.println(hisName + " Board:" + hisBoard + "\n" + hisName + " turn...");
 
+
         }
+        System.out.println();
     }
 
     private void print(Print print, Status status) {
