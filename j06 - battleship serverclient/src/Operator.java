@@ -8,10 +8,17 @@ import java.nio.charset.Charset;
 import java.util.Scanner;
 
 public class Operator {
-    private Operator() {
+    private final SocketChannel socket;
+    private final Scanner sc;
+    private final ByteBuffer buff = ByteBuffer.allocate(1024);
+    private Player player;
+
+    public Operator(SocketChannel socket, Scanner sc) {
+        this.socket = socket;
+        this.sc = sc;
     }
 
-    public static void play(Player player, SocketChannel socket, ByteBuffer buff) throws IOException {
+    private void play() throws IOException {
         while (true) {
             if (socket.read(buff) >= 0 && buff.position() >= 8) {
                 buff.limit(buff.position());
@@ -64,7 +71,7 @@ public class Operator {
         return resBuff;
     }
 
-    public static ByteBuffer shot(Player player) {
+    private static ByteBuffer shot(Player player) {
         var shot = player.shot();
         var shotBuff = ByteBuffer.allocate(64);
         shotBuff.putInt(2);
@@ -74,7 +81,7 @@ public class Operator {
         return shotBuff;
     }
 
-    public static void firstMove(SocketChannel socket, Charset charset, Scanner sc, int size) throws IOException {
+    public void firstMove(SocketChannel socket, Charset charset, Scanner sc, int size) throws IOException {
         System.out.println("What is your name ?");
         var myName = sc.hasNextLine() ? sc.nextLine() : "Anonimos";
         System.out.println("Wait for response");
@@ -86,17 +93,12 @@ public class Operator {
         var hisName = charset.decode(buffer).toString();
         System.out.println("You play against " + hisName);
         System.out.println("You start");
-        var player = new Player(size, myName, hisName, sc);
+        player = new Player(size, myName, hisName, sc);
         var shot = shot((player));
         socket.write(shot);
-        var buff = ByteBuffer.allocate(64);
-        play(player, socket,  buff);
-//        buff.clear();
-//        buff = shot((player));
-//        socket.write(buff);
-//        buff.clear();
+        play();
     }
-    public static void secondMove(SocketChannel socket, Charset charset, Scanner sc, int size) throws IOException {
+    public void secondMove(SocketChannel socket, Charset charset, Scanner sc, int size) throws IOException {
         var buffer = ByteBuffer.allocate(1024);
         if(socket.read(buffer) > 0) {
             buffer.flip();
@@ -108,9 +110,8 @@ public class Operator {
             buffer = charset.encode(myName);
             socket.write(buffer);
             System.out.println(hisName + " turn");
-            var player = new Player(size, myName, hisName, sc);
-            var buff = ByteBuffer.allocate(64);
-            play(player, socket,  buff);
+            player = new Player(size, myName, hisName, sc);
+            play();
         }
     }
 }

@@ -25,22 +25,8 @@ public class Main {
             serverSocket.socket().bind(new InetSocketAddress(port));
             try (SocketChannel socket = serverSocket.accept()) {
                 try (var sc = new Scanner(System.in)) {
-                    Operator.secondMove(socket, charset, sc, size);
-//                    var buffer = ByteBuffer.allocate(1024);
-//                    if(socket.read(buffer) >= 0) {
-//                        buffer.flip();
-//                        var hisName = charset.decode(buffer).toString();
-//                        System.out.println("what is your name ?");
-//                        var myName = sc.hasNextLine() ? sc.nextLine() : "opopop";
-//                        System.out.println("You play against " + hisName);
-//                        buffer.clear();
-//                        buffer = charset.encode(myName);
-//                        socket.write(buffer);
-//                        System.out.println(hisName + " turn");
-//                        var player = new Player(size, myName, hisName, sc);
-//                        var buff = ByteBuffer.allocate(64);
-//                        Operator.play(player, socket, buff);
-//                    }
+                    var serverOp = new Operator(socket, sc);
+                    serverOp.secondMove(socket, charset, sc, size);
                 }
             }
         }
@@ -51,24 +37,8 @@ public class Main {
             var address = new InetSocketAddress(host, port);
             socket.connect(address);
             try (var sc = new Scanner(System.in)) {
-                Operator.firstMove(socket, charset, sc, size);
-
-//                System.out.println("What is your name ?");
-//                var myName = sc.hasNextLine() ? sc.nextLine() : "opopop";
-//                System.out.println("Wait for response");
-//                var buffer = charset.encode(myName);
-//                socket.write(buffer);
-//                buffer.clear();
-//                socket.read(buffer);
-//                buffer.flip();
-//                var hisName = charset.decode(buffer).toString();
-//                System.out.println("You play against " + hisName);
-//                System.out.println("You start");
-//                var player = new Player(size, myName, hisName, sc);
-//                var buff = ByteBuffer.allocate(64);
-//                var shot = Operator.shot((player));
-//                socket.write(shot);
-//                Operator.play(player, socket, buff);
+                var clientOp = new Operator(socket, sc);
+                clientOp.firstMove(socket, charset, sc, size);
             }
         }
     }
