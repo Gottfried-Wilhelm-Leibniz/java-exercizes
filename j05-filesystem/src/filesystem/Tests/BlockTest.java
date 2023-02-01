@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Path;
 
-class FileTest {
+class BlockTest {
 
 
     //------------------------------OUT OF USE--------------------------------------//
@@ -24,7 +24,7 @@ class FileTest {
     private static Disc m_disc;
     private static FileSystem m_fs;
 
-    FileTest() throws IOException {
+    BlockTest() throws IOException {
     }
 
     @BeforeAll

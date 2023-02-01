@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Path;
 
-class FileSystemTest {
+class BlockSystemTest {
     private static final int NUMOFBLOCKS = 10;
     private static final int InodesBLOCKS = 1;
     private static final int BLOCKSIZE = 4096;

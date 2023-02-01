@@ -16,28 +16,28 @@ public class Questions {
     }
 
     private static List ewavesLists(List a, List b) {
-        var list = new ArrayList(a.size() + b.size());
-        for (int i = 0; i < a.size(); i++) {
-            list.add(a.get(i));
-            list.add(b.get(i));
+        var list3 = new ArrayList(a.size() + b.size());
+        var iterA = a.iterator();
+        var iterB = b.iterator();
+        while (iterA.hasNext()) {
+            list3.add(iterA.next());
+            if (iterB.hasNext()) {
+                list3.add(iterB.next());
+            }
         }
-        return list;
+        return list3;
     }
 }
-
 //        var list2 = new LinkedList();
 //        for (int i = 0; i < a.size(); i++) {
 //            list.add(a.get(i));
 //            list.add(b.get(i));
 //        }
 //return list2
-//        var list3 = new ArrayList(a.size() + b.size());
-//        var iterA = a.iterator();
-//        var iterB = b.iterator();
-//        while (iterA.hasNext()) {
-//            list3.add(iterA.next());
-//            if (iterB.hasNext()) {
-//                list3.add(iterB.next());
-//            }
-//        }
-//        return list3;
+//var list = new ArrayList(a.size() + b.size());
+//        for (int i = 0; i < a.size(); i++) {
+//        list.add(a.get(i));
+//        list.add(b.get(i));
+//    }
+//        return list;
+//}

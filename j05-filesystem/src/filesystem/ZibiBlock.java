@@ -2,7 +2,7 @@ package filesystem;
 
 import java.nio.ByteBuffer;
 
-public class ZibiFile extends File {
+public class ZibiBlock extends Block {
 
 //    private final FileOptions m_options;
 //    private final String m_fileName;
@@ -11,7 +11,7 @@ public class ZibiFile extends File {
 //    private ByteBuffer m_fileBuffer;
 //    private int m_dataBlock;
 
-    public ZibiFile(String fileName, int size, int inode, FileOptions filesOptions, int m_blockSize) {
+    public ZibiBlock(String fileName, int size, int inode, FileOptions filesOptions, int m_blockSize) {
         super(fileName, size, inode, filesOptions, m_blockSize);
         //m_fileName = fileName;
         //m_size = size;
@@ -28,11 +28,11 @@ public class ZibiFile extends File {
 
     public void removeFromFile(int remSize) {
         int pos = position();
-        var temp = ByteBuffer.allocate(m_size - remSize);
-        temp.put(m_fileBuffer.array(), 0, pos - remSize);
-        temp.put(m_fileBuffer.array(), pos, m_size - pos);
-        m_fileBuffer = temp;
+        var temp = ByteBuffer.allocate(size - remSize);
+        temp.put(buff.array(), 0, pos - remSize);
+        temp.put(buff.array(), pos, size - pos);
+        buff = temp;
         position(pos - remSize);
-        m_size = m_fileBuffer.array().length;
+        size = buff.array().length;
     }
 }

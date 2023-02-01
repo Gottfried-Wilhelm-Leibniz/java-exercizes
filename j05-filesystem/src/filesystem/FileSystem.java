@@ -103,13 +103,13 @@ public class FileSystem {
         }
     }
 
-    public File open(String str) throws IOException, BufferIsNotTheSizeOfAblockException {
+    public Block open(String str) throws IOException, BufferIsNotTheSizeOfAblockException {
         var inode = m_filesMap.get(str);
         if (inode == null) {
             throw new FileNotFoundException("the file you searched is not on the disc");
         }
         var fileSize = getFileSize(inode);
-        return new File(str, fileSize, inode, m_fileOptions, m_superBlock.blockSize());
+        return new Block(str, fileSize, inode, m_fileOptions, m_superBlock.blockSize());
     }
 
     private int getFileSize(int blockRef) throws IOException, BufferIsNotTheSizeOfAblockException {

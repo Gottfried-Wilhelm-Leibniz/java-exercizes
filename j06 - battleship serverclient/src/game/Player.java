@@ -63,22 +63,22 @@ public class Player {
         if (fleet.size() == 0) {
         }
         myBoard.putShot(point, status);
-        print(Print.SHOTYOU);
+        print(Print.SHOTYOU, status);
         return fleet.size() == 0 ? Status.LOST : status;
     }
 
     public void updateHisBoard(Status response) {
+        if (response == Status.WATER) {
+            response = Status.SHOT;
+        }
+
         if (response == Status.LOST) {
             hisBoard.putShot(lastShot, Status.SHIP.SUNK);
             print(Print.YOUWIN);
             System.exit(0);
         }
-
-        if (response == Status.WATER) {
-            response = Status.SHOT;
-        }
         hisBoard.putShot(lastShot, response);
-        print(Print.RESULT);
+        print(Print.RESULT, response);
     }
 
     public Set<Ship> buildFleet() {
@@ -93,10 +93,28 @@ public class Player {
     private void print(Print print) {
         switch (print) {
             case PUTSHOT -> System.out.println(hisName + " board" + hisBoard + "\n" + "Pick your next shot: x,y");
-            case SHOTYOU -> System.out.println(hisName + " Shot you !!!" + "\n" + "My Board:" + "\n" + myBoard);
+//            case SHOTYOU -> System.out.println(hisName + " Shot you !!!" + "\n" + "My Board:" + "\n" + myBoard);
             case YOUWIN -> System.out.println(hisName + " Board:" + hisBoard + "\n" + "You win !");
-            case RESULT -> System.out.println(hisName + " Board:" + hisBoard + "\n" + hisName + " turn...");
+            //case RESULT -> System.out.println(hisName + " Board:" + hisBoard + "\n" + hisName + " turn...");
 
+        }
+    }
+
+    private void print(Print print, Status status) {
+        switch (print) {
+            case RESULT:
+                switch (status) {
+                    case SHOT -> System.out.println("Oh it's a miss !" + "\n" + hisName + " Board:" + hisBoard + "\n" + hisName + " turn...");
+                    case HIT -> System.out.println("Dam it's a hit !" + "\n" + hisName + " Board:" + hisBoard + "\n" + hisName + " turn...");
+                    case SUNK -> System.out.println("Oh lord the ship sunk !" + "\n" + hisName + " Board:" + hisBoard + "\n" + hisName + " turn...");
+                }
+                break;
+            case SHOTYOU:
+                switch (status) {
+                    case WATER -> System.out.println(hisName + " Shot you !!!" + "\n" + "it's a miss !" + "\n" + "My Board:" + "\n" + myBoard);
+                    case HIT -> System.out.println(hisName + " Shot you !!!" + "\n" + "it's a his !" + "\n" + "My Board:" + "\n" + myBoard);
+                    case SUNK -> System.out.println(hisName + " Shot you !!!" + "\n" + "Your ship sunk !" + "\n" + "My Board:" + "\n" + myBoard);
+            }
         }
     }
 }

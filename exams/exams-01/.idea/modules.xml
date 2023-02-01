@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/IQ-1/IQ-1.iml" filepath="$PROJECT_DIR$/IQ-1/IQ-1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/IQ-2/IQ-2.iml" filepath="$PROJECT_DIR$/IQ-2/IQ-2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/IQ-3/IQ-3.iml" filepath="$PROJECT_DIR$/IQ-3/IQ-3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/IQ-4/IQ-4.iml" filepath="$PROJECT_DIR$/IQ-4/IQ-4.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/exams-01.iml" filepath="$PROJECT_DIR$/.idea/exams-01.iml" />
+    </modules>
+  </component>
+</project>
