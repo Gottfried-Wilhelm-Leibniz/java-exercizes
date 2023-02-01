@@ -23,8 +23,8 @@ public class Main {
             serverSocket.socket().bind(new InetSocketAddress(port));
             try (SocketChannel socket = serverSocket.accept()) {
                 try (var sc = new Scanner(System.in)) {
-                    var serverOp = new Operator(socket, sc);
-                    serverOp.secondMove(socket, charset, sc, size);
+                    var serverOp = new GameManager(socket, sc);
+                    serverOp.secondPlayer(socket, charset, sc, size);
                 }
             }
         }
@@ -35,8 +35,8 @@ public class Main {
             var address = new InetSocketAddress(host, port);
             socket.connect(address);
             try (var sc = new Scanner(System.in)) {
-                var clientOp = new Operator(socket, sc);
-                clientOp.firstMove(socket, charset, sc, size);
+                var clientOp = new GameManager(socket, sc);
+                clientOp.firstPlayer(socket, charset, sc, size);
             }
         }
     }

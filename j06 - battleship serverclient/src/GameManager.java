@@ -7,13 +7,13 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
-public class Operator {
+public class GameManager {
     private final SocketChannel socket;
     private final Scanner sc;
     private final ByteBuffer buff = ByteBuffer.allocate(1024);
     private Player player;
 
-    public Operator(SocketChannel socket, Scanner sc) {
+    public GameManager(SocketChannel socket, Scanner sc) {
         this.socket = socket;
         this.sc = sc;
     }
@@ -81,7 +81,7 @@ public class Operator {
         return shotBuff;
     }
 
-    public void firstMove(SocketChannel socket, Charset charset, Scanner sc, int size) throws IOException {
+    public void firstPlayer(SocketChannel socket, Charset charset, Scanner sc, int size) throws IOException {
         System.out.println("What is your name ?");
         var myName = sc.hasNextLine() ? sc.nextLine() : "Anonimos";
         System.out.println("Wait for response");
@@ -98,7 +98,7 @@ public class Operator {
         socket.write(shot);
         play();
     }
-    public void secondMove(SocketChannel socket, Charset charset, Scanner sc, int size) throws IOException {
+    public void secondPlayer(SocketChannel socket, Charset charset, Scanner sc, int size) throws IOException {
         var buffer = ByteBuffer.allocate(1024);
         if(socket.read(buffer) > 0) {
             buffer.flip();
