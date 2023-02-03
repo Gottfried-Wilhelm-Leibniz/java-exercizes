@@ -39,4 +39,6 @@ public class Main {
             }
         }
     }
+
+    // TODO print my board his hits
 }

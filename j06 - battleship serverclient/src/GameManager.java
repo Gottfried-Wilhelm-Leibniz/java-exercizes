@@ -41,11 +41,10 @@ public class GameManager {
 //            buff.limit(64);
 //        }
 //    }
-
+// TODO fix bug
     private void play() throws IOException {
         while (true) {
             buff.clear();
-            System.out.println(player.toString());
             socket.read(buff);
             buff.flip();
             handler();
@@ -55,8 +54,9 @@ public class GameManager {
     private void handler() throws IOException {
         var code = buff.getInt();
         switch (code) {
-            case 1 -> updateBoard(buff.getInt()); //takeShot();}
+            case 1 -> updateBoard(buff.getInt());
             case 2 -> {response(buff.getInt(), buff.getInt()); shot();}
+            // TODO change so responce get nothing
         };
 
     }

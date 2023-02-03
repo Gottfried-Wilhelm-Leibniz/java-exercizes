@@ -119,4 +119,6 @@ public class Player {
             }
         }
     }
+
+    // TODO arrange printings try to move to manager
 }
