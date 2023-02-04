@@ -3,6 +3,7 @@ import filesystem.DiscController;
 import filesystem.Exceptions.BufferIsNotTheSizeOfAblockException;
 import filesystem.Exceptions.DiscNotValidException;
 import filesystem.Exceptions.FilesNameIsAlreadyOnDiscEcxeption;
+import filesystem.Exceptions.NoSpaceOnDiscException;
 import filesystem.FileSystem;
 import org.junit.jupiter.api.*;
 import java.io.IOException;
@@ -156,10 +157,8 @@ class FileSystemTest {
         }
         f.write(str);
         fs.createNewFile("gol");
-
-        var secfs = new FileSystem(discController.get(1));
-        var seclist = secfs.getFilesList();
-        Files.delete(Path.of("disc" + 9 + ".sdk"));
+        var a = fs.open("gol");
+        Assertions.assertThrowsExactly(NoSpaceOnDiscException.class , () -> {a.write("ac");});
     }
 
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 public class FileSystem {
     private static Charset charset = Charset.defaultCharset();
@@ -52,8 +53,7 @@ public class FileSystem {
         if (buff.getInt() == 0) {
             throw new FileNotFoundException();
         }
-        int size = buff.getInt();
-        return size;
+        return buff.getInt();
     }
 
     private void setSize(int inode, int newSize) throws IOException, BufferIsNotTheSizeOfAblockException {
@@ -81,7 +81,7 @@ public class FileSystem {
         m_disc.write(inodeBlock, buff);
     }
     private int getBlock(int inode, int index) throws IOException, BufferIsNotTheSizeOfAblockException {
-        var existsList = getListOfBlocks(inode);
+        var existsList = listOfDataBlocks(inode);
         if(existsList.size() > index) {
             return existsList.get(index);
         }
@@ -98,19 +98,25 @@ public class FileSystem {
             var relPos = inodePosition + (2 + existsList.size()) * INTSIZE;
             buffInode.position(relPos);
             block = getNewBlock();
-            System.out.println("dirct " + block); //todo erase
             buffInode.putInt(block);
             m_disc.write(inodeBlock, buffInode);
         }
+        else if(existsList.size() == 5) {
+            var relPos = inodePosition + 7 * INTSIZE;
+            buffInode.position(relPos);
+            var indirect = getNewBlock();
+            buffInode.putInt(indirect);
+            relPos = inodePosition + 1 * INTSIZE;
+            buffInode.position(relPos);
+            m_disc.write(inodeBlock, buffInode);
+            setSize(inode, getSize(inode) + 1);
+            block = getNewBlock();
+            var indirectbuff = ByteBuffer.allocate(m_super.blockSize());
+            indirectbuff.putInt(block);
+            m_disc.write(block, indirectbuff);
+            setSize(inode, getSize(inode) - 1);
+        }
         else {
-            if(existsList.size() == 5) {
-                var relPos = inodePosition + 7 * INTSIZE;
-                buffInode.position(relPos);
-                var indirect = getNewBlock();
-                System.out.println("ref to indirect " + indirect); //todo erase
-                buffInode.putInt(indirect);
-                m_disc.write(inodeBlock, buffInode);
-            }
             var relPos = inodePosition + 7 * INTSIZE;
             buffInode.position(relPos);
             var indirect = buffInode.getInt();
@@ -119,7 +125,6 @@ public class FileSystem {
             indirectbuff.rewind();
             indirectbuff.position((existsList.size() - 5) * INTSIZE);
             block = getNewBlock();
-            System.out.println("indirect " + block); //todo erase
             indirectbuff.putInt(block);
             indirectbuff.rewind();
             m_disc.write(indirect, indirectbuff);
@@ -131,14 +136,10 @@ public class FileSystem {
     }
 
     public List<String> getFilesList() {
-        var list = new ArrayList<String>(m_filesMap.size());
-        for (Map.Entry<String,Integer> entry : m_filesMap.entrySet()) {
-                list.add(entry.getKey());
-        }
-        return list;
+        return m_filesMap.keySet().stream().toList();
     }
 
-    private List<Integer> getListOfBlocks(int inode) throws IOException, BufferIsNotTheSizeOfAblockException {
+    private List<Integer> listOfDataBlocks(int inode) throws IOException, BufferIsNotTheSizeOfAblockException {
         var inodeBlock = inode / m_super.inodesPerBlock() + 1;
         var buffInode = ByteBuffer.allocate(m_super.blockSize());
         m_disc.read(inodeBlock, buffInode);
@@ -158,7 +159,6 @@ public class FileSystem {
             var block = buffInode.getInt();
             list.add(block);
         }
-
         return list;
     }
 
@@ -167,7 +167,7 @@ public class FileSystem {
         if (bytesToRead + position > size) {
             throw new BytesNotAccesibleEcxeption("your file reached the limit");
         }
-        var lastBlock = getListOfBlocks(inode).size();
+        var lastBlock = listOfDataBlocks(inode).size();
         var startBlockIdx = position / m_super.blockSize();
         var block = getBlock(inode, startBlockIdx);
         var buffData = ByteBuffer.allocate(m_super.blockSize());
@@ -258,6 +258,7 @@ public class FileSystem {
     }
     private int getNewBlock() throws IOException, BufferIsNotTheSizeOfAblockException {
         var blockList = new ArrayList<Integer>();
+        blockList.add(0);
         var buffInode = ByteBuffer.allocate(m_super.blockSize());
         for (int i = 1; i <= m_super.inodeBlocks(); i++) {
             blockList.add(i);
@@ -270,21 +271,19 @@ public class FileSystem {
                 }
                 var size = buffInode.getInt();
                 var blocks = (int)Math.ceil((double)size / m_super.blockSize());
-                blocks = blocks > 4 ? blocks++ : blocks;
                 for (int k = 0; k < blocks; k++) {
                     var block = buffInode.getInt();
-                    System.out.println(block); // todo erase
                     blockList.add(block);
                     if (k == 5) {
                         m_disc.read(block, buffInode);
                         buffInode.rewind();
-//                        blocks++;
+                        blocks++;
                     }
                 }
             }
         }
 
-        for (int i = 1; i <= m_super.numBlocks(); i++) {
+        for (int i = 0; i < m_super.numBlocks(); i++) {
             if(!blockList.contains(i)) {
                 return i;
             }
@@ -392,125 +391,3 @@ public class FileSystem {
         }
     }
 }
-
-
-//    var size = buffInode.getInt();
-//    var blocks = (int)Math.ceil((double)size / m_super.blockSize());
-//                for (int k = 0; k < blocks && k < 5; k++) {
-//        var block = buffInode.getInt();
-//        blockList.add(block);
-//        }
-//        if (blocks > 5) {
-//        var indirect = buffInode.getInt();
-//        blockList.add(indirect);
-//        m_disc.read(indirect, buffInode);
-//        buffInode.rewind();
-//        }
-//        for (int k = 5; k < blocks; k++) {
-//        var block = buffInode.getInt();
-//        blockList.add(block);
-//        }
-//        }
-
-
-
-//for (int k = 0; k < exists && k < 5; k++) {
-//        blockList.add(buffInodeBlock.getInt());
-//        }
-//        if (exists > 5) {
-//        var indirectRef = buffInodeBlock.getInt();
-//        blockList.add(indirectRef);
-//        var buffIndirectBlock = ByteBuffer.allocate(m_super.blockSize());
-//        m_disc.read(indirectRef, buffIndirectBlock);
-//        buffIndirectBlock.rewind();
-//        for (int k = 5; k < exists; k++) {
-//        blockList.add(buffIndirectBlock.getInt());
-//        }
-//        }
-
-
-//blockList.add(0);
-//        for (int i = 1; i <= m_super.inodeBlocks(); i++) {
-//        blockList.add(i);
-//        var buffInodeBlock = ByteBuffer.allocate(m_super.blockSize());
-//        m_disc.read(i, buffInodeBlock);
-//        for (int j = 0; j < m_super.inodesPerBlock(); j++) {
-//        buffInodeBlock.position(j * m_super.inodeSize());
-//        if (buffInodeBlock.getInt() == 0) {
-//        continue;
-//        }
-//        var size = buffInodeBlock.getInt();
-//        var exists = (int)Math.ceil((double)size / m_super.blockSize());
-////                int exists = size / m_super.blockSize() + 1;
-//        for (int k = 0; k < exists ; k++) {
-//        blockList.add(buffInodeBlock.getInt());
-//        if (k == 5) {
-//        var indirectRef = buffInodeBlock.getInt();
-//        blockList.add(indirectRef);
-//        buffInodeBlock.rewind();
-//        m_disc.read(indirectRef, buffInodeBlock);
-//        buffInodeBlock.rewind();
-//        }
-//        }
-//        }
-//        }
-//        for (int i = 0; i <= m_super.numBlocks(); i++) {
-//        if (!blockList.contains(i)) {
-//        return i;
-//        }
-//        }
-
-// ----------- get list of blocks --------------------------
-// for (int i = 0; i < dataBlocks && i < 5; i++) {
-//        var directRef = buffInodeBlock.getInt();
-//        list.add(directRef);
-//        }
-//        if (dataBlocks > 5) {
-//        var indirectRef = buffInodeBlock.getInt();
-//        var indirectBlock = ByteBuffer.allocate(m_super.blockSize());
-//        m_disc.read(indirectRef, indirectBlock);
-//        indirectBlock.rewind();
-//        for (int i = 5; i < dataBlocks; i++) {
-//        var indirectBlockRef = indirectBlock.getInt();
-//        list.add(indirectBlockRef);
-//        }
-//        }
-//        System.out.println("inode " + inode + " list " + list);
-//        return list;
-//--------------------get block----------------------
-//var inodeBlock = inode / m_super.inodesPerBlock() + 1;
-//    var buffInodeBlock = ByteBuffer.allocate(m_super.blockSize());
-//        m_disc.read(inodeBlock, buffInodeBlock);
-//                buffInodeBlock.position(inode % m_super.inodesPerBlock() * m_super.inodeSize());
-//                var register = 0;
-//                if (existsList.size() < 5) {
-//        var pos = buffInodeBlock.position() + (2 + existsList.size()) * INTSIZE;
-//        buffInodeBlock.position(pos);
-//        register = getNewBlock();
-//        buffInodeBlock.putInt(register);
-//        buffInodeBlock.rewind();
-//        m_disc.write(inodeBlock, buffInodeBlock);
-//        }
-//        else {
-//        if(existsList.size() == 5) {
-//        buffInodeBlock.position(buffInodeBlock.position() + 7 * INTSIZE);
-//        register = getNewBlock();
-//        buffInodeBlock.putInt(register);
-//        buffInodeBlock.rewind();
-//        m_disc.write(inodeBlock, buffInodeBlock);
-//        }
-//        buffInodeBlock.position(buffInodeBlock.position() + 7 * INTSIZE);
-//        var indirect = buffInodeBlock.getInt();
-//        var indirectbuff = ByteBuffer.allocate(m_super.blockSize());
-//        m_disc.read(indirect, indirectbuff);
-//        indirectbuff.rewind();
-//        indirectbuff.position((existsList.size() - 5) * INTSIZE);
-//        register = getNewBlock();
-//        indirectbuff.putInt(register);
-//        indirectbuff.rewind();
-//        m_disc.write(indirect, indirectbuff);
-//        }
-//        if (register == 0) {
-//        throw new DiscErrorIsOccuredException("not able to locate free space on disc");
-//        }
-//        return register;
