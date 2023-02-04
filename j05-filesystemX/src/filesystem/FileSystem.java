@@ -15,7 +15,7 @@ public class FileSystem {
     final int INTSIZE = 4;
     private Disc m_disc;
     private SuperBlock m_super;
-    private Options options = new Options(this::write, this::read, this::getFileSize, this::truncate);
+    private Options options = new Options(this::write, this::read, this::getSize, this::truncate);
     private final ConcurrentHashMap<String, Integer> m_filesMap = new ConcurrentHashMap<>();
 
     public FileSystem(Disc disc) throws IOException, BufferIsNotTheSizeOfAblockException, DiscNotValidException, FilesNameIsAlreadyOnDiscEcxeption {
@@ -26,7 +26,7 @@ public class FileSystem {
 
     private void initialize() throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
         try {
-            getFileSize(0);
+            getSize(0);
         } catch (FileNotFoundException e) {
             createNewFile(".");
             return;
@@ -40,11 +40,11 @@ public class FileSystem {
         if (inode == null) {
             throw new FileNotFoundException("the file you searched is not on the disc");
         }
-        var totalSize = getFileSize(inode);
+        var totalSize = getSize(inode);
         return new File(inode, totalSize, options);
     }
 
-    private int getFileSize(int inode) throws IOException, BufferIsNotTheSizeOfAblockException {
+    private int getSize(int inode) throws IOException, BufferIsNotTheSizeOfAblockException {
         var inodeBlock = inode / m_super.inodesPerBlock() + 1;
         var buff = ByteBuffer.allocate(m_super.blockSize());
         m_disc.read(inodeBlock, buff);
@@ -54,6 +54,19 @@ public class FileSystem {
         }
         int size = buff.getInt();
         return size;
+    }
+
+    private void setSize(int inode, int newSize) throws IOException, BufferIsNotTheSizeOfAblockException {
+        var inodeBlock = inode / m_super.inodesPerBlock() + 1;
+        var buff = ByteBuffer.allocate(m_super.blockSize());
+        m_disc.read(inodeBlock, buff);
+        buff.position(inode % m_super.inodesPerBlock() * m_super.inodeSize());
+        if (buff.getInt() == 0) {
+            throw new FileNotFoundException();
+        }
+        buff.putInt(newSize);
+        buff.rewind();
+        m_disc.write(inodeBlock, buff);
     }
     private void truncate(int inode, int newSize) throws IOException, BufferIsNotTheSizeOfAblockException {
         var inodeBlock = inode / m_super.inodesPerBlock() + 1;
@@ -85,14 +98,14 @@ public class FileSystem {
             buffInodeBlock.rewind();
             m_disc.write(inodeBlock, buffInodeBlock);
         }
-        else if(existsList.size() == 5) {
-            buffInodeBlock.position(buffInodeBlock.position() + 7 * INTSIZE);
-            register = getNewBlock();
+        else {
+            if(existsList.size() == 5) {
+                buffInodeBlock.position(buffInodeBlock.position() + 7 * INTSIZE);
+                register = getNewBlock();
                 buffInodeBlock.putInt(register);
                 buffInodeBlock.rewind();
                 m_disc.write(inodeBlock, buffInodeBlock);
-        }
-        else {
+            }
             buffInodeBlock.position(buffInodeBlock.position() + 7 * INTSIZE);
             var indirect = buffInodeBlock.getInt();
             var indirectbuff = ByteBuffer.allocate(m_super.blockSize());
@@ -147,7 +160,7 @@ public class FileSystem {
     }
 
     private ByteBuffer read(int inode, int bytesToRead, int position) throws IOException, BufferIsNotTheSizeOfAblockException {
-        var size = getFileSize(inode);
+        var size = getSize(inode);
         if (bytesToRead + position > size) {
             throw new BytesNotAccesibleEcxeption("your file reached the limit");
         }
@@ -175,40 +188,38 @@ public class FileSystem {
         return buffRead;
     }
     private void write(int inode, ByteBuffer buff, int position) throws IOException, BufferIsNotTheSizeOfAblockException {
-        var totalWrite = buff.limit();
+        var left = buff.limit();
         buff.flip();
-        var currentSize = getFileSize(inode);
         var startBlockIdx = position / m_super.blockSize();
-        var additionBytes = totalWrite - currentSize + position;
-        var newSize = additionBytes > 0 ? currentSize + additionBytes : currentSize;
+        System.out.println("startidx " + startBlockIdx); //todo erase
         var block = getBlock(inode, startBlockIdx);
         var buffData = ByteBuffer.allocate(m_super.blockSize());
-        var relStartPosition = position % m_super.blockSize();
         m_disc.read(block, buffData);
+        var relStartPosition = position % m_super.blockSize();
         buffData.position(relStartPosition);
-        var howMuch = Math.min(totalWrite, m_super.blockSize() - position);
+        var howMuch = Math.min(left, m_super.blockSize() - position);
         buffData.put(buff.array(), 0, howMuch);
         buffData.rewind();
         m_disc.write(block, buffData);
+        var currentSize = getSize(inode);
+        var additionBytes = Math.min(left - getSize(inode) + position, m_super.blockSize());
+        var newSize = additionBytes > 0 ? currentSize + additionBytes : currentSize;
+        setSize(inode, newSize);
         var offset = howMuch;
-        var left = totalWrite - howMuch;
+        left -= howMuch;
         for (int i = startBlockIdx + 1; left > 0; i++) {
             buffData.clear();
-            block = getBlock(i, inode);
+            block = getBlock(inode, i);
             howMuch = Math.min(left, m_super.blockSize());
             buffData.put(buff.array(), offset, howMuch);
             m_disc.write(block, buffData);
+            currentSize = getSize(inode);
+            additionBytes = Math.min(left - getSize(inode) + position, m_super.blockSize());
+            newSize = additionBytes > 0 ? currentSize + additionBytes : currentSize;
+            setSize(inode, newSize);
             offset += howMuch;
             left -= howMuch;
         }
-        var inodeBlock = inode / m_super.inodesPerBlock() + 1;
-        var buffinodeBlock = ByteBuffer.allocate(m_super.blockSize());
-        m_disc.read(inodeBlock, buffinodeBlock);
-        buffinodeBlock.position(inode % m_super.inodesPerBlock() * m_super.inodeSize());
-        buffinodeBlock.putInt(1);
-        buffinodeBlock.putInt(newSize);
-        buffinodeBlock.rewind();
-        m_disc.write(inodeBlock, buffinodeBlock);
     }
 
     public File createNewFile (String name) throws IOException, BufferIsNotTheSizeOfAblockException, FilesNameIsAlreadyOnDiscEcxeption {
@@ -254,7 +265,8 @@ public class FileSystem {
                     continue;
                 }
                 var size = buffInodeBlock.getInt();
-                int exists = size / m_super.blockSize() + 1;
+                var exists = (int)Math.ceil((double)size / m_super.blockSize());
+//                int exists = size / m_super.blockSize() + 1;
                 for (int k = 0; k < exists && k < 5; k++) {
                     blockList.add(buffInodeBlock.getInt());
                 }
@@ -263,15 +275,17 @@ public class FileSystem {
                     blockList.add(indirectRef);
                     var buffIndirectBlock = ByteBuffer.allocate(m_super.blockSize());
                     m_disc.read(indirectRef, buffIndirectBlock);
-                    buffIndirectBlock.flip();
+                    buffIndirectBlock.rewind();
                     for (int k = 5; k < exists; k++) {
                         blockList.add(buffIndirectBlock.getInt());
                     }
                 }
             }
         }
+        System.out.println(blockList); // todo erase
         for (int i = 0; i <= m_super.numBlocks(); i++) {
             if (!blockList.contains(i)) {
+                System.out.println(i); //todo erase
                 return i;
             }
         }

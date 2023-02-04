@@ -143,4 +143,23 @@ class FileSystemTest {
         Assertions.assertEquals(firlist, seclist);
         Files.delete(Path.of("disc" + 8 + ".sdk"));
     }
+
+    @Test
+    void bigSizeFile() throws FilesNameIsAlreadyOnDiscEcxeption, IOException, BufferIsNotTheSizeOfAblockException, DiscNotValidException {
+        var discController = DiscController.theOne(NUMOFBLOCKS, BLOCKSIZE);
+        var fs = new FileSystem(discController.get(9));
+        fs.createNewFile("alon");
+        var f = fs.open("alon");
+        var str = "";
+        for (int i = 0; i < 7 * BLOCKSIZE; i++) {
+            str += "a";
+        }
+        f.write(str);
+        fs.createNewFile("gol");
+
+        var secfs = new FileSystem(discController.get(1));
+        var seclist = secfs.getFilesList();
+        Files.delete(Path.of("disc" + 9 + ".sdk"));
+    }
+
 }
