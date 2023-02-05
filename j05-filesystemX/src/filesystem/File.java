@@ -1,7 +1,6 @@
 package filesystem;
 import filesystem.Exceptions.BufferIsNotTheSizeOfAblockException;
 import filesystem.options.Options;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -12,8 +11,8 @@ public class File {
     private int size;
     private int lastSize = size;
     private final Options options;
-
     private int position = 0;
+
     public File(int inodeNum, int size, Options options) {
         this.inode = inodeNum;
         this.options = options;
@@ -21,20 +20,20 @@ public class File {
     }
 
     public void write(String s) throws IOException, BufferIsNotTheSizeOfAblockException {
-        lastSize = size;
+//        lastSize = size;
         var buff = charset.encode(s);
         options.write(inode, buff, position);
     }
 
     public void write(int inti) throws IOException, BufferIsNotTheSizeOfAblockException {
-        lastSize = size;
+//        lastSize = size;
         var buff = ByteBuffer.allocate(4);
         buff.putInt(inti);
         options.write(inode, buff, position);
     }
 
     public void write(byte[] buffer) throws IOException, BufferIsNotTheSizeOfAblockException {
-        lastSize = size;
+//        lastSize = size;
         var buff = ByteBuffer.wrap(buffer);
         options.write(inode, buff, position);
     }
@@ -63,7 +62,11 @@ public class File {
     }
 
     public void ctrlZ() throws IOException, BufferIsNotTheSizeOfAblockException {
-        options.truncate(inode, lastSize);
+//        options.truncate(inode, lastSize);
+    }
+
+    public int getSize() {
+        return size;
     }
 
 }
