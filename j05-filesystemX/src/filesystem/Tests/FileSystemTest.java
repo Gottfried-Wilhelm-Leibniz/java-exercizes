@@ -25,7 +25,7 @@ class FileSystemTest {
         fs.createNewFile("alon");
         var file = fs.open("alon");
         Assertions.assertEquals(0, file.size());
-        Files.delete(Path.of("disc" + 1 + ".sdk"));
+        Files.delete(Path.of("disc" + 1 + ".dsk"));
     }
 
     @Test
