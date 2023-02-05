@@ -1,11 +1,12 @@
 package filesystem;
 import filesystem.Exceptions.*;
-import filesystem.options.Options;
+import filesystem.options.FileActions;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,7 +15,7 @@ public class FileSystem {
     final int INTSIZE = 4;
     private Disc m_disc;
     private SuperBlock m_super;
-    private Options options = new Options(this::write, this::read, this::getSize, this::truncate);
+    private FileActions fileActions = new FileActions(this::write, this::read, this::getSize, this::truncate);
     private final ConcurrentHashMap<String, Integer> m_filesMap = new ConcurrentHashMap<>();
 
     public FileSystem(Disc disc) throws IOException, BufferIsNotTheSizeOfAblockException, DiscNotValidException, FilesNameIsAlreadyOnDiscEcxeption {
@@ -40,7 +41,7 @@ public class FileSystem {
             throw new FileNotFoundException("the file you searched is not on the disc");
         }
         var totalSize = getSize(inode);
-        return new File(inode, totalSize, options);
+        return new File(inode, totalSize, fileActions);
     }
 
     private int getSize(int inode) throws IOException, BufferIsNotTheSizeOfAblockException {
@@ -78,6 +79,16 @@ public class FileSystem {
         buff.rewind();
         m_disc.write(inodeBlock, buff);
     }
+
+    /**
+     * Get the data block number that is at sequential index @index in the file,
+     * if the file is too small it will enlarge it at most by one
+     * @param inode     file inode
+     * @param index     index is the sequential index of teh data block within the file
+     * @return
+     * @throws IOException
+     * @throws BufferIsNotTheSizeOfAblockException
+     */
     private int getBlock(int inode, int index) throws IOException, BufferIsNotTheSizeOfAblockException {
         var existsList = listOfDataBlocks(inode);
         if(existsList.size() > index) {
@@ -137,6 +148,36 @@ public class FileSystem {
         return m_filesMap.keySet().stream().toList();
     }
 
+    /**
+     * Get the data block number that is at sequential index @index in the file,
+     * if the file is too small it will enlarge it at most by one
+     * @param inode     file inode
+     * @param blockSequentialIndex     index is the sequential index of teh data block within the file
+     * @return
+     * @throws IOException
+     * @throws BufferIsNotTheSizeOfAblockException
+     */
+//    private int getBlockNumber(int inode, int blockSequentialIndex){
+//        try {
+//            var lst = listOfDataBlocks(inode);
+//            if(blockSequentialIndex < lst.size()){
+//                return lst.get(blockSequentialIndex);
+//            }
+//
+//            // we need to add one more block
+//            return addOneBlock(inode);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+    /**
+     * return data blocks for the file
+     * @param inode id of file
+     * @return
+     * @throws IOException
+     * @throws BufferIsNotTheSizeOfAblockException
+     */
     private List<Integer> listOfDataBlocks(int inode) throws IOException, BufferIsNotTheSizeOfAblockException {
         var inodeBlock = inode / m_super.inodesPerBlock() + 1;
         var buffInode = ByteBuffer.allocate(m_super.blockSize());
@@ -165,14 +206,21 @@ public class FileSystem {
         if (bytesToRead + position > size) {
             throw new BytesNotAccesibleEcxeption("your file reached the limit");
         }
-        var lastBlock = listOfDataBlocks(inode).size();
-        var startBlockIdx = position / m_super.blockSize();
-        var block = getBlock(inode, startBlockIdx);
-        var buffData = ByteBuffer.allocate(m_super.blockSize());
+
+        var startBlockNumber = getBlockContainingPosition(inode, position);
+
+        var bytesRead = ByteBuffer.allocate(bytesToRead);
+
         var relStartPosition = position % m_super.blockSize();
-        m_disc.read(block, buffData);
+        readfromBlock(startBlockNumber, bytesRead, relStartPosition, size);
+
+        var buffData = ByteBuffer.allocate(m_super.blockSize());
+        m_disc.read(startBlockNumber, buffData);
+
+
         buffData.position(relStartPosition);
         var howMuch = Math.min(bytesToRead, m_super.blockSize() - position);
+
         var buffRead = ByteBuffer.allocate(bytesToRead);
         buffRead.put(buffData.array(), 0, howMuch);
         var offset = howMuch;
@@ -191,17 +239,21 @@ public class FileSystem {
     private void write(int inode, ByteBuffer buff, int position) throws IOException, BufferIsNotTheSizeOfAblockException {
         var total = buff.limit();
         buff.flip();
+
         var blockStart = position / m_super.blockSize();
         var block = getBlock(inode, blockStart);
         var buffData = ByteBuffer.allocate(m_super.blockSize());
+
         m_disc.read(block, buffData);
         var relStartPosition = position % m_super.blockSize();
         buffData.position(relStartPosition);
+
         var left = total;
         var howMuch = Math.min(left, m_super.blockSize() - position);
         buffData.put(buff.array(), 0, howMuch);
         buffData.rewind();
         m_disc.write(block, buffData);
+
         var currentSize = getSize(inode);
         var additionBytes = Math.min(left - getSize(inode) + position, m_super.blockSize());
         var newSize = additionBytes > 0 ? currentSize + additionBytes : currentSize;
@@ -231,7 +283,7 @@ public class FileSystem {
         var inodeAdd = getNewInode();
         m_filesMap.put(name, inodeAdd);
         registerInDataFile(name, inodeAdd);
-        return new File(inodeAdd, 0, options);
+        return new File(inodeAdd, 0, fileActions);
     }
 
 
@@ -255,9 +307,10 @@ public class FileSystem {
         throw new NoSpaceOnDiscException("there isn't a free inode on disc");
     }
     private int getNewBlock() throws IOException, BufferIsNotTheSizeOfAblockException {
-        var blockList = new ArrayList<Integer>();
+        var blockList = new HashSet<Integer>();
         blockList.add(0);
         var buffInode = ByteBuffer.allocate(m_super.blockSize());
+
         for (int i = 1; i <= m_super.inodeBlocks(); i++) {
             blockList.add(i);
             m_disc.read(i, buffInode);
