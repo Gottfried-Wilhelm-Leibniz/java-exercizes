@@ -7,9 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
 
 public class FileSystem {
     private static Charset charset = Charset.defaultCharset();
@@ -351,13 +349,14 @@ public class FileSystem {
         var readBuff = ByteBuffer.wrap(bytes);
         var content = charset.decode(readBuff).toString();
         String[] cuts = content.split(name);
-        var newString = cuts[0] + cuts[1].substring(3);
+        var inodeStrSize = m_filesMap.get(name).toString().length();
+        var newString = cuts[0] + cuts[1].substring(2 + inodeStrSize);
         truncate(0, newString.length());
         dataFile.setPosition(0);
         dataFile.write(newString);
     }
 
-    public void removeFile(String name) throws IOException, BufferIsNotTheSizeOfAblockException {
+    public void deleteFile(String name) throws IOException, BufferIsNotTheSizeOfAblockException {
         if(!m_filesMap.containsKey(name)) {
             throw new FileDoesNotExistException("no such file on disc");
         }

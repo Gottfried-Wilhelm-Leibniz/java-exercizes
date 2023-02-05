@@ -55,7 +55,7 @@ class FileSystemTest {
         var b = ByteBuffer.wrap(s);
         var content = charset.decode(b).toString();
         Assertions.assertEquals(".:0/alon:1/", content);
-        fs.removeFile("alon");
+        fs.deleteFile("alon");
         f.setPosition(0);
         s = f.readBytes(f.size());
         b = ByteBuffer.wrap(s);
@@ -76,6 +76,11 @@ class FileSystemTest {
         var buff = ByteBuffer.wrap(res);
         var content =  new String(buff.array(), charset.defaultCharset());
         Assertions.assertEquals("hello", content);
+        var f2 = fs.createNewFile("op");
+        f2.write(5);
+        f2.setPosition(0);
+        var inti = f2.readInt();
+        Assertions.assertEquals(5, inti);
         Files.delete(Path.of("disc" + 4 + ".sdk"));
     }
 
@@ -124,7 +129,7 @@ class FileSystemTest {
         fs.createNewFile("golov");
         list = fs.getFilesList();
         Assertions.assertTrue(list.size() == 3);
-        fs.removeFile("alon");
+        fs.deleteFile("alon");
         list = fs.getFilesList();
         Assertions.assertEquals(2, list.size());
         var secfs = new FileSystem(discController.get(7));
