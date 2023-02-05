@@ -3,13 +3,13 @@ import filesystem.Exceptions.BufferIsNotTheSizeOfAblockException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-public class Options {
+public class FileActions {
     private final Write write;
     private final Read read;
     private final Size size;
     private final Truncate truncate;
 
-    public Options(Write w, Read o, Size s, Truncate t) {
+    public FileActions(Write w, Read o, Size s, Truncate t) {
         write = w;
         read = o;
         size = s;

@@ -66,11 +66,16 @@ public class Disc {
             byteBuffer.position(0);
             m_seekable.write(byteBuffer);
         } finally {
-            m_writeLock.lock();
+            m_writeLock.unlock();
         }
     }
     public void close() {
         m_isClosed.set(true);
+        try {
+            m_seekable.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     public int getBlockSize() {
         return m_blockSize;

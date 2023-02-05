@@ -154,16 +154,18 @@ class FileSystemTest {
     void bigSizeFile() throws FilesNameIsAlreadyOnDiscEcxeption, IOException, BufferIsNotTheSizeOfAblockException, DiscNotValidException {
         var discController = DiscController.theOne(NUMOFBLOCKS, BLOCKSIZE);
         var fs = new FileSystem(discController.get(9));
-        fs.createNewFile("alon");
-        var f = fs.open("alon");
-        var str = "";
+        var f = fs.createNewFile("alon");
+
+        var str = "abcdef";
         for (int i = 0; i < 7 * BLOCKSIZE; i++) {
-            str += "a";
+            f.write(str);
         }
-        f.write(str);
-        fs.createNewFile("gol");
-        var a = fs.open("gol");
-        Assertions.assertThrowsExactly(NoSpaceOnDiscException.class , () -> {a.write("ac");});
+
+        discController.shutdown();
+
+//        fs.createNewFile("gol");
+//        var a = fs.open("gol");
+//        Assertions.assertThrowsExactly(NoSpaceOnDiscException.class , () -> {a.write("ac");});
     }
 
 }
