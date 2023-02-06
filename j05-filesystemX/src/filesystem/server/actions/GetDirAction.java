@@ -11,18 +11,16 @@ import java.util.List;
 
 public class GetDirAction implements Action {
     @Override
-    public String doAction(FileSystem fs, String str) throws IOException {
+    public Record doAction(FileSystem fs, String[] data) throws IOException {
         var gson = new Gson();
         List<String> filesList;
         try {
             filesList = fs.getFilesList();
         } catch (RuntimeException e) {
-            var result = new Error(e.toString());
-            return gson.toJson(result);
+            return new Error(e.toString());
         }
         if(filesList.size() < 2) {
-            var result = new Error("No files on disc");
-            return gson.toJson(result);
+            return new Error("No files on disc");
         }
 
         var filesRecord = new ArrayList<FileAndSize>();
@@ -30,8 +28,7 @@ public class GetDirAction implements Action {
             var file = fs.open(f);
             filesRecord.add(new FileAndSize(f, file.getSize()));
         }
-        var resultAndFiles = new ResultAndFiles("OK", filesRecord);
-        return gson.toJson(resultAndFiles);
+        return new ResultAndFiles("OK", filesRecord);
     }
 }
 

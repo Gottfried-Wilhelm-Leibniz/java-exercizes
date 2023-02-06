@@ -5,22 +5,21 @@ import filesystem.FileSystem;
 import filesystem.server.Ansewrs.Error;
 import filesystem.server.Ansewrs.FileAndData;
 import filesystem.File;
-
+import filesystem.server.actions.Action;
 import java.io.IOException;
 
-public class GetFileAction implements filesystem.server.actions.Action {
+public class GetFileAction implements Action {
     @Override
-    public String doAction(FileSystem fs, String fileName) throws IOException {
+    public Record doAction(FileSystem fs, String[] data) throws IOException {
+        var fileName = data[0];
         var gson = new Gson();
         File file;
         try {
             file = fs.open(fileName);
         } catch (RuntimeException e) {
-            var result = new Error(e.toString());
-            return gson.toJson(result);
+            return new Error(e.toString());
         }
         var bytes = file.readBytes(file.getSize());
-        var fileAndData = new FileAndData(fileName, bytes);
-        return gson.toJson(fileAndData);
+        return new FileAndData(fileName, bytes);
     }
 }

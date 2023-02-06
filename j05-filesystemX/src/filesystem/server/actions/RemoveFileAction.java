@@ -4,20 +4,19 @@ import com.google.gson.Gson;
 import filesystem.FileSystem;
 import filesystem.server.Ansewrs.Error;
 import filesystem.server.Ansewrs.Result;
-
+import filesystem.server.actions.Action;
 import java.io.IOException;
 
-public class RemoveFileAction implements filesystem.server.actions.Action {
+public class RemoveFileAction implements Action {
     @Override
-    public String doAction(FileSystem fs, String toRemove) throws IOException {
+    public Record doAction(FileSystem fs, String[] data) throws IOException {
+        var toRemove = data[0];
         var gson = new Gson();
         try {
             fs.deleteFile(toRemove);
         } catch (RuntimeException e) {
-            var result = new Error(e.toString());
-            return gson.toJson(result);
+           return new Error(e.toString());
         }
-        var result = new Result("Ok");
-        return gson.toJson(result);
+       return new Result("Ok");
     }
 }

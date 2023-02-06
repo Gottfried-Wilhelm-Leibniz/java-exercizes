@@ -6,5 +6,5 @@ import java.io.IOException;
 
 @FunctionalInterface
 public interface Action {
-    String doAction(FileSystem fs, String str) throws IOException;
+    Record doAction(FileSystem fs, String[] data) throws IOException;
 }

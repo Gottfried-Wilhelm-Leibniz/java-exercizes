@@ -66,7 +66,7 @@ public class Disc {
             byteBuffer.position(0);
             m_seekable.write(byteBuffer);
         } finally {
-            m_writeLock.lock();
+            m_writeLock.unlock();
         }
     }
     public void close() {
