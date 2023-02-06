@@ -22,7 +22,6 @@ public class Client {
             var udpAdrress = InetAddress.getByName("localhost");
             socket.connect(tcpAdrress);
             String request = "";
-
             do {
                 System.out.println("Choose tcp/udp:");
                 var protocol = sc.nextLine();
@@ -71,7 +70,7 @@ public class Client {
         var buffData = ByteBuffer.wrap(totalData);
         var numOfBytes = buffData.getInt();
         var bytesData = new byte[numOfBytes];
-        buffData.put(bytesData, 0, numOfBytes);
+        buffData.get(bytesData, 0, numOfBytes);
         return bytesData;
     }
 }

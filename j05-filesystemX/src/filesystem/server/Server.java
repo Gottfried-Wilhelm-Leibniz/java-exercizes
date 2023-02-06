@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
@@ -37,8 +38,18 @@ public class Server {
         new Thread(()-> {
             try(var serverSocket = ServerSocketChannel.open()) {
                 serverSocket.socket().bind(new InetSocketAddress(port));
-                var client = serverSocket.accept();
-                handleTcp(client);
+                while(true) {
+                    var client = serverSocket.accept();
+                    new Thread( ()-> {
+                        SocketAddress remoteAddress = null;
+                        try {
+                            remoteAddress = client.getRemoteAddress();
+                            handleTcp(client);
+                        } catch (IOException e) {
+                            System.out.println("Error talkint to client " + remoteAddress + " exc:" + e);;
+                        }
+                    }).start();
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -49,28 +60,29 @@ public class Server {
     }
 
     private void handleUdp(DatagramSocket socket) throws IOException {
-        while(on) {
+        while(true) {
             byte[] bytes = new byte[64];
             var packet = new DatagramPacket(bytes, bytes.length);
             socket.receive(packet);
             var address = packet.getAddress();
             var fromPort = packet.getPort();
             var totaldata = packet.getData();
+
             var data = extractData(totaldata);
-            var response = doTheWork(ByteBuffer.wrap(data));
-            var signedResponse = signResponse(response);
-            packet = new DatagramPacket(signedResponse, signedResponse.length, address, fromPort);
+            var answer = doTheWork(ByteBuffer.wrap(data));
+            var response = toJson(answer);
+            var bytesToSend = orgenizeResponse(response);
+            packet = new DatagramPacket(bytesToSend, bytesToSend.length, address, fromPort);
             socket.send(packet);
         }
     }
 
-    private static byte[] signResponse(ByteBuffer buff) {
-        var numBytes = buff.limit() - buff.position();
-        var returnedBuff = ByteBuffer.allocate(numBytes + 4);
-        returnedBuff.putInt(numBytes);
-        returnedBuff.put(buff);
-        //buff.get(returnedBuff.array(), 4, numBytes);
-        return returnedBuff.array();
+    private byte[] orgenizeResponse(String response) {
+        var buff = ByteBuffer.allocate(1024);
+        buff.putInt(response.length());
+        buff.put(response.getBytes(charset), 0, response.length());
+        buff.flip();
+        return buff.array();
     }
 
     private static byte[] extractData(byte[] totalData) {
@@ -86,23 +98,20 @@ public class Server {
         while (client.read(buff) >= 0) {
             buff.flip();
             var answer = doTheWork(buff);
-            var responseBuff = toJson(answer);
-            client.write(responseBuff);
+            var response = toJson(answer);
+            buff = charset.encode(response);
+            client.write(buff);
             buff.clear();
         }
     }
 
     private Record doTheWork(ByteBuffer buff) throws IOException {
         var request = charset.decode(buff).toString();
-        System.out.println(request);
         if (request.equals("quit")) {on = false;}
-        var answer = handleRequest(request);
-        return answer;
-        //var send = toJson(answer);
-        //return charset.encode(send);
+        return handleRequest(request);
     }
 
-    private ByteBuffer toJson(Record answer) {
+    private String toJson(Record answer) {
         var gson = new Gson();
         return gson.toJson(answer);
     }
