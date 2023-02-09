@@ -1,8 +1,9 @@
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RandomProcessor {
@@ -34,7 +35,7 @@ public class RandomProcessor {
         mapi.put(String.class, (Object o, Field f, Randomize r) -> {
             try {
                 var sb = new StringBuilder(r.length());
-                for (int i = 0; i < r.length(); i++) {
+                for(int i = 0; i < r.length(); i++) {
                     sb.append((char) (33 + secureRandom.nextInt(93)));
                 }
                 f.set(o, sb.toString());
@@ -44,23 +45,23 @@ public class RandomProcessor {
         });
     }
 
-
     public void processor(Klass toProcess) {
         var klass = toProcess.getClass();
         Field[] fields = klass.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true);
+        List publicFields = Arrays.stream(klass.getFields()).toList();
+        for(Field field : fields) {
             var randomize = field.getAnnotation(Randomize.class);
-            if (randomize != null) {
+            if(randomize != null) {
+                if(! publicFields.contains(field)) {
+                    field.setAccessible(true);
+                }
                 if(mapi.containsKey(field.getType())) {
                     mapi.get(field.getType()).set(toProcess, field, randomize);
                 }
+                if(! publicFields.contains(field)) {
+                    field.setAccessible(false);
+                }
             }
-            field.setAccessible(false);
         }
     }
 }
-
-//            Annotation[] annotations = field.getAnnotations();
-//            for (var anno : annotations) {
-//                if(anno instanceof Randomize randomize) {
