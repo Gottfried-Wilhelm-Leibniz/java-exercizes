@@ -8,25 +8,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum Instruction implements CodeWord {
-    ADD(100, new AddAction()),
-    SUB(101, new SubAction()),
-    MUL(102, new MulAction()),
-    DIV(103, new DivAction()),
-    POP(104, new PopAction()),
-    PUSH(105, new PushAction()),
-    DUP(106, new DupAction()),
-    SWAP(107, new SwapAction()),
-    PRINT(108, new PrintAction()),
-    PRINTC(109, new PrintCAction()),
-    NOP(110, new NopAction()),
-    HALT(111, new HaltAction()),
-    INC(112, new IncAction()),
-    DEC(113, new DecAction()),
-    JMP(114, new JmpAction()),
-    JZ(115, new JzAction()),
-    JNZ(116, new JnzAction()),
-    CALL(117, new CallAction()),
-    RET(118, new RetAction()),
+    ADD(new AddAction()),
+    SUB(new SubAction()),
+    MUL(new MulAction()),
+    DIV(new DivAction()),
+    POP(new PopAction()),
+    PUSH(new PushAction()),
+    DUP(new DupAction()),
+    SWAP(new SwapAction()),
+    PRINT(new PrintAction()),
+    PRINTC(new PrintCAction()),
+    NOP(new NopAction()),
+    HALT(new HaltAction()),
+    INC(new IncAction()),
+    DEC(new DecAction()),
+    JMP(new JmpAction()),
+    JZ(new JzAction()),
+    JNZ(new JnzAction()),
+    CALL(new CallAction()),
+    RET(new RetAction()),
     ;
     private static final Map<Integer, Instruction> instructionList;
     private final int code;
@@ -41,11 +41,10 @@ public enum Instruction implements CodeWord {
         }
     }
 
-    Instruction(int code, OpAction action) {
+    Instruction(OpAction action) {
         this.code = Counter.value++;
         this.action = action;
     }
-
     public static Map<Integer, Instruction> getInstructionMap() {
         return Map.copyOf(instructionList);
     }

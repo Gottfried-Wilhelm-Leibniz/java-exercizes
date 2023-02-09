@@ -52,8 +52,11 @@ public class RandomProcessor {
             field.setAccessible(true);
             var randomize = field.getAnnotation(Randomize.class);
             if (randomize != null) {
-                mapi.get(field.getType()).set(toProcess, field, randomize);
+                if(mapi.containsKey(field.getType())) {
+                    mapi.get(field.getType()).set(toProcess, field, randomize);
+                }
             }
+            field.setAccessible(false);
         }
     }
 }

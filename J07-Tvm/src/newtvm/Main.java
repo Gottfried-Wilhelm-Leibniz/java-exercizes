@@ -86,7 +86,7 @@ public class Main {
         Vm tvm = new Tvm(stack, callStack, printer);
         var decoder = new SimpleDecoder(Instruction.getInstructionMap());
 
-        Loader fileLoader = new FileLoader(file);
+        Loader fileLoader = new FileLoader(thirdfile);
         var buffer = fileLoader.readAll();
         Program program = decoder.decode(buffer);
         tvm.run(program);
