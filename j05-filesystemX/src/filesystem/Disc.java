@@ -60,6 +60,7 @@ public class Disc {
         if (m_isClosed.get()) {
             throw new DiscIsClosedException();
         }
+
         m_writeLock.lock();
         try {
             m_seekable.position(blockNum * m_blockSize);

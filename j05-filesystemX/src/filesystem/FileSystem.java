@@ -38,7 +38,7 @@ public class FileSystem {
     public File open(String str) throws IOException, BufferIsNotTheSizeOfAblockException {
         var inode = m_filesMap.get(str);
         if (inode == null) {
-            throw new FileNotFoundException("the file you searched is not on the disc");
+            throw new FileDoesNotExistException("the file you searched is not on the disc");
         }
         var totalSize = getSize(inode);
         return new File(inode, totalSize, fileActions);
