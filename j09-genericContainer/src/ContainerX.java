@@ -1,8 +1,11 @@
+import lombok.Getter;
+
 import java.util.*;
 import java.util.stream.Stream;
 
 public class ContainerX<T extends Comparable<T>> implements ComperableContainer<T> {
     private final Comparator<T> comparator;
+    @Getter
     private final Stack<T> stack = new Stack<>();
     private final Stack<T> minStack = new Stack<>();
 
