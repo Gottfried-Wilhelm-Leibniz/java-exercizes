@@ -1,4 +1,5 @@
 package org.alongolov;
+import java.util.List;
 import java.util.Scanner;
 
 public class QuadraticUi {
@@ -18,6 +19,7 @@ public class QuadraticUi {
             System.out.printf("%.2fx^2 + %.2fx + %.2f \n", a, b, c);
             System.out.println(answer);
         }
-
+    } public List<Double> uiIt(double a, double b, double c) {
+            return solver.solve(a, b, c);
     }
 }
