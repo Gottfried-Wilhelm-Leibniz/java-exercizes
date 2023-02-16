@@ -1,4 +1,5 @@
 package ui.uiactions;
+import ui.UiEnum;
 import ui.context.Context;
 
 public class FleetList implements UiAction {
@@ -9,8 +10,8 @@ public class FleetList implements UiAction {
     }
 
     @Override
-    public void act() {
+    public UiEnum act() {
         context.printIt(context.getFleetList());
-        context.getActionMap().get("0").act();
+        return UiEnum.MENU;
     }
 }

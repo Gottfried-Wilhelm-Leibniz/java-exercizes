@@ -1,4 +1,7 @@
 package station.robot.actions;
-public interface RobotAction {
-    void act();
+import station.robot.Robot;
+@FunctionalInterface
+public interface RobotAction extends Runnable {
+
 }
+

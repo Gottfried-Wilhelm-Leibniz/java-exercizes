@@ -1,8 +1,11 @@
 package ui.uiactions;
+import ui.UiEnum;
+
 public class Quit implements UiAction {
 
     @Override
-    public void act() {
+    public UiEnum act() {
         System.exit(0);
+        return null;
     }
 }

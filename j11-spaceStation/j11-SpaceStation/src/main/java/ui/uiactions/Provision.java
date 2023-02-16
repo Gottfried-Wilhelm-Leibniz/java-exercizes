@@ -1,5 +1,6 @@
 package ui.uiactions;
 import station.Reply;
+import ui.UiEnum;
 import ui.context.Context;
 
 public class Provision implements UiAction {
@@ -16,7 +17,7 @@ public class Provision implements UiAction {
     }
 
     @Override
-    public void act() {
+    public UiEnum act() {
         context.printIt(headLine);
         context.printIt(context.getModels());
         context.printIt(model);
@@ -28,12 +29,10 @@ public class Provision implements UiAction {
 
         var reply = context.createNew(model, name, sign);
         context.printIt(reply.reason());
-        if (reply.isSucceed()) {
-            context.getActionMap().get("0").act();
+        if (!reply.isSucceed()) {
+            return UiEnum.PROVISION;
         }
-        else {
-            act();
-        }
+        return UiEnum.MENU;
     }
 
 }

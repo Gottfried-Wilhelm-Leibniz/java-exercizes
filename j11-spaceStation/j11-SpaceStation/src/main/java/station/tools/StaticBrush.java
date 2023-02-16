@@ -1,5 +1,5 @@
 package station.tools;
-public class StaticBrush extends Tool{
+public class StaticBrush extends StandardTool {
     public StaticBrush() {
         super("StaticBrush");
     }

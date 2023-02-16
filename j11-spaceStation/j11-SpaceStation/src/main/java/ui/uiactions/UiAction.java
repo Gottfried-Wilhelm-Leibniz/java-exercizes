@@ -1,5 +1,7 @@
 package ui.uiactions;
+import ui.UiEnum;
+
 @FunctionalInterface
 public interface UiAction {
-    void act();
+    UiEnum act();
 }

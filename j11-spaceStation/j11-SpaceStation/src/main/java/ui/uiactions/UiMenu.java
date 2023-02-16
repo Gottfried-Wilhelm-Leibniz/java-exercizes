@@ -1,4 +1,5 @@
 package ui.uiactions;
+import ui.UiEnum;
 import ui.context.Context;
 
 public class UiMenu implements UiAction {
@@ -11,16 +12,18 @@ public class UiMenu implements UiAction {
     }
 
     @Override
-    public void act() {
+    public UiEnum act() {
         context.printIt(menu);
         var input = context.inputIt();
-        var next = context.getActionMap().get(input);
-        if(next == null) {
+        int intInput;
+        UiEnum inputEnum;
+        try {
+            intInput = Integer.parseInt(input);
+            inputEnum = UiEnum.values()[intInput];
+        } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
             context.printIt(error);
-            act();
+            return UiEnum.MENU;
         }
-        else {
-            next.act();
-        }
+        return inputEnum;
     }
 }

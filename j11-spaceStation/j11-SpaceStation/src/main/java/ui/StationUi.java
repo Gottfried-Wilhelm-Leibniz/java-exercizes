@@ -1,5 +1,6 @@
 package ui;
 import station.Reply;
+import station.robot.RobotOrder;
 import station.Station;
 import station.robot.Robot;
 import ui.context.Context;
@@ -10,15 +11,14 @@ import ui.output.SoutPrinter;
 import ui.uiactions.*;
 
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
 
 public class StationUi {
-    private final Map<String, UiAction> actionsMap = new HashMap<>();
+    private final EnumMap<UiEnum, UiAction> actions = new EnumMap<>(UiEnum.class);
     private final Station<Robot> spacestation;
     private final Printer printer = new SoutPrinter();
     private final Input input = new UserInput();
-    private final Context context = new Context(this::print, this::input, this::getFleetList, this::getModels, this:: createNew, actionsMap);
+    private final Context context = new Context(this::print, this::input, this::getFleetList, this::getModels,
+            this:: createNew, this:: getAvailableRobots, this::getRobotDetails, this::commandRobot);
 
     public StationUi(Station<Robot> station) {
         this.spacestation = station;
@@ -26,15 +26,18 @@ public class StationUi {
     }
 
     private void initStates() {
-        actionsMap.put("0", new UiMenu(context));
-        actionsMap.put("1", new FleetList(context));
-        actionsMap.put("2", new Provision(context));
-        actionsMap.put("3", new IssuCommand());
-        actionsMap.put("4", new Quit());
+        actions.put(UiEnum.MENU, new UiMenu(context));
+        actions.put(UiEnum.FLEETLIST, new FleetList(context));
+        actions.put(UiEnum.PROVISION, new Provision(context));
+        actions.put(UiEnum.ISSUCOMMAND, new IssuCommand(context));
+        actions.put(UiEnum.QUIT, new Quit());
     }
 
     public void go() {
-        actionsMap.get("0").act();
+        var choise = actions.get(UiEnum.MENU).act();
+        while(true) {
+            choise = actions.get(choise).act();
+        }
     }
 
     private void print(String s) {
@@ -52,6 +55,13 @@ public class StationUi {
     private Reply createNew(String model, String name, String sign) {
         return spacestation.createNew(model, name, sign);
     }
+    private String getAvailableRobots() {
+        return spacestation.getAvailableRobots();
+    }
+    private Reply getRobotDetails(String callSign) {
+        return spacestation.getRobotDetails(callSign);
+    }
+    private Reply commandRobot(RobotOrder robotOrder, String callSign) {
+        return spacestation.commandRobot(robotOrder, callSign);
+    }
 }
-
-// TODO enum map

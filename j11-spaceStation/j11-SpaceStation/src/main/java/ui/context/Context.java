@@ -1,11 +1,8 @@
 package ui.context;
-import lombok.Getter;
 import station.Reply;
+import station.robot.RobotOrder;
 import ui.input.Input;
 import ui.output.Printer;
-import ui.uiactions.UiAction;
-
-import java.util.Map;
 
 public class Context {
     private final Printer printer;
@@ -13,15 +10,18 @@ public class Context {
     private final GetFleetList getFleetList;
     private final GetModels getModels;
     private final CreateNew createNew;
-    @Getter
-    private final Map<String, UiAction> actionMap;
-    public Context(Printer printer, Input input, GetFleetList getFleetList, GetModels getModels, CreateNew createNew, Map<String, UiAction> actionsMap) {
+    private final GetAvailableRobots getAvailableRobots;
+    private final GetRobotDetails getit;
+    private final CommandRobot commandRobot;
+    public Context(Printer printer, Input input, GetFleetList getFleetList, GetModels getModels, CreateNew createNew, GetAvailableRobots getAvailableRobots, GetRobotDetails getRobotDetails, CommandRobot commandRobot) {
         this.printer = printer;
         this.input = input;
         this.getFleetList = getFleetList;
         this.getModels = getModels;
         this.createNew = createNew;
-        this.actionMap = actionsMap;
+        this.getAvailableRobots = getAvailableRobots;
+        this.getit = getRobotDetails;
+        this.commandRobot = commandRobot;
     }
 
     public void printIt(String s) {
@@ -38,5 +38,14 @@ public class Context {
     }
     public Reply createNew(String model, String name, String sign) {
         return createNew.create(model, name, sign);
+    }
+    public String getAvailableRobots() {
+        return getAvailableRobots.getAvailable();
+    }
+    public Reply getRobotDetails(String callsign) {
+        return getit.getRobotDetails(callsign);
+    }
+    public Reply commandRobot(RobotOrder robotOrder, String callSign) {
+        return commandRobot.orderRobot(robotOrder, callSign);
     }
 }
