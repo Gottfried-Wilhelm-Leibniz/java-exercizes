@@ -5,7 +5,6 @@ import station.tools.Tool;
 import java.util.List;
 
 public abstract class StandardRobot implements Robot {
-    @Getter
     private final String name;
     private final String callSign;
     private RobotState current;
@@ -18,6 +17,11 @@ public abstract class StandardRobot implements Robot {
         this.name = name;
         this.callSign = callSign;
         this.toolSet = toolSet;
+    }
+
+    @Override
+    public String getSign() {
+        return callSign;
     }
 
 }

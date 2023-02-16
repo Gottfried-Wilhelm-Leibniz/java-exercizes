@@ -22,7 +22,7 @@ public class RobotFactory {
     public Robot create(String key, String name, String sign) {
         var c = robotCreatorMap.get(key);
         if (c == null) {
-            throw new NoSuchRobotInFactoryException("No such");
+            throw new NoSuchRobotInFactoryException("No such Robot");
         }
         return c.create(name, sign);
     }

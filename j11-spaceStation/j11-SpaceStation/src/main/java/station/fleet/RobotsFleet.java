@@ -5,15 +5,15 @@ import station.robot.StandardRobot;
 import java.util.Iterator;
 import java.util.List;
 public class RobotsFleet implements Fleet<Robot> {
-    private final List<Robot> standardRobots;
+    private final List<Robot> robots;
 
     public RobotsFleet(List<Robot> robots) {
-        this.standardRobots = robots;
+        this.robots = robots;
     }
 
     @Override
-    public void addNew(Robot standardRobot) {
-
+    public void addNew(Robot newRobot) {
+        robots.add(newRobot);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class RobotsFleet implements Fleet<Robot> {
     }
 
     @Override
-    public Iterator iterator() {
-        return standardRobots.iterator();
+    public Iterator<Robot> iterator() {
+        return robots.iterator();
     }
 }

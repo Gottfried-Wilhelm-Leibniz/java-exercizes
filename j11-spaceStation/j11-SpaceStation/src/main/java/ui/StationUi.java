@@ -1,4 +1,5 @@
 package ui;
+import station.Reply;
 import station.Station;
 import station.robot.Robot;
 import ui.context.Context;
@@ -16,7 +17,7 @@ public class StationUi {
     private final Station<Robot> spacestation;
     private final Printer printer = new SoutPrinter();
     private final Input input = new UserInput();
-    private final Context context = new Context(this::print, this::input, this::getFleetList, this::getModels, actionsMap);
+    private final Context context = new Context(this::print, this::input, this::getFleetList, this::getModels, this:: createNew, actionsMap);
 
     public StationUi(Station<Robot> station) {
         this.spacestation = station;
@@ -41,10 +42,13 @@ public class StationUi {
     private String input() {
         return input.in();
     }
-    private final String getFleetList() {
+    private String getFleetList() {
         return spacestation.getFleetList();
     }
-    private final String getModels() {
+    private String getModels() {
         return spacestation.getAvailableModels();
+    }
+    private Reply createNew(String model, String name, String sign) {
+        return spacestation.createNew(model, name, sign);
     }
 }
