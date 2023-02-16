@@ -9,6 +9,7 @@ import ui.output.Printer;
 import ui.output.SoutPrinter;
 import ui.uiactions.*;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,3 +53,5 @@ public class StationUi {
         return spacestation.createNew(model, name, sign);
     }
 }
+
+// TODO enum map

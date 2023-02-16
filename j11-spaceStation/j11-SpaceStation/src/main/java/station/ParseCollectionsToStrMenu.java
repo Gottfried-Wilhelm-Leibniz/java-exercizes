@@ -19,6 +19,10 @@ public class ParseCollectionsToStrMenu {
         return sb.toString();
     }
 
+    public<T> String objectToJson(T t) {
+        return new Gson().toJson(t);
+    }
+
     public <T,S> String keys(Map<T, S> map) {
         var sb = new StringBuilder();
         var i = 1;

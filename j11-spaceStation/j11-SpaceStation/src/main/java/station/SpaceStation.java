@@ -36,7 +36,7 @@ public class SpaceStation implements Station<Robot> {
             return new Reply(false, "Failed: " + e.getMessage());
         }
         addToFleet(newRobot);
-        return new Reply(true, "The creation has Succeed");
+        return new Reply(true, "The creation has Succeed\n" + parser.objectToJson(newRobot));
     }
 
     private void addToFleet(Robot newRobot) {
