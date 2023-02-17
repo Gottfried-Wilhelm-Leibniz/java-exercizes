@@ -7,6 +7,9 @@ import station.robot.RobotOrder;
 import station.robot.actions.*;
 import station.robot.robotfactory.RobotFactory;
 
+import java.lang.reflect.Method;
+import java.util.List;
+
 public class SpaceStation implements Station<Robot> {
     private final Fleet<Robot> robotsfleet;
     private final Parser parser = new Parser();
@@ -35,9 +38,24 @@ public class SpaceStation implements Station<Robot> {
         }
         return replyGenerator(true, "The creation of " + sign + " has Succeed\n" + parser.objectToJson(newRobot));
     }
+//    @Override
+//    public String listAvailableRobots() {
+//        return parser.listSignState(robotsfleet.listAvailableRobots());
+//    }
+
     @Override
     public String listAvailableRobots() {
-        return parser.listSignState(robotsfleet.listAvailableRobots());
+        Method a;
+        Method b;
+        try {
+            a = Robot.class.getMethod("getSign");
+            b = Robot.class.getMethod("getState");
+        } catch (NoSuchMethodException e) {
+            return "the procedure is not possible at the moment";
+            // todo change to record
+            // todo send the write list !!!!
+        }
+        return parser.listMethods(robotsfleet.listAvailableRobots(), List.of(a, b));
     }
 
     @Override

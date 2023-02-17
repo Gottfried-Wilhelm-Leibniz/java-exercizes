@@ -11,42 +11,43 @@ import java.util.List;
 public abstract class StandardRobot implements Robot {
     private final String model;
     private final String name;
-    @Getter
-    @Setter
     private final String callSign;
+    @Setter
     private RobotState robotState;
     @Getter
-    protected List<Tool> toolSet;
+    protected List<Tool> tools;
 
     protected StandardRobot(String name, String callSign, List<Tool> toolSet) {
         if (name.length() < 2 || name.length() > 32) {
-            throw new InvalidRobotNameException("Robot name shoud be 2-32 length");
+            throw new InvalidRobotNameException("Robot's name should be 2-32 length");
         }
         this.model = this.getClass().getName();
         this.name = name;
         this.callSign = callSign;
-        this.toolSet = toolSet;
+        this.tools = toolSet;
         creationSucceed();
     }
     private void creationSucceed() {
         robotState = new Randomizer().boolRandom(0.9) ? RobotState.ACTIVE: RobotState.FAILING;
     }
     @Override
-    public String getSign() {
+    public String callSign() {
         return callSign;
     }
     @Override
-    public RobotState getState() {
+    public RobotState robotState() {
         return robotState;
     }
-    @Override
-    public List<Tool> getToolList() {
-        return toolSet;
-    }
-    @Override
-    public void setState(RobotState robotState) {
-        this.robotState = robotState;
-    }
-
 
 }
+
+//    @Override
+//    public List<Tool> getToolList() {
+//        return toolSet;
+//    }
+
+
+//    @Override
+//    public void setRobotState(RobotState robotState) {
+//        this.robotState = robotState;
+//    }

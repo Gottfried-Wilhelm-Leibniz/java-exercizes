@@ -15,14 +15,25 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.26</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.golov.space</groupId>
+            <groupId>com.golov.accessorize</groupId>
             <artifactId>Parser</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.golov.accessorize</groupId>
+            <artifactId>Randomizer</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>

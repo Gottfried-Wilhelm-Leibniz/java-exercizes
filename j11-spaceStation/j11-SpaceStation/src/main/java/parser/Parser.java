@@ -2,6 +2,8 @@ package parser;
 import com.google.gson.Gson;
 import station.robot.Robot;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +46,24 @@ public class Parser {
             sb.append(" State: ").append(r.getState());
             sb.append("\n");
             i++;
+        }
+        return sb.toString();
+    }
+
+    public <T> String listMethods(List<T> list, List<Method> mList) {
+        var sb = new StringBuilder();
+        var i = 1;
+        for(var r : list) {
+            sb.append(i++).append(") ");
+            for(var m : mList) {
+                try {
+                    sb.append(m.getName()).append(": ").append(m.invoke(r)).append(" ");
+                } catch (InvocationTargetException | IllegalAccessException e) {
+                    sb.append("Procedure is not possible at the moment");
+                    break;
+                }
+            }
+            sb.append("\n");
         }
         return sb.toString();
     }

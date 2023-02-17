@@ -12,12 +12,12 @@ public class Reboot implements RobotAction {
 
     @Override
     public void run() {
-        robot.setState(RobotState.REBOOTING);
+        robot.setRobotState(RobotState.REBOOTING);
         try {
             Thread.sleep(new Randomizer().intRandom(1000, 5000));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        robot.setState(RobotState.ACTIVE);
+        robot.setRobotState(RobotState.ACTIVE);
     }
 }

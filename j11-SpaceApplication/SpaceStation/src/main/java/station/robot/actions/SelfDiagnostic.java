@@ -9,20 +9,20 @@ public class SelfDiagnostic implements RobotAction {
     private final Robot robot;
 
     public SelfDiagnostic(Robot robot) {
-        if(!robot.getState().equals(RobotState.FAILING)) {
-            throw new RobotNotFailingException("Robot: " + robot.getSign() + " is not in Failing state");
+        if(!robot.robotState().equals(RobotState.FAILING)) {
+            throw new RobotNotFailingException("Robot: " + robot.callSign() + " is not in Failing state");
         }
         this.robot = robot;
     }
 
     @Override
     public void run() {
-        var toolList = robot.getToolList();
+        var toolList = robot.getTools();
         for(var t : toolList) {
             if(t.getToolState().equals(ToolState.READY)) {
                 continue;
             }
-            System.out.println("Robot: " + robot.getSign() + " Starting self-healing on tool: " + t.getToolName());
+            System.out.println("Robot: " + robot.callSign() + " Starting self-healing on tool: " + t.getToolName());
             try {
                 Thread.sleep(new Randomizer().intRandom(10_000, 20_000));
             } catch (InterruptedException e) {

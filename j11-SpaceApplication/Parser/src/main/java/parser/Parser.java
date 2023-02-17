@@ -37,36 +37,16 @@ public class Parser {
         return sb.toString();
     }
 
-    public <T> String listMethods(List<T> list, List<Method> mList) {
+    public <T> String listGetters(Iterable<T> iterable, List<Method> mList) throws InvocationTargetException, IllegalAccessException {
         var sb = new StringBuilder();
         var i = 1;
-        for(var r : list) {
-            sb.append(i).append(") ");
+        for(var r : iterable) {
+            sb.append(i++).append(") ");
             for(var m : mList) {
-                try {
-                    sb.append(m.toString()).append(": ").append(m.invoke(r));
-                } catch (InvocationTargetException | IllegalAccessException e) {
-                    sb.append("Procedure is not possible at the moment");
-                    break;
-                }
+                sb.append(m.getName()).append(": ").append(m.invoke(r)).append(" ");
             }
-            i++;
+            sb.append("\n");
         }
-        sb.append("\n");
         return sb.toString();
     }
 }
-
-// todo try it like this
-//    public String listSignState(List<Robot> list) {
-//        var sb = new StringBuilder();
-//        var i = 1;
-//        for(var r : list) {
-//            sb.append(i).append(") ");
-//            sb.append("Call sign: ").append(r.getSign());
-//            sb.append(" State: ").append(r.getState());
-//            sb.append("\n");
-//            i++;
-//        }
-//        return sb.toString();
-//    }

@@ -22,18 +22,18 @@ public class RobotsFleet implements Fleet<Robot> {
 
     private void initializeMap(List<Robot> robots) {
         for(var r : robots) {
-            robotsMap.put(r.getSign(), r);
+            robotsMap.put(r.callSign(), r);
         }
     }
 
     @Override
     public void addNew(Robot newRobot) {
-        if (robotsMap.containsKey(newRobot.getSign())) {
-            throw new CallSignAlreadyExistOnFleetException("Fleet already contains call sign: " + newRobot.getSign());
+        if (robotsMap.containsKey(newRobot.callSign())) {
+            throw new CallSignAlreadyExistOnFleetException("Fleet already contains call sign: " + newRobot.callSign());
         }
         writeLock.lock();
         try {
-            robotsMap.put(newRobot.getSign(), newRobot);
+            robotsMap.put(newRobot.callSign(), newRobot);
         } finally {
             writeLock.unlock();
         }
@@ -49,7 +49,7 @@ public class RobotsFleet implements Fleet<Robot> {
     }
     @Override
     public List<Robot> listAvailableRobots() {
-        return robotsMap.values().stream().filter(r -> r.getState().equals(RobotState.ACTIVE) || r.getState().equals(RobotState.FAILING)).toList();
+        return robotsMap.values().stream().filter(r -> r.robotState().equals(RobotState.ACTIVE) || r.robotState().equals(RobotState.FAILING)).toList();
     }
     @Override
     public List<Robot> listRobots() {
@@ -61,12 +61,12 @@ public class RobotsFleet implements Fleet<Robot> {
         Robot r;
         writeLock.lock();
         try {
-            r = robotsMap.remove(robot.getSign());
+            r = robotsMap.remove(robot.callSign());
         } finally {
             writeLock.unlock();
         }
         if (r == null) {
-            throw new RobotNotExistInFleetExceptopn("Robot " + robot.getSign() + " is not in the fleet");
+            throw new RobotNotExistInFleetExceptopn("Robot " + robot.callSign() + " is not in the fleet");
         }
     }
 }

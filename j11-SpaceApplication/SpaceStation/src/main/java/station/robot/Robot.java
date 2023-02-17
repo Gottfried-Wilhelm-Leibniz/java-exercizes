@@ -5,8 +5,8 @@ import station.tools.Tool;
 import java.util.List;
 
 public interface Robot {
-    String getSign();
-    RobotState getState();
-    void setState(RobotState robotState);
-    List<Tool> getToolList();
+    String callSign();
+    RobotState robotState();
+    void setRobotState(RobotState robotState);
+    List<Tool> getTools();
 }
