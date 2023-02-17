@@ -5,7 +5,7 @@ import ui.context.Context;
 
 public class IssuCommand implements UiAction {
     private String haed = "Choose call sign from the Available robots:";
-    private String menu = "Choose action:\n0.Dispatch\n1.Reboot\n2.SelfDiagnostic\n3.Delete\n4.Back";
+    private String menu = "Choose action:\n1.Dispatch\n2.Reboot\n3.SelfDiagnostic\n4.Delete\n5.Back";
     private final Context context;
 
     public IssuCommand(Context context) {
@@ -24,13 +24,13 @@ public class IssuCommand implements UiAction {
         }
         context.printIt(menu);
         var command = context.inputIt();
-        if(command.equals("4")) {
+        if(command.equals("5")) {
             return UiEnum.MENU;
         }
         int intInput;
         RobotOrder inputEnum;
         try {
-            intInput = Integer.parseInt(command);
+            intInput = Integer.parseInt(command) - 1;
             inputEnum = RobotOrder.values()[intInput];
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
             context.printIt("no such option");

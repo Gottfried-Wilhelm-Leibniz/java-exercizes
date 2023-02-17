@@ -6,19 +6,10 @@ import station.exceptions.RobotNotExistInFleetExceptopn;
 import station.fleet.Fleet;
 import station.robot.Robot;
 import station.robot.RobotOrder;
-import station.robot.actions.DispatchAction;
-import station.robot.actions.Reboot;
-import station.robot.actions.RobotAction;
-import station.robot.actions.SelfDiagnostic;
+import station.robot.actions.*;
 import station.robot.robotfactory.RobotFactory;
 
 public class SpaceStation implements Station<Robot> {
-//    private final static EnumMap<RobotOrder, RobotAction> ordersMap = new EnumMap<>(RobotOrder.class);
-//    static {
-//        ordersMap.put(RobotOrder.DISPATCH, new DispatchAction());
-//        ordersMap.put(RobotOrder.DIAGNOSTIC, new SelfDiagnostic());
-//        ordersMap.put(RobotOrder.REBOOT, new Reboot());
-//    }
     private final Fleet<Robot> robotsfleet;
     private final Parser parser = new Parser();
     private final RobotFactory robotFactory = new RobotFactory();
@@ -39,17 +30,20 @@ public class SpaceStation implements Station<Robot> {
     public Reply createNew(String model, String name, String sign) {
         for(var r : robotsfleet) {
             if(r.getSign().equals(sign)) {
-                return new Reply(false, "Failed: The callSign already Register in the fleet");
+                return replyGenerator(false, "Failed: " + sign + " is already Register in the fleet");
+//                return new Reply(false, "Failed: The callSign already Register in the fleet");
             }
         }
         Robot newRobot;
         try {
             newRobot = robotFactory.create(model, name, sign);
         } catch (NoSuchRobotInFactoryException | InvalidRobotNameException e) {
-            return new Reply(false, "Failed: " + e.getMessage());
+            return replyGenerator(false, "Failed: " + e.getMessage());
+//            return new Reply(false, "Failed: " + e.getMessage());
         }
         addToFleet(newRobot);
-        return new Reply(true, "The creation has Succeed\n" + parser.objectToJson(newRobot));
+        return replyGenerator(true, "The creation has Succeed\n" + parser.objectToJson(newRobot));
+//        return new Reply(true, "The creation has Succeed\n" + parser.objectToJson(newRobot));
     }
     @Override
     public String getAvailableRobots() {
@@ -62,9 +56,11 @@ public class SpaceStation implements Station<Robot> {
         try {
             r = robotsfleet.get(callSign);
         } catch (RobotNotExistInFleetExceptopn e) {
-            return new Reply(false, "Failed: " + e.getMessage());
+            return replyGenerator(false, "Failed: " + e.getMessage());
+//            return new Reply(false, "Failed: " + e.getMessage());
         }
-        return new Reply(true, parser.objectToJson(r));
+        return replyGenerator(true, parser.objectToJson(r));
+//        return new Reply(true, parser.objectToJson(r));
     }
 
     @Override
@@ -73,26 +69,24 @@ public class SpaceStation implements Station<Robot> {
         try {
             r = robotsfleet.get(callSign);
         } catch (RobotNotExistInFleetExceptopn e) {
-            return new Reply(false, "Failed: " + e.getMessage());
+            return replyGenerator(false, "Failed: " + e.getMessage());
+//            return new Reply(false, "Failed: " + e.getMessage());
         }
-        if (robotOrder.equals(RobotOrder.DELETE)) {
-            robotsfleet.remove(r);
-            return new Reply(true, "Robot is removed");
-        }
-        RobotAction ra;
         try {
-            ra = switch (robotOrder) {
-                case DISPATCH -> new DispatchAction(r);
-                case REBOOT -> new Reboot(r);
-                case DIAGNOSTIC -> new SelfDiagnostic(r);
-                default -> null;
+            switch (robotOrder) {
+                case DISPATCH -> new Thread(new DispatchAction(r)).start();
+                case REBOOT -> new Thread(new Reboot(r)).start();
+                case DIAGNOSTIC -> new Thread(new SelfDiagnostic(r)).start();
+                case DELETE -> robotsfleet.remove(r);
             };
         } catch (RobotNotActiveException e) {
-            return new Reply(false, "Failed: call sign: " + callSign + " " + e.getMessage());
+            return replyGenerator(false, "Failed: call sign: " + callSign + " " + e.getMessage());
         }
-        new Thread(ra).start();
+        return replyGenerator(true, callSign + " is " + robotOrder);
+    }
 
-        return new Reply(true, callSign + " is " + robotOrder);
+    private Reply replyGenerator(boolean bool, String reason) {
+        return new Reply(bool, reason);
     }
 
     private void addToFleet(Robot newRobot) {
