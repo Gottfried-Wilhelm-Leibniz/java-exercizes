@@ -29,8 +29,6 @@ public class Application {
         var charset = Charset.defaultCharset();
         var byteBuff = ByteBuffer.wrap(strFile.getBytes(charset));
         Files.write(path, byteBuff.array());
-
-
         Loader<Robot> loader;
         if(args.length == 0) {
             loader = new RobotsFileLoader(path);
@@ -41,8 +39,8 @@ public class Application {
         }
         var initialList = loader.load();
         Fleet<Robot> robotsFleet = new RobotsFleet(initialList);
-        Station<Robot> spaceStation = new SpaceStation(robotsFleet);
         new Thread(new UniverseCosmicAction(robotsFleet)).start();
+        Station<Robot> spaceStation = new SpaceStation(robotsFleet);
         var stationUi = new StationUi(spaceStation);
         stationUi.go();
     }

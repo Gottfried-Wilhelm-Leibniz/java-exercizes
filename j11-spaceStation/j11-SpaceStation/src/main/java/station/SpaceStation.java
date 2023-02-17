@@ -28,6 +28,7 @@ public class SpaceStation implements Station<Robot> {
 
     @Override
     public Reply createNew(String model, String name, String sign) {
+
         for(var r : robotsfleet) {
             if(r.getSign().equals(sign)) {
                 return replyGenerator(false, "Failed: " + sign + " is already Register in the fleet");
@@ -41,7 +42,10 @@ public class SpaceStation implements Station<Robot> {
             return replyGenerator(false, "Failed: " + e.getMessage());
 //            return new Reply(false, "Failed: " + e.getMessage());
         }
-        addToFleet(newRobot);
+        try {
+            addToFleet(newRobot);
+        } catch ()
+
         return replyGenerator(true, "The creation has Succeed\n" + parser.objectToJson(newRobot));
 //        return new Reply(true, "The creation has Succeed\n" + parser.objectToJson(newRobot));
     }

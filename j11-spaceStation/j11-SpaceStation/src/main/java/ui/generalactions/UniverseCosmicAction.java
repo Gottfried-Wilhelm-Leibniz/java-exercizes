@@ -2,6 +2,7 @@ package ui.generalactions;
 import randomizer.Randomizer;
 import station.fleet.Fleet;
 import station.robot.Robot;
+import station.tools.ToolState;
 
 public class UniverseCosmicAction implements generalActions {
     private final Fleet<Robot> robotFleet;
@@ -19,8 +20,10 @@ public class UniverseCosmicAction implements generalActions {
                 throw new RuntimeException(e);
             }
             for(var r : robotFleet) {
-                if(randomizer.boolRandom(0.1)) {
-
+                for(var t : r.getToolList()) {
+                    if(randomizer.boolRandom(0.1)) {
+                        t.setToolState(ToolState.MALFUNCTION);
+                    }
                 }
             }
         }
