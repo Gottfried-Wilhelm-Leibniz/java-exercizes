@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4471be1d-0e4b-4018-a7e1-d45a285d2109" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../j05-filesystemX/src/filesystem/server/server.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Parser/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Parser/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Parser/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Parser/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Parser/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Parser/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Parser/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Parser/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/Reply.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/SpaceStation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/Station.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/exceptions/CallSignAlreadyExistOnFleetException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/exceptions/InvalidRobotNameException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/exceptions/NoSuchRobotInFactoryException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/exceptions/RobotNotActiveException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/exceptions/RobotNotExistInFleetExceptopn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/exceptions/RobotNotFailingException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/fleet/Fleet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/fleet/RobotsFleet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/Robot.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/RobotOrder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/StandardRobot.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/actions/DispatchAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/actions/Reboot.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/actions/RobotAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/actions/SelfDiagnostic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/models/Hal9000.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/models/Johnny5.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/models/Maschinemensch.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/models/Tachikomas.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/robotfactory/Hal9000Creator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/robotfactory/Johnny5Creator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/robotfactory/MaschinemenschCreator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/robotfactory/RobotCreator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/robotfactory/RobotFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/robotfactory/TachikomasCreator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/robotstate/RobotState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/tools/Disruptor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/tools/LaserCutter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/tools/Replicator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/tools/StandardTool.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/tools/StaticBrush.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/tools/Tool.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/tools/ToolState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/parser/Parser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/station/exceptions/CallSignAlreadyExistOnFleetException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PomParent/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PomParent/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/station/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Parser/src/main/java/parser/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/station/SpaceStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/station/SpaceStation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/station/Station.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/station/Station.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/station/fleet/Fleet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/station/fleet/Fleet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/station/fleet/RobotsFleet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/station/fleet/RobotsFleet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/StationUi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/StationUi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/UiState.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/generalactions/UniverseCosmicAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/generalactions/UniverseCosmicAction.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="workspaceImportEnabled" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2LrtNpdhrHsgzWLUQA3p5I1jjzq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true"
+  }
+}]]></component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn install" />
+    </option>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4471be1d-0e4b-4018-a7e1-d45a285d2109" name="Changes" comment="" />
+      <created>1676640992723</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1676640992723</updated>
+    </task>
+    <servers />
+  </component>
+</project>

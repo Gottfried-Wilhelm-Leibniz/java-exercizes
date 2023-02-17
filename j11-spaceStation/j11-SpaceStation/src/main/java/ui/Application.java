@@ -8,7 +8,6 @@ import ui.generalactions.UniverseCosmicAction;
 import ui.loader.RobotsFileLoader;
 import ui.loader.InputLoader;
 import ui.loader.Loader;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;

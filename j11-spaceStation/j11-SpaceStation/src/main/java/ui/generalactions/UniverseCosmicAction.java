@@ -19,7 +19,8 @@ public class UniverseCosmicAction implements generalActions {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            for(var r : robotFleet) {
+            var list = robotFleet.listRobots();
+            for(var r : list) {
                 for(var t : r.getToolList()) {
                     if(randomizer.boolRandom(0.1)) {
                         t.setToolState(ToolState.MALFUNCTION);

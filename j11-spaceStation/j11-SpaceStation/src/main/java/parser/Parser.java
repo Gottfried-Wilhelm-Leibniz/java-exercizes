@@ -1,4 +1,4 @@
-package station;
+package parser;
 import com.google.gson.Gson;
 import station.robot.Robot;
 
@@ -35,7 +35,7 @@ public class Parser {
         return sb.toString();
     }
 
-    public String listOfSign(List<Robot> list) {
+    public String listSignState(List<Robot> list) {
         var sb = new StringBuilder();
         var i = 1;
         for(var r : list) {

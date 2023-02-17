@@ -4,8 +4,14 @@ import station.exceptions.*;
 import station.fleet.Fleet;
 import station.robot.Robot;
 import station.robot.RobotOrder;
-import station.robot.actions.*;
+import station.robot.actions.DispatchAction;
+import station.robot.actions.Reboot;
+import station.robot.actions.SelfDiagnostic;
+import station.robot.models.Hal9000;
 import station.robot.robotfactory.RobotFactory;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 public class SpaceStation implements Station<Robot> {
     private final Fleet<Robot> robotsfleet;
@@ -37,7 +43,17 @@ public class SpaceStation implements Station<Robot> {
     }
     @Override
     public String listAvailableRobots() {
-        return parser.listSignState(robotsfleet.listAvailableRobots());
+        Method a;
+        Method b;
+        try {
+            a = Robot.class.getMethod("getSign");
+            b = Robot.class.getMethod("getState");
+        } catch (NoSuchMethodException e) {
+            return "the procedure is not possible at the moment";
+            // todo change to record
+            // todo send the write list !!!!
+        }
+        return parser.listMethods(robotsfleet.listAvailableRobots(),);
     }
 
     @Override

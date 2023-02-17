@@ -35,7 +35,7 @@ public class StationUi {
 
     public void go() {
         var choise = actions.get(UiEnum.MENU).act();
-        while(true) {
+        while(!choise.equals(UiEnum.QUIT)) {
             choise = actions.get(choise).act();
         }
     }
@@ -50,13 +50,13 @@ public class StationUi {
         return spacestation.getFleetList();
     }
     private String getModels() {
-        return spacestation.getAvailableModels();
+        return spacestation.ListAvailableModels();
     }
     private Reply createNew(String model, String name, String sign) {
         return spacestation.createNew(model, name, sign);
     }
     private String getAvailableRobots() {
-        return spacestation.getAvailableRobots();
+        return spacestation.listAvailableRobots();
     }
     private Reply getRobotDetails(String callSign) {
         return spacestation.getRobotDetails(callSign);
