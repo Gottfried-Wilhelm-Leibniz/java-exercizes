@@ -4,16 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4471be1d-0e4b-4018-a7e1-d45a285d2109" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../Robot/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Robot/.idea/dbnavigator.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Robot/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Robot/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Robot/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Robot/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Robot/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Robot/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Robot/src/main/java/robot/Robot.java" afterDir="false" />
+    <list default="true" id="7dfbc944-d84a-4d3f-ae28-72815ed90576" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/robot/Robot.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Robotstate/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Robotstate/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Robotstate/.idea/dbnavigator.xml" afterDir="false" />
@@ -27,7 +27,7 @@
       <change afterPath="$PROJECT_DIR$/../Tool/.idea/uiDesigner.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Tool/.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../ToolState/.idea/uiDesigner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpacePom/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SpacePom/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ToolState/src/main/java/ToolState.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ToolState/src/main/java/toolstate/ToolState.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,31 +48,40 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectId" id="2LrtNpdhrHsgzWLUQA3p5I1jjzq" />
+  <component name="ProjectId" id="2Lv5idAM4qEgYfUkpGXNorRqz7f" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="robot" />
+    </key>
+  </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn install" />
+      <command value="mvn validate" />
+      <command value="mvn clean install" />
     </option>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="4471be1d-0e4b-4018-a7e1-d45a285d2109" name="Changes" comment="" />
-      <created>1676640992723</created>
+      <changelist id="7dfbc944-d84a-4d3f-ae28-72815ed90576" name="Changes" comment="" />
+      <created>1676738845107</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1676640992723</updated>
+      <updated>1676738845107</updated>
     </task>
     <servers />
   </component>
