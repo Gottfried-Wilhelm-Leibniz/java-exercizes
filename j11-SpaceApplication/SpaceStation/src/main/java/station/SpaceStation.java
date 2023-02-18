@@ -15,9 +15,11 @@ public class SpaceStation implements Station<Robot> {
     private final Fleet<Robot> robotsfleet;
     private final Parser parser = new Parser();
     private final RobotFactory robotFactory = new RobotFactory();
-    public SpaceStation(Fleet<Robot> robotsList) {
-        this.robotsfleet = robotsList;
+
+    public SpaceStation(Fleet<Robot> robotsfleet) {
+        this.robotsfleet = robotsfleet;
     }
+
     @Override
     public String getFleetList() {
         return parser.iterableToJson(robotsfleet.listRobots());

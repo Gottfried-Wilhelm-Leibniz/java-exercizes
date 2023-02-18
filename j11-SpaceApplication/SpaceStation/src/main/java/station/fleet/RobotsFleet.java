@@ -16,16 +16,6 @@ public class RobotsFleet implements Fleet<Robot> {
     private final Lock readLock = lock.readLock();
     private final Lock writeLock = lock.writeLock();
 
-    public RobotsFleet(List<Robot> robots) {
-        initializeMap(robots);
-    }
-
-    private void initializeMap(List<Robot> robots) {
-        for(var r : robots) {
-            robotsMap.put(r.callSign(), r);
-        }
-    }
-
     @Override
     public void addNew(Robot newRobot) {
         if (robotsMap.containsKey(newRobot.callSign())) {

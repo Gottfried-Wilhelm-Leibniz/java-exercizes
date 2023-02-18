@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
@@ -48,5 +50,14 @@ public class Parser {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    public String bytesToString(byte[] bytes, Charset charset) {
+        var byteBuff = ByteBuffer.wrap(bytes);
+        return charset.decode(byteBuff).toString();
+    }
+
+    public String[] stringSeparator(String s, String sep) {
+        return s.split(sep);
     }
 }

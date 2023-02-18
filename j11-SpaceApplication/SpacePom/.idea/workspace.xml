@@ -5,94 +5,57 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4471be1d-0e4b-4018-a7e1-d45a285d2109" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../Randomizer/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Randomizer/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Randomizer/.idea/dbnavigator.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Randomizer/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Randomizer/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Randomizer/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Randomizer/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Randomizer/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Randomizer/src/main/java/randomizer/Randomizer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpaceUi/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpaceUi/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpaceUi/.idea/dbnavigator.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpaceUi/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpaceUi/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpaceUi/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpaceUi/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpaceUi/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/loader/InputLoader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/Application.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/StationUi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/UiEnum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/context/CommandRobot.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/context/Context.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/context/CreateNew.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/context/GetAvailableRobots.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/context/GetFleetList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/context/GetModels.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/context/GetRobotDetails.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/exceptions/NoConfigorationFileException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/generalactions/UniverseCosmicAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/generalactions/generalActions.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/input/Input.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/input/UserInput.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/loader/InputLoader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/loader/InterfaceAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/loader/Loader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/loader/RobotsFileLoader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/output/Printer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/output/SoutPrinter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/uiactions/FleetList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/uiactions/IssuCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/uiactions/Provision.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/uiactions/Quit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/uiactions/UiAction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/uiactions/UiMenu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/test/java/spaceui/loader/RobotsFileLoaderTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FileLoader/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FileLoader/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FileLoader/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FileLoader/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FileLoader/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FileLoader/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FileLoader/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FileLoader/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FileLoader/src/main/java/loader/FileLoader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Loader/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Loader/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Loader/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Loader/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Loader/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Loader/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Loader/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Loader/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Loader/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Loader/src/main/java/loader/Loader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SimpleFileLoader/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SimpleFileLoader/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SimpleFileLoader/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SimpleFileLoader/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SimpleFileLoader/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SimpleFileLoader/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SimpleFileLoader/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SimpleFileLoader/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SimpleFileLoader/src/main/java/FileLoader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ToolState/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ToolState/src/main/java/ToolState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Parser/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Parser/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Parser/src/main/java/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Parser/src/main/java/parser/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SpaceStation/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/SpaceStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/SpaceStation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/Station.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/Station.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/fleet/RobotsFleet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/fleet/RobotsFleet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/Robot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/Robot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/StandardRobot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/StandardRobot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/actions/DispatchAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/actions/DispatchAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/actions/Reboot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/actions/Reboot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/actions/SelfDiagnostic.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robot/actions/SelfDiagnostic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/parser/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/station/SpaceStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/station/SpaceStation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/StationUi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/StationUi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/UiEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/UiEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/context/CommandRobot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/context/CommandRobot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/context/Context.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/context/Context.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/context/CreateNew.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/context/CreateNew.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/context/GetAvailableRobots.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/context/GetAvailableRobots.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/context/GetFleetList.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/context/GetFleetList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/context/GetModels.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/context/GetModels.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/context/GetRobotDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/context/GetRobotDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/exceptions/NoConfigorationFileException.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/exceptions/NoConfigorationFileException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/generalactions/UniverseCosmicAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/generalactions/UniverseCosmicAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/generalactions/generalActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/generalactions/generalActions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/input/Input.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/input/Input.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/input/UserInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/input/UserInput.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/loader/InputLoader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/loader/InterfaceAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/loader/InterfaceAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/loader/Loader.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/loader/Loader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/loader/RobotsFileLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/loader/RobotsFileLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/output/Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/output/Printer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/output/SoutPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/output/SoutPrinter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/uiactions/FleetList.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/uiactions/FleetList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/uiactions/IssuCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/uiactions/IssuCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/uiactions/Provision.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/uiactions/Provision.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/uiactions/Quit.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/uiactions/Quit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/uiactions/UiAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/uiactions/UiAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/ui/uiactions/UiMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/uiactions/UiMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/test/java/ui/loader/RobotsFileLoaderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/test/java/java/spaceui/loader/RobotsFileLoaderTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/StationUi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/StationUi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/loader/InputLoader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/loader/InterfaceAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/loader/Loader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/loader/RobotsFileLoader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/loader/InputLoader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/loader/InterfaceAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/loader/Loader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../j11-spaceStation/j11-SpaceStation/src/main/java/spaceui/loader/RobotsFileLoader.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,13 +80,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn install" />

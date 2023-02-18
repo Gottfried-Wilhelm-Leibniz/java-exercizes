@@ -15,13 +15,15 @@ import java.util.EnumMap;
 public class StationUi {
     private final EnumMap<UiEnum, UiAction> actions = new EnumMap<>(UiEnum.class);
     private final Station<Robot> spacestation;
-    private final Printer printer = new SoutPrinter();
-    private final Input input = new UserInput();
+    private final Printer printer;
+    private final Input input;
     private final Context context = new Context(this::print, this::input, this::getFleetList, this::getModels,
             this:: createNew, this:: getAvailableRobots, this::getRobotDetails, this::commandRobot);
 
-    public StationUi(Station<Robot> station) {
+    public StationUi(Station<Robot> station, Printer printer, Input input) {
         this.spacestation = station;
+        this.printer = printer;
+        this.input = input;
         initStates();
     }
 
