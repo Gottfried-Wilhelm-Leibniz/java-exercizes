@@ -1,14 +1,10 @@
 package spaceui;
+import input.Input;
+import output.Printer;
 import spaceui.context.Context;
-import spaceui.input.Input;
-import spaceui.input.UserInput;
-import spaceui.output.Printer;
-import spaceui.output.SoutPrinter;
 import spaceui.uiactions.*;
-import station.Reply;
-import station.Station;
-import station.robot.Robot;
-import station.robot.RobotOrder;
+import robot.Robot;
+import station.*;
 
 import java.util.EnumMap;
 

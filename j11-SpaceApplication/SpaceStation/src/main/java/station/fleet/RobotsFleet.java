@@ -1,9 +1,8 @@
 package station.fleet;
+import robot.Robot;
+import robotstate.RobotState;
 import station.exceptions.CallSignAlreadyExistOnFleetException;
 import station.exceptions.RobotNotExistInFleetExceptopn;
-import station.robot.Robot;
-import station.robot.robotstate.RobotState;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,21 +11,21 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class RobotsFleet implements Fleet<Robot> {
     private final Map<String, Robot> robotsMap = new ConcurrentHashMap<>();
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Lock readLock = lock.readLock();
-    private final Lock writeLock = lock.writeLock();
+//    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+//    private final Lock readLock = lock.readLock();
+//    private final Lock writeLock = lock.writeLock();
 
     @Override
     public void addNew(Robot newRobot) {
         if (robotsMap.containsKey(newRobot.callSign())) {
             throw new CallSignAlreadyExistOnFleetException("Fleet already contains call sign: " + newRobot.callSign());
         }
-        writeLock.lock();
-        try {
+//        writeLock.lock();
+//        try {
             robotsMap.put(newRobot.callSign(), newRobot);
-        } finally {
-            writeLock.unlock();
-        }
+//        } finally {
+//            writeLock.unlock();
+//        }
     }
 
     @Override
@@ -48,13 +47,13 @@ public class RobotsFleet implements Fleet<Robot> {
 
     @Override
     public void remove(Robot robot) {
-        Robot r;
-        writeLock.lock();
-        try {
-            r = robotsMap.remove(robot.callSign());
-        } finally {
-            writeLock.unlock();
-        }
+//        Robot r;
+//        writeLock.lock();
+//        try {
+        var r = robotsMap.remove(robot.callSign());
+//        } finally {
+//            writeLock.unlock();
+//        }
         if (r == null) {
             throw new RobotNotExistInFleetExceptopn("Robot " + robot.callSign() + " is not in the fleet");
         }

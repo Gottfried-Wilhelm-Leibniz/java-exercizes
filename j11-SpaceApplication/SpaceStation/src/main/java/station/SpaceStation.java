@@ -2,13 +2,10 @@ package station;
 import parser.Parser;
 import station.exceptions.*;
 import station.fleet.Fleet;
-import station.robot.Robot;
-import station.robot.RobotOrder;
-import station.robot.actions.DispatchAction;
-import station.robot.actions.Reboot;
-import station.robot.actions.SelfDiagnostic;
-import station.robot.robotfactory.RobotFactory;
+import station.robotactions.*;
 import java.lang.reflect.InvocationTargetException;
+import robot.Robot;
+import station.robotfactory.RobotFactory;
 import java.util.List;
 
 public class SpaceStation implements Station<Robot> {

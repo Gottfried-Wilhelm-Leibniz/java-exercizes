@@ -1,8 +1,8 @@
 package spaceui.context;
-import spaceui.input.Input;
-import spaceui.output.Printer;
+import input.Input;
+import output.Printer;
 import station.Reply;
-import station.robot.RobotOrder;
+import station.RobotOrder;
 
 public class Context {
     private final Printer printer;

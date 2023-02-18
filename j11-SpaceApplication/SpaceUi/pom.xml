@@ -25,21 +25,6 @@
             <artifactId>SpaceStation</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.golov.accessorize.loader</groupId>
-            <artifactId>Loader</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.golov.accessorize.loader</groupId>
-            <artifactId>FileLoader</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.golov.accessorize</groupId>
-            <artifactId>Parser</artifactId>
-            <version>1.0.0</version>
-        </dependency>
     </dependencies>
 
     <build>
