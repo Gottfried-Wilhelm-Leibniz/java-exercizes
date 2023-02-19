@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/Tool/pom.xml" />
+        <option value="$PROJECT_DIR$/Robot/pom.xml" />
+        <option value="$PROJECT_DIR$/Loader/pom.xml" />
+        <option value="$PROJECT_DIR$/Parser/pom.xml" />
+        <option value="$PROJECT_DIR$/SpaceUi/pom.xml" />
+        <option value="$PROJECT_DIR$/SpacePom/pom.xml" />
+        <option value="$PROJECT_DIR$/ToolState/pom.xml" />
+        <option value="$PROJECT_DIR$/FileLoader/pom.xml" />
+        <option value="$PROJECT_DIR$/Randomizer/pom.xml" />
+        <option value="$PROJECT_DIR$/RobotState/pom.xml" />
+        <option value="$PROJECT_DIR$/SpaceInput/pom.xml" />
+        <option value="$PROJECT_DIR$/SpaceOutput/pom.xml" />
+        <option value="$PROJECT_DIR$/SpaceStation/pom.xml" />
+        <option value="$PROJECT_DIR$/StandardTool/pom.xml" />
+        <option value="$PROJECT_DIR$/StandardRobot/pom.xml" />
+        <option value="$PROJECT_DIR$/SimpleFileLoader/pom.xml" />
+        <option value="$PROJECT_DIR$/SpaceApplication/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" default="true" project-jdk-name="19" project-jdk-type="JavaSDK" />
+</project>

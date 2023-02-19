@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/FileLoader/FileLoader.iml" filepath="$PROJECT_DIR$/FileLoader/FileLoader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Loader/Loader.iml" filepath="$PROJECT_DIR$/Loader/Loader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Parser/Parser.iml" filepath="$PROJECT_DIR$/Parser/Parser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Randomizer/Randomizer.iml" filepath="$PROJECT_DIR$/Randomizer/Randomizer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Robot/Robot.iml" filepath="$PROJECT_DIR$/Robot/Robot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RobotState/RobotState.iml" filepath="$PROJECT_DIR$/RobotState/RobotState.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SpaceApplication/SpaceApplication.iml" filepath="$PROJECT_DIR$/SpaceApplication/SpaceApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SpaceInput/SpaceInput.iml" filepath="$PROJECT_DIR$/SpaceInput/SpaceInput.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SpaceOutput/SpaceOutput.iml" filepath="$PROJECT_DIR$/SpaceOutput/SpaceOutput.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SpacePom/SpacePom.iml" filepath="$PROJECT_DIR$/SpacePom/SpacePom.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SpaceStation/SpaceStation.iml" filepath="$PROJECT_DIR$/SpaceStation/SpaceStation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SpaceUi/SpaceUi.iml" filepath="$PROJECT_DIR$/SpaceUi/SpaceUi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/StandardRobot/StandardRobot.iml" filepath="$PROJECT_DIR$/StandardRobot/StandardRobot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/StandardTool/StandardTool.iml" filepath="$PROJECT_DIR$/StandardTool/StandardTool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Tool/Tool.iml" filepath="$PROJECT_DIR$/Tool/Tool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ToolState/ToolState.iml" filepath="$PROJECT_DIR$/ToolState/ToolState.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/j11-SpaceApplication.iml" filepath="$PROJECT_DIR$/.idea/j11-SpaceApplication.iml" />
+    </modules>
+  </component>
+</project>

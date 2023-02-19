@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/FileLoader/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/FileLoader/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Loader/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Loader/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Parser/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Parser/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Randomizer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Randomizer/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Robot/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Robot/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/RobotState/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/RobotState/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SimpleFileLoader/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SimpleFileLoader/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpaceApplication/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpaceApplication/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpaceInput/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpaceInput/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpaceOutput/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpaceOutput/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpacePom/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpacePom/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpaceStation/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpaceStation/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpaceUi/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpaceUi/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/StandardRobot/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/StandardRobot/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/StandardTool/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/StandardTool/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Tool/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Tool/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ToolState/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ToolState/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

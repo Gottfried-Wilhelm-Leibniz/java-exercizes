@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="Randomizer" />
+        <module name="SpaceStation" />
+        <module name="ToolState" />
+        <module name="SpaceApplication" />
+        <module name="Loader" />
+        <module name="SpaceInput" />
+        <module name="StandardTool" />
+        <module name="StandardRobot" />
+        <module name="Parser" />
+        <module name="SpaceOutput" />
+        <module name="SpaceUi" />
+        <module name="RobotState" />
+        <module name="FileLoader" />
+        <module name="Robot" />
+        <module name="Tool" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="FileLoader" target="19" />
+      <module name="Loader" target="19" />
+      <module name="Parser" target="19" />
+      <module name="Randomizer" target="19" />
+      <module name="Robot" target="19" />
+      <module name="RobotState" target="19" />
+      <module name="SimpleFileLoader" target="19" />
+      <module name="SpaceApplication" target="19" />
+      <module name="SpaceInput" target="19" />
+      <module name="SpaceOutput" target="19" />
+      <module name="SpacePom" target="19" />
+      <module name="SpaceStation" target="19" />
+      <module name="SpaceUi" target="19" />
+      <module name="StandardRobot" target="19" />
+      <module name="StandardTool" target="19" />
+      <module name="Tool" target="19" />
+      <module name="ToolState" target="19" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
