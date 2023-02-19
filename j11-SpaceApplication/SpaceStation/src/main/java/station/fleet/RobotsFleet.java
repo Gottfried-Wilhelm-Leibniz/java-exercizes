@@ -11,9 +11,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class RobotsFleet implements Fleet<Robot> {
     private final Map<String, Robot> robotsMap = new ConcurrentHashMap<>();
-//    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-//    private final Lock readLock = lock.readLock();
-//    private final Lock writeLock = lock.writeLock();
 
     @Override
     public void addNew(Robot newRobot) {
@@ -47,13 +44,7 @@ public class RobotsFleet implements Fleet<Robot> {
 
     @Override
     public void remove(Robot robot) {
-//        Robot r;
-//        writeLock.lock();
-//        try {
         var r = robotsMap.remove(robot.callSign());
-//        } finally {
-//            writeLock.unlock();
-//        }
         if (r == null) {
             throw new RobotNotExistInFleetExceptopn("Robot " + robot.callSign() + " is not in the fleet");
         }

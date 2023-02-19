@@ -7,16 +7,19 @@ import tools.Tool;
 import robotstate.RobotState;
 import java.util.List;
 import ecxeptions.InvalidRobotNameException;
-
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public abstract class StandardRobot implements Robot {
     private final String model;
     private final String name;
     private final String callSign;
-    @Setter
     private RobotState robotState;
     @Getter
     protected List<Tool> tools;
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private final Lock readLock = lock.readLock();
+    private final Lock writeLock = lock.writeLock();
 
     protected StandardRobot(String name, String callSign, List<Tool> toolSet) {
         if (name.length() < 2 || name.length() > 32) {
@@ -37,18 +40,24 @@ public abstract class StandardRobot implements Robot {
     }
     @Override
     public RobotState robotState() {
-        return robotState;
+        readLock.lock();
+        try {
+            return robotState;
+        } finally {
+            readLock.unlock();
+        }
     }
-
+    @Override
+    public void setRobotState(RobotState newRobotState) {
+        writeLock.lock();
+        try {
+            robotState = newRobotState;
+        } finally {
+            writeLock.unlock();
+        }
+    }
 }
 
-//    @Override
-//    public List<Tool> getToolList() {
-//        return toolSet;
-//    }
 
 
-//    @Override
-//    public void setRobotState(RobotState robotState) {
-//        this.robotState = robotState;
-//    }
+

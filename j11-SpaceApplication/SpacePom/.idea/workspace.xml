@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4471be1d-0e4b-4018-a7e1-d45a285d2109" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../SimpleFileLoader/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SimpleFileLoader/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SimpleFileLoader/.idea/dbnavigator.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SimpleFileLoader/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SimpleFileLoader/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SimpleFileLoader/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SimpleFileLoader/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SimpleFileLoader/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SimpleFileLoader/src/main/java/FileLoader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Robot/src/main/java/robot/Robot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Robot/src/main/java/robot/Robot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/fleet/RobotsFleet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/fleet/RobotsFleet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StandardRobot/src/main/java/robotsmodels/StandardRobot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../StandardRobot/src/main/java/robotsmodels/StandardRobot.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
