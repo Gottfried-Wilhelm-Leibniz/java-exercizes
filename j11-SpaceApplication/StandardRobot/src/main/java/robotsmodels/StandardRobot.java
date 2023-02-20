@@ -32,7 +32,7 @@ public abstract class StandardRobot implements Robot {
         creationSucceed();
     }
     private void creationSucceed() {
-        robotState = new Randomizer().boolRandom(0.9) ? RobotState.ACTIVE: RobotState.FAILING;
+        setRobotState(new Randomizer().boolRandom(0.9) ? RobotState.ACTIVE: RobotState.FAILING);
     }
     @Override
     public String callSign() {
