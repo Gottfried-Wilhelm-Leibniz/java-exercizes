@@ -1,13 +1,11 @@
 package randomizer;
-import java.security.SecureRandom;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Randomizer {
-    private final SecureRandom sr = new SecureRandom();
-
     public boolean boolRandom(double r) {
-        return sr.nextDouble() < r;
+        return ThreadLocalRandom.current().nextDouble() < r;
     }
     public int intRandom(int a, int b) {
-        return a + sr.nextInt(b - a + 1);
+        return a + ThreadLocalRandom.current().nextInt(b - a + 1);
     }
 }

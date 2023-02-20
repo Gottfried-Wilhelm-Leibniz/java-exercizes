@@ -20,26 +20,6 @@
     <dependencies>
         <dependency>
             <groupId>com.golov.space</groupId>
-            <artifactId>Robot</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.golov.space</groupId>
-            <artifactId>RobotState</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.golov.space</groupId>
-            <artifactId>Tool</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.golov.space</groupId>
-            <artifactId>ToolState</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.golov.space</groupId>
             <artifactId>SpaceOutput</artifactId>
             <version>1.0.0</version>
         </dependency>

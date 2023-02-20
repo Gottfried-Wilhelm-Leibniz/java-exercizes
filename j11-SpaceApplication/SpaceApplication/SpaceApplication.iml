@@ -19,11 +19,11 @@
     <orderEntry type="module" module-name="Randomizer" />
     <orderEntry type="module" module-name="StandardRobot" />
     <orderEntry type="module" module-name="StandardTool" />
-    <orderEntry type="module" module-name="SpaceUi" />
-    <orderEntry type="module" module-name="Robot" />
     <orderEntry type="module" module-name="RobotState" />
     <orderEntry type="module" module-name="Tool" />
     <orderEntry type="module" module-name="ToolState" />
+    <orderEntry type="module" module-name="SpaceUi" />
+    <orderEntry type="module" module-name="Robot" />
     <orderEntry type="module" module-name="SpaceOutput" />
     <orderEntry type="module" module-name="SpaceInput" />
   </component>

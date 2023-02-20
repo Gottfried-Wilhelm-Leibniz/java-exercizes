@@ -39,5 +39,10 @@
             <artifactId>SpaceUi</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.golov.space</groupId>
+            <artifactId>Robot</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 </project>

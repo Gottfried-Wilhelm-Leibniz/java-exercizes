@@ -5,7 +5,75 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4471be1d-0e4b-4018-a7e1-d45a285d2109" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/exceptions/ErrorWhenExitingProgramException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FileLoader/target/classes/loader/FileLoader.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Loader/target/classes/loader/Loader.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Parser/target/classes/parser/Parser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Randomizer/src/main/java/randomizer/Randomizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Randomizer/src/main/java/randomizer/Randomizer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Randomizer/target/classes/randomizer/Randomizer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Robot/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Robot/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Robot/target/classes/robot/Robot.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Robotstate/target/classes/robotstate/RobotState.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceApplication/target/classes/Application.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceApplication/target/classes/generalactions/UniverseCosmicAction.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceApplication/target/classes/generalactions/generalActions.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/SpaceStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/SpaceStation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/Station.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/Station.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/fleet/RobotsFleet.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/fleet/RobotsFleet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robotfactory/RobotCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robotfactory/RobotCreator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robotfactory/RobotFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceStation/src/main/java/station/robotfactory/RobotFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/Reply.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/RobotOrder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/SpaceStation$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/SpaceStation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/Station.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/exceptions/CallSignAlreadyExistOnFleetException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/exceptions/InvalidRobotNameException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/exceptions/NoSuchRobotInFactoryException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/exceptions/RobotNotActiveException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/exceptions/RobotNotExistInFleetExceptopn.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/exceptions/RobotNotFailingException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/fleet/Fleet.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/fleet/RobotsFleet.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/robotactions/DispatchAction.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/robotactions/Reboot.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/robotactions/RobotAction.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/robotactions/SelfDiagnostic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/robotfactory/Hal9000Creator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/robotfactory/Johnny5Creator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/robotfactory/MaschinemenschCreator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/robotfactory/RobotCreator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/robotfactory/RobotFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceStation/target/classes/station/robotfactory/TachikomasCreator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/StationUi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/StationUi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/context/Context.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/context/Context.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/uiactions/Quit.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpaceUi/src/main/java/spaceui/uiactions/Quit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/StationUi.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/UiEnum.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/context/CommandRobot.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/context/Context.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/context/CreateNew.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/context/GetAvailableRobots.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/context/GetFleetList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/context/GetModels.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/context/GetRobotDetails.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/exceptions/NoConfigorationFileException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/uiactions/FleetList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/uiactions/IssuCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/uiactions/Provision.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/uiactions/Quit.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/uiactions/UiAction.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpaceUi/target/classes/spaceui/uiactions/UiMenu.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StandardTool/target/classes/toolmodels/Disruptor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StandardTool/target/classes/toolmodels/LaserCutter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StandardTool/target/classes/toolmodels/Replicator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StandardTool/target/classes/toolmodels/StandardTool.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../StandardTool/target/classes/toolmodels/StaticBrush.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Tool/target/classes/tools/Tool.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ToolState/target/classes/toolstate/ToolState.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,13 +98,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "C:/E/experis/mohamadJava/j4.alon/j11-SpaceApplication/SpacePom"
   }
-}</component>
+}]]></component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn install" />

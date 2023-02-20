@@ -21,7 +21,7 @@ public class RobotFactory {
         return c.create(name, sign);
     }
 
-    public Map<String, RobotCreator> getMap() {
-        return robotCreatorMap;
+    public Map<String, RobotCreator> getMapCopy() {
+        return Map.copyOf(robotCreatorMap);
     }
 }

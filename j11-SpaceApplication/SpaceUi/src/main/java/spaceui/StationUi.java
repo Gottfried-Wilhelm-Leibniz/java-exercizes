@@ -28,7 +28,7 @@ public class StationUi {
         actions.put(UiEnum.FLEETLIST, new FleetList(context));
         actions.put(UiEnum.PROVISION, new Provision(context));
         actions.put(UiEnum.ISSUCOMMAND, new IssuCommand(context));
-        actions.put(UiEnum.QUIT, new Quit());
+//        actions.put(UiEnum.QUIT, new Quit());
     }
 
     public void go() {
@@ -36,6 +36,7 @@ public class StationUi {
         while(!choise.equals(UiEnum.QUIT)) {
             choise = actions.get(choise).act();
         }
+        stationQuit();
     }
 
     private void print(String s) {
@@ -61,5 +62,8 @@ public class StationUi {
     }
     private Reply commandRobot(RobotOrder robotOrder, String callSign) {
         return spacestation.commandRobot(robotOrder, callSign);
+    }
+    private void stationQuit() {
+        spacestation.quit();
     }
 }

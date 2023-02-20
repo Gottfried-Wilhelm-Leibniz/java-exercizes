@@ -13,6 +13,7 @@ public class Context {
     private final GetAvailableRobots getAvailableRobots;
     private final GetRobotDetails getit;
     private final CommandRobot commandRobot;
+
     public Context(Printer printer, Input input, GetFleetList getFleetList, GetModels getModels, CreateNew createNew, GetAvailableRobots getAvailableRobots, GetRobotDetails getRobotDetails, CommandRobot commandRobot) {
         this.printer = printer;
         this.input = input;
@@ -22,6 +23,7 @@ public class Context {
         this.getAvailableRobots = getAvailableRobots;
         this.getit = getRobotDetails;
         this.commandRobot = commandRobot;
+
     }
 
     public void printIt(String s) {

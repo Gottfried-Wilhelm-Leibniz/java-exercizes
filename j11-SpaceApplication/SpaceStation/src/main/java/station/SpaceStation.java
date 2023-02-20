@@ -7,11 +7,14 @@ import java.lang.reflect.InvocationTargetException;
 import robot.Robot;
 import station.robotfactory.RobotFactory;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SpaceStation implements Station<Robot> {
     private final Fleet<Robot> robotsfleet;
     private final Parser parser = new Parser();
     private final RobotFactory robotFactory = new RobotFactory();
+    private final ExecutorService pool = Executors.newCachedThreadPool();
 
     public SpaceStation(Fleet<Robot> robotsfleet) {
         this.robotsfleet = robotsfleet;
@@ -24,7 +27,7 @@ public class SpaceStation implements Station<Robot> {
 
     @Override
     public String listAvailableModels() {
-        return parser.keys(robotFactory.getMap());
+        return parser.keys(robotFactory.getMapCopy());
     }
 
     @Override
@@ -70,15 +73,19 @@ public class SpaceStation implements Station<Robot> {
         }
         try {
             switch (robotOrder) {
-                case DISPATCH -> new Thread(new DispatchAction(r)).start();
-                case REBOOT -> new Thread(new Reboot(r)).start();
-                case DIAGNOSTIC -> new Thread(new SelfDiagnostic(r)).start();
+                case DISPATCH -> pool.execute(new DispatchAction(r));
+                case REBOOT -> pool.execute(new Reboot(r));
+                case DIAGNOSTIC -> pool.execute(new SelfDiagnostic(r));
                 case DELETE -> robotsfleet.remove(r);
             };
         } catch (RobotNotActiveException | RobotNotFailingException e) {
             return replyGenerator(false, "Failed: call sign: " + callSign + " " + e.getMessage());
         }
         return replyGenerator(true, callSign + " is " + robotOrder);
+    }
+    @Override
+    public void quit() {
+        pool.close();
     }
 
     private Reply replyGenerator(boolean bool, String reason) {

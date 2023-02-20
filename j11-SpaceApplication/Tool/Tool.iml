@@ -12,8 +12,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="ToolState" />
-    <orderEntry type="module" module-name="Robot" />
-    <orderEntry type="module" module-name="RobotState" />
     <orderEntry type="module" module-name="SpaceOutput" />
     <orderEntry type="module" module-name="SpaceInput" />
   </component>

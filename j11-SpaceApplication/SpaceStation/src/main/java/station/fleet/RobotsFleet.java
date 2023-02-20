@@ -17,12 +17,7 @@ public class RobotsFleet implements Fleet<Robot> {
         if (robotsMap.containsKey(newRobot.callSign())) {
             throw new CallSignAlreadyExistOnFleetException("Fleet already contains call sign: " + newRobot.callSign());
         }
-//        writeLock.lock();
-//        try {
-            robotsMap.put(newRobot.callSign(), newRobot);
-//        } finally {
-//            writeLock.unlock();
-//        }
+        robotsMap.put(newRobot.callSign(), newRobot);
     }
 
     @Override
@@ -50,30 +45,3 @@ public class RobotsFleet implements Fleet<Robot> {
         }
     }
 }
-
-
-
-//    List<Robot> list;
-//        readLock.lock();
-//        try {
-//        list = robots.stream().filter(x -> x.getSign().equals(callSign)).toList();
-//    } finally {
-//        readLock.unlock();
-//    }
-//        if(list.size() == 0) {
-//        throw new RobotNotExistInFleetExceptopn("Robot " + callSign + " is not in the fleet");
-//    }
-//        return list.get(0);
-
-//    @Override
-//    public Iterator<Robot> iterator() {
-//        return robots.iterator();
-//    }
-
-
-//        readLock.lock();
-//        try {
-//            return robots.stream().filter(r -> r.getState().equals(RobotState.ACTIVE) || r.getState().equals(RobotState.FAILING)).toList();
-//        } finally {
-//            readLock.unlock();
-//        }
