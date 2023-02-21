@@ -9,7 +9,7 @@
 
     <parent>
         <groupId>com.golov.space</groupId>
-        <artifactId>SpacePom</artifactId>
+        <artifactId>SpaceReactor</artifactId>
         <version>1.0.0</version>
     </parent>
     <dependencies>
