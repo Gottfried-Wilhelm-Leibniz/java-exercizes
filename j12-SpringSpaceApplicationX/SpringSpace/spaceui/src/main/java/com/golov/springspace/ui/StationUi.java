@@ -1,5 +1,7 @@
 package com.golov.springspace.ui;
 import input.Input;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import output.Printer;
 import com.golov.springspace.ui.context.Context;
 import com.golov.springspace.infra.Robot;
@@ -8,29 +10,18 @@ import java.util.EnumMap;
 import com.golov.springspace.station.Reply;
 import com.golov.springspace.station.RobotOrder;
 import com.golov.springspace.ui.uiactions.*;
-
+@Component
 public class StationUi {
-    private final EnumMap<UiEnum, UiAction> actions = new EnumMap<>(UiEnum.class);
-    private final Station<Robot> spacestation;
-    private final Printer printer;
-    private final Input input;
-    private final Context context = new Context(this::print, this::input, this::getFleetList, this::getModels,
-            this:: createNew, this:: getAvailableRobots, this::getRobotDetails, this::commandRobot);
-
-    public StationUi(Station<Robot> station, Printer printer, Input input) {
-        this.spacestation = station;
-        this.printer = printer;
-        this.input = input;
-        initStates();
-    }
-
-    private void initStates() {
-        actions.put(UiEnum.MENU, new UiMenu(context));
-        actions.put(UiEnum.FLEETLIST, new FleetList(context));
-        actions.put(UiEnum.PROVISION, new Provision(context));
-        actions.put(UiEnum.ISSUCOMMAND, new IssuCommand(context));
-//        actions.put(UiEnum.QUIT, new Quit());
-    }
+    @Autowired
+    private EnumMap<UiEnum, UiAction> actions;
+    @Autowired
+    private Station<Robot> spacestation;
+    @Autowired
+    private Printer printer;
+    @Autowired
+    private Input input;
+    @Autowired
+    private Context context;
 
     public void go() {
         var choise = actions.get(UiEnum.MENU).act();
@@ -40,28 +31,28 @@ public class StationUi {
         stationQuit();
     }
 
-    private void print(String s) {
+    public void print(String s) {
         printer.print(s);
     }
-    private String input() {
+    public String input() {
         return input.in();
     }
-    private String getFleetList() {
+    public String getFleetList() {
         return spacestation.getFleetList();
     }
-    private String getModels() {
+    public String getModels() {
         return spacestation.listAvailableModels();
     }
-    private Reply createNew(String model) {
+    public Reply createNew(String model) {
         return spacestation.createNew(model);
     }
-    private String getAvailableRobots() {
+    public String getAvailableRobots() {
         return spacestation.listAvailableRobots();
     }
-    private Reply getRobotDetails(String callSign) {
+    public Reply getRobotDetails(String callSign) {
         return spacestation.getRobotDetails(callSign);
     }
-    private Reply commandRobot(RobotOrder robotOrder, String callSign) {
+    public Reply commandRobot(RobotOrder robotOrder, String callSign) {
         return spacestation.commandRobot(robotOrder, callSign);
     }
     private void stationQuit() {

@@ -17,25 +17,24 @@ import com.golov.springspace.ui.StationUi;
 public class Application {
     public static void main(String[] args) {
         var ctx = new AnnotationConfigApplicationContext(AppConfiguration.class);
-        Station<Robot> spaceStation = new SpaceStation(ctx);
-        Printer printer = ctx.getBean("printer", Printer.class);
-        Input input = new UserInput();
-
         if(args.length > 0) {
-            loadFromFile(args[0], printer, spaceStation);
+            loadFromFile(args[0], ctx);
         }
-        new Thread(new UniverseCosmicAction(ctx.getBean("robotsFleet", RobotsFleet.class), printer)).start();
+
+        new Thread(new UniverseCosmicAction()).start();
 //        ctx.getBean("rununi", UniverseCosmicAction.class).run();
-        var stationUi = new StationUi(spaceStation, printer, input);
+        var stationUi = ctx.getBean("stationUi", StationUi.class);
         stationUi.go();
     }
 
-    private static void loadFromFile(String arg, Printer printer, Station<Robot> spaceStation) {
-        Loader loader = new FileLoader();
+    private static void loadFromFile(String arg, AnnotationConfigApplicationContext ctx) {
+        Loader loader = ctx.getBean("fileLoader", FileLoader.class);
         var bytes = loader.load(Path.of(arg));
-        var parser = new Parser();
+        var parser =ctx.getBean("parser", Parser.class);
         var str = parser.bytesToString(bytes, Charset.defaultCharset());
         var robotsStrings = parser.stringSeparator(str, "\n");
+        var printer = ctx.getBean("printer", Printer.class);
+        var spaceStation = ctx.getBean("station", SpaceStation.class);
         for(var r : robotsStrings) {
             var robotsDetails = parser.stringSeparator(r, ":");
             printer.print(spaceStation.createNew(robotsDetails[0]).reason());

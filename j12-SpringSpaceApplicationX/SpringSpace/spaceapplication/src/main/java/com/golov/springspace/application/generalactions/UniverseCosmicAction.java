@@ -1,4 +1,5 @@
 package com.golov.springspace.application.generalactions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import output.Printer;
 import randomizer.Randomizer;
@@ -6,14 +7,12 @@ import com.golov.springspace.infra.*;
 import com.golov.springspace.station.fleet.Fleet;
 @Component
 public class UniverseCosmicAction implements generalActions {
-    private final Fleet<Robot> robotFleet;
-    private final Randomizer randomizer = new Randomizer();
-    private final Printer printer;
-
-    public UniverseCosmicAction(Fleet<Robot> robotFleet, Printer printer) {
-        this.robotFleet = robotFleet;
-        this.printer = printer;
-    }
+    @Autowired
+    private Fleet<Robot> robotFleet;
+    @Autowired
+    private Randomizer randomizer = new Randomizer();
+    @Autowired
+    private Printer printer;
     @Override
     public void run() {
         while(true) {

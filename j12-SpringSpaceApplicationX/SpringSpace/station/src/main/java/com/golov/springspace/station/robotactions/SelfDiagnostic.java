@@ -1,8 +1,10 @@
 package com.golov.springspace.station.robotactions;
+import com.golov.springspace.infra.RobotState;
+import com.golov.springspace.infra.ToolState;
 import output.Printer;
 import output.SoutPrinter;
 import randomizer.Randomizer;
-import com.golov.springspace.infra.*;
+import com.golov.springspace.infra.Robot;
 import com.golov.springspace.station.exceptions.RobotNotFailingException;
 
 public class SelfDiagnostic implements RobotAction {
