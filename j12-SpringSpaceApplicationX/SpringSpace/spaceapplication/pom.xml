@@ -3,8 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>station</artifactId>
+    <artifactId>spaceapplication</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <parent>
@@ -16,14 +15,21 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>start-kit</artifactId>
+            <artifactId>spaceui</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.golov.accessorize</groupId>
-            <artifactId>Parser</artifactId>
+            <groupId>com.golov.accessorize.loader</groupId>
+            <artifactId>Loader</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.golov.accessorize.loader</groupId>
+            <artifactId>FileLoader</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>
+
+
 
 </project>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="station" />
+        <module name="start-kit" />
+        <module name="spaceui" />
+        <module name="infra" />
+        <module name="spaceapplication" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="infra" options="-parameters" />
+      <module name="spaceapplication" options="-parameters" />
+      <module name="spaceui" options="-parameters" />
+      <module name="start-kit" options="-parameters" />
+      <module name="station" options="-parameters" />
+    </option>
+  </component>
+</project>

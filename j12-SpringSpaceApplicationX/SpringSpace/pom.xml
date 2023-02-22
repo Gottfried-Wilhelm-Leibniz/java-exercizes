@@ -13,6 +13,8 @@
 		<module>infra</module>
 		<module>start-kit</module>
 		<module>station</module>
+		<module>spaceui</module>
+		<module>spaceapplication</module>
 	</modules>
 
 	<groupId>com.golov.springspace</groupId>
@@ -23,7 +25,9 @@
 	<packaging>pom</packaging>
 
 	<properties>
+		<project.version>0.0.1-SNAPSHOT</project.version>
 		<java.version>19</java.version>
+		<start-class>Application</start-class>
 	</properties>
 
 	<dependencies>
@@ -41,6 +45,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.golov.space</groupId>
+			<artifactId>SpaceOutput</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.golov.space</groupId>
+			<artifactId>SpaceInput</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 

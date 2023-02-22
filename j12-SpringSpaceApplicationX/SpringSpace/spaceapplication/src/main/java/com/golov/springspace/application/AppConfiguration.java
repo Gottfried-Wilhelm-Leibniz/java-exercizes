@@ -1,4 +1,5 @@
-package com.golov.springspace.station;
+package com.golov.springspace.application;
+import com.golov.springspace.application.generalactions.UniverseCosmicAction;
 import com.golov.springspace.startkit.toolmodels.*;
 import com.golov.springspace.startkit.robotsmodels.*;
 import com.golov.springspace.infra.*;
@@ -9,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import output.Printer;
+import output.SoutPrinter;
 import randomizer.Randomizer;
 
 import java.util.List;
@@ -78,5 +81,13 @@ public class AppConfiguration {
     public Fleet<Robot> robotsFleet() {
         return new RobotsFleet();
     }
+    @Bean
+    public Printer printer() {
+        return new SoutPrinter();
+    }
+//    @Bean("rununi")
+//    public UniverseCosmicAction runUniverseThread() {
+//        return new UniverseCosmicAction(robotsFleet(), printer());
+//    }
 
 }

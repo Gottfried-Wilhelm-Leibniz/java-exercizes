@@ -60,4 +60,13 @@ public class Parser {
     public String[] stringSeparator(String s, String sep) {
         return s.split(sep);
     }
+
+    public String strArrToStrList(String... strings) {
+        var sb = new StringBuilder();
+        var i = 1;
+        for(var s : strings) {
+            sb.append(i++).append(") ").append(s).append("\n");
+        }
+        return sb.toString();
+    }
 }

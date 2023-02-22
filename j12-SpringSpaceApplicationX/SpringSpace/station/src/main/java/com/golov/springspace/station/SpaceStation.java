@@ -33,8 +33,8 @@ public class SpaceStation implements Station<Robot> {
 
     @Override
     public String listAvailableModels() {
-//        return parser.keys(robotFactory.getMapCopy());
-        return null;
+        var sa = applicationContext.getBeanFactory().getBeanNamesForType(Robot.class);
+        return parser.strArrToStrList(sa);
     }
 
     @Override
