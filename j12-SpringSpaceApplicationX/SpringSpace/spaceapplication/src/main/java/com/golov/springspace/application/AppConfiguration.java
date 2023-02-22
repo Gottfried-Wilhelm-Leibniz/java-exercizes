@@ -1,29 +1,24 @@
 package com.golov.springspace.application;
-import com.golov.springspace.application.generalactions.UniverseCosmicAction;
 import com.golov.springspace.startkit.toolmodels.*;
 import com.golov.springspace.startkit.robotsmodels.*;
 import com.golov.springspace.infra.*;
+import com.golov.springspace.station.Reply;
 import com.golov.springspace.station.SpaceStation;
 import com.golov.springspace.station.Station;
 import com.golov.springspace.station.fleet.Fleet;
 import com.golov.springspace.station.fleet.RobotsFleet;
 import com.golov.springspace.ui.StationUi;
 import com.golov.springspace.ui.UiEnum;
-import com.golov.springspace.ui.context.Context;
 import com.golov.springspace.ui.uiactions.*;
 import input.Input;
 import input.UserInput;
 import loader.FileLoader;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.*;
 import output.Printer;
 import output.SoutPrinter;
 import parser.Parser;
 import randomizer.Randomizer;
-
 import java.util.EnumMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -62,9 +57,19 @@ public class AppConfiguration {
     }
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public Reply createhal9000() {
+        return station().createNew("hal9000");
+    }
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public Johnny5 johnny5() {
         List<Tool> toolList = List.of(laserCutter(), staticBrush());
         return new Johnny5(robotname(), robotcallSign(), toolList);
+    }
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public Reply createjohnny5() {
+        return station().createNew("Johnny5");
     }
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -74,9 +79,25 @@ public class AppConfiguration {
     }
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public Reply createtachikomas() {
+        return station().createNew("tachikomas");
+    }
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public Maschinemensch maschinenmensch() {
         List<Tool> toolList = List.of(replicator(), disruptor());
         return new Maschinemensch(robotname(), robotcallSign(), toolList);
+    }
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public Reply createmaschinenmensch() {
+        return station().createNew("maschinenmensch");
+    }
+    @Bean
+    @Primary
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public Reply create() {
+        return station().createNew(null);
     }
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -91,6 +112,7 @@ public class AppConfiguration {
     }
 
     @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public Fleet<Robot> robotsFleet() {
         return new RobotsFleet();
     }
@@ -98,10 +120,7 @@ public class AppConfiguration {
     public Printer printer() {
         return new SoutPrinter();
     }
-//    @Bean("rununi")
-//    public UniverseCosmicAction runUniverseThread() {
-//        return new UniverseCosmicAction(robotsFleet(), printer());
-//    }
+
     @Bean
     public Station<Robot> station() {
         return new SpaceStation();
@@ -133,27 +152,35 @@ public class AppConfiguration {
     }
 
     @Bean
-    public Context context() {
-        var ui = stationUi();
-        return new Context(ui::print, ui::input, ui::getFleetList, ui::getModels,
-                ui::createNew, ui:: getAvailableRobots, ui::getRobotDetails, ui::commandRobot);
-    }
-
-    @Bean
     public UiAction uiMenu() {
-        return new UiMenu(context());
+        return new UiMenu();
     }
     @Bean
     public UiAction fleetList() {
-        return new FleetList(context());
+        return new FleetList();
     }
     @Bean
     public UiAction provision() {
-        return new Provision(context());
+        return new Provision();
     }
     @Bean
     public UiAction issuCommand() {
-        return new IssuCommand(context());
+        return new IssuCommand();
+    }
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public String getModels() {
+        return station().listAvailableModels();
+    }
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public String getFleetList() {
+        return station().getFleetList();
+    }
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public String getAvailableRobots() {
+        return station().listAvailableRobots();
     }
     @Bean
     public EnumMap<UiEnum, UiAction> actionEnumMap() {
@@ -164,8 +191,5 @@ public class AppConfiguration {
         m.put(UiEnum.ISSUCOMMAND, issuCommand());
         return m;
     }
-
-
-
 
 }

@@ -1,17 +1,11 @@
 package com.golov.springspace.application;
-import com.golov.springspace.application.generalactions.UniverseCosmicAction;
-import input.Input;
-import input.UserInput;
 import loader.*;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import output.Printer;
-import output.SoutPrinter;
 import parser.Parser;
-import com.golov.springspace.infra.Robot;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import com.golov.springspace.station.*;
-import com.golov.springspace.station.fleet.*;
 import com.golov.springspace.ui.StationUi;
 
 public class Application {
@@ -21,7 +15,7 @@ public class Application {
             loadFromFile(args[0], ctx);
         }
 
-        new Thread(new UniverseCosmicAction()).start();
+//        new Thread(new UniverseCosmicAction()).start();
 //        ctx.getBean("rununi", UniverseCosmicAction.class).run();
         var stationUi = ctx.getBean("stationUi", StationUi.class);
         stationUi.go();

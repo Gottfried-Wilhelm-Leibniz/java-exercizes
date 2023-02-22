@@ -7,6 +7,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public abstract class StandardRobot implements Robot {
+    @Getter
     private final String model;
     private final String name;
     private final String callSign;
@@ -51,6 +52,10 @@ public abstract class StandardRobot implements Robot {
         } finally {
 //            writeLock.unlock();
         }
+    }
+    @Override
+    public String toString() {
+        return model;
     }
 }
 

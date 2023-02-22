@@ -8,7 +8,7 @@ import com.golov.springspace.station.fleet.Fleet;
 @Component
 public class UniverseCosmicAction implements generalActions {
     @Autowired
-    private Fleet<Robot> robotFleet;
+    private Fleet<Robot> robotsFleet;
     @Autowired
     private Randomizer randomizer = new Randomizer();
     @Autowired
@@ -21,7 +21,7 @@ public class UniverseCosmicAction implements generalActions {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            var list = robotFleet.listRobots();
+            var list = robotsFleet.listRobots();
             for(var r : list) {
                 for(var t : r.getTools()) {
                     if(randomizer.boolRandom(0.1)) {

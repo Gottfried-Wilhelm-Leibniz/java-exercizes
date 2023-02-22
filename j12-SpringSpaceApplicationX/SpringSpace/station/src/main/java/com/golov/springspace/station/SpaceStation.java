@@ -25,11 +25,6 @@ public class SpaceStation implements Station<Robot> {
     @Autowired
     private AnnotationConfigApplicationContext cpx;
 
-//    public SpaceStation(AnnotationConfigApplicationContext applicationContext) {
-//        this.applicationContext = applicationContext;
-//        this.robotsfleet = applicationContext.getBean("robotsFleet", RobotsFleet.class);
-//    }
-
     @Override
     public String getFleetList() {
         return parser.iterableToJson(robotsfleet.listRobots());
@@ -57,6 +52,12 @@ public class SpaceStation implements Station<Robot> {
         } catch (NoSuchRobotInFactoryException | InvalidRobotNameException | CallSignAlreadyExistOnFleetException e) {
             return replyGenerator(false, "Failed: " + e.getMessage());
         }
+
+        cpx.registerBean(newRobot.callSign(), Reply.class, (() -> getRobotDetails(newRobot.callSign())));
+        cpx.registerBean(newRobot.callSign() + RobotOrder.DISPATCH, Reply.class, (() -> commandRobot(RobotOrder.DISPATCH, newRobot.callSign())));
+        cpx.registerBean(newRobot.callSign() + RobotOrder.REBOOT, Reply.class, (() -> commandRobot(RobotOrder.REBOOT, newRobot.callSign())));
+        cpx.registerBean(newRobot.callSign() + RobotOrder.DIAGNOSTIC, Reply.class, (() -> commandRobot(RobotOrder.DIAGNOSTIC, newRobot.callSign())));
+        cpx.registerBean(newRobot.callSign() + RobotOrder.DELETE, Reply.class, (() -> commandRobot(RobotOrder.DELETE, newRobot.callSign())));
         return replyGenerator(true, "The creation of " + newRobot.callSign() + " has Succeed\n" + parser.objectToJson(newRobot));
     }
     @Override
