@@ -9,6 +9,27 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
+	<groupId>com.golov.springspace</groupId>
+	<artifactId>SpringSpace</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+
+	<name>SpringSpace</name>
+	<description>traning on spring with space station app</description>
+
+
+	<properties>
+<!--		<project.version>0.0.1-SNAPSHOT</project.version>-->
+		<java.version>19</java.version>
+
+		<maven.compiler.source>19</maven.compiler.source>
+		<maven.compiler.target>19</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+<!--		<start-class>Application</start-class>-->
+	</properties>
+
 	<modules>
 		<module>infra</module>
 		<module>start-kit</module>
@@ -16,19 +37,6 @@
 		<module>spaceui</module>
 		<module>spaceapplication</module>
 	</modules>
-
-	<groupId>com.golov.springspace</groupId>
-	<artifactId>SpringSpace</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>SpringSpace</name>
-	<description>traning on spring with space station app</description>
-	<packaging>pom</packaging>
-
-	<properties>
-		<project.version>0.0.1-SNAPSHOT</project.version>
-		<java.version>19</java.version>
-		<start-class>Application</start-class>
-	</properties>
 
 	<dependencies>
 		<dependency>
@@ -57,22 +65,4 @@
 			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
 </project>
