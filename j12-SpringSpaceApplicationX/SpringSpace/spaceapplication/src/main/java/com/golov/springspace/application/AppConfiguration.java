@@ -28,26 +28,26 @@ import java.util.concurrent.Executors;
 @ComponentScan
 public class AppConfiguration {
 
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Disruptor disruptor() {
-        return new Disruptor();
-    }
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public LaserCutter laserCutter() {
-        return new LaserCutter();
-    }
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Replicator replicator() {
-        return new Replicator();
-    }
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public StaticBrush staticBrush() {
-        return new StaticBrush();
-    }
+//    @Bean
+//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+//    public Disruptor disruptor() {
+//        return new Disruptor();
+//    }
+//    @Bean
+//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+//    public LaserCutter laserCutter() {
+//        return new LaserCutter();
+//    }
+//    @Bean
+//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+//    public Replicator replicator() {
+//        return new Replicator();
+//    }
+//    @Bean
+//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+//    public StaticBrush staticBrush() {
+//        return new StaticBrush();
+//    }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

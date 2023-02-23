@@ -1,0 +1,736 @@
+[33mcommit 1d2129f2beba9c0aae1a2e6a661ee2b439034884[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Feb 23 00:33:51 2023 +0200
+
+    end of 22/2/23
+
+[33mcommit bcefceb0e5a87c198ecae36beb35f7fa33622a6b[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 22 22:25:16 2023 +0200
+
+    middle wire
+
+[33mcommit 6683fe6a4a0736fa4d75d2377c9d9901b9726e33[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 22 19:11:20 2023 +0200
+
+    before mohamad
+
+[33mcommit 82e8ab111c22d60f6d0d7504f260b6f71490cd05[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Tue Feb 21 23:35:52 2023 +0200
+
+    something spring
+
+[33mcommit a078a5901edbfb1f09987ed8b57e44eb67420c2e[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Feb 20 14:39:35 2023 +0200
+
+    after dividing dep now json robot lock prob
+
+[33mcommit 41df815262ac5cab51614503bc4fc18aec8f15fc[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Feb 20 12:40:17 2023 +0200
+
+    prob with pom referncing itself
+
+[33mcommit 46672f8b859b999915381e2d06e8d5cbbdf20e77[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Feb 20 10:31:09 2023 +0200
+
+    rem target
+
+[33mcommit 8efb781b03be47fe1a81081a16b0c05603266496[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Feb 20 10:25:59 2023 +0200
+
+    rem target
+
+[33mcommit 68ce3e8cb6e34085cf05794fea49b3b896f82842[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sun Feb 19 13:15:16 2023 +0200
+
+    23/2/19b
+
+[33mcommit 384d516910610857f7e49a8ec39bb261d1c811d8[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sun Feb 19 10:50:54 2023 +0200
+
+    23/2/19
+
+[33mcommit 8042f7431b21a7a451fc704bf6c4a77d286a3c59[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sat Feb 18 22:52:35 2023 +0200
+
+    done for 10:51
+
+[33mcommit c6f94357eb44bfd47bcdd14db3a831f600ff8679[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sat Feb 18 19:13:38 2023 +0200
+
+    before deleting robot and tool interfaces
+
+[33mcommit 59206b089eab609e79f4d041cea8e9d5fef9e081[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sat Feb 18 17:07:58 2023 +0200
+
+    asf
+
+[33mcommit 76d57b2a2a05ff16395c52f4a207c6be38d295f1[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sat Feb 18 01:04:22 2023 +0200
+
+    end of 17/2
+
+[33mcommit 6a9bd11371ad1df3c2538220b1a6bce4404a2072[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Fri Feb 17 16:45:47 2023 +0200
+
+    wip going to work
+
+[33mcommit 2ef4d136ce46c3a7c62643e9cfd718612d87dffd[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Fri Feb 17 13:31:14 2023 +0200
+
+    wip switching to map
+
+[33mcommit 2e6f0c8ccdad0c2e25f59758f4ca1680d32bc5e3[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Fri Feb 17 12:34:44 2023 +0200
+
+    wip start 17/2
+
+[33mcommit aba850a9d7d14209a1b5caee8061d809f2b29e9b[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Fri Feb 17 01:06:50 2023 +0200
+
+    wip end 16/02/23
+
+[33mcommit 8d82a8b490026d4deaf837ddd37d42a1d6bf248c[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Feb 16 20:24:56 2023 +0200
+
+    wip before changing the reg enum
+
+[33mcommit 021c0ed39f4c3cc1d476abecba1f1e30385c13c8[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Feb 16 19:30:00 2023 +0200
+
+    wip after add new
+
+[33mcommit 651506c3341c5a1a0c68db476fd795832cb86d71[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Feb 16 18:18:00 2023 +0200
+
+    wip in ui
+
+[33mcommit ccc8fb766c2600323f6a2f158ac21e3c3d8e4c2a[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 15 16:49:08 2023 +0200
+
+    wip tools start
+
+[33mcommit a6c901721f65b90ad3c56f3bb548bf5c930c74c7[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Tue Feb 14 12:04:07 2023 +0200
+
+    after tostring and roots print
+
+[33mcommit 895c8cc57ebaf980d03e1072a533e475d76236f3[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Tue Feb 14 10:37:05 2023 +0200
+
+    fiinished the poms
+
+[33mcommit e35fd357ba493eee0246ad8356493ede3b2f6c7e[m
+Merge: f58e799 6317b03
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Feb 13 17:04:00 2023 +0200
+
+     merged generic container
+
+[33mcommit 6317b0321d898960529b970f97fd6eee88ce7233[m[33m ([m[1;31morigin/genericContainerBranch[m[33m, [m[1;32mgenericContainerBranch[m[33m)[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Feb 13 16:51:37 2023 +0200
+
+    close maven lab 01
+
+[33mcommit 517f9e04f1fd96f51361d379d388ec0e30b6064b[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Feb 13 16:35:50 2023 +0200
+
+    after phase 2
+
+[33mcommit 65c887786b1a5aec02cb3b7d2965ec2225959996[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Feb 13 15:58:46 2023 +0200
+
+    done phase 2
+
+[33mcommit 40c55ef9bb8de37215b02f6e6772a020c342e5ec[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Feb 13 15:15:43 2023 +0200
+
+    after phase 2
+
+[33mcommit ca0fed8fa3f769036889922ba9c06f9d4d63cf00[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sun Feb 12 21:20:55 2023 +0200
+
+    done generic container
+
+[33mcommit 4d26e4fa5aaf305ed47a4d5ff2819a07ec9a317a[m[33m ([m[1;31morigin/new_branch[m[33m, [m[1;32mnew_branch[m[33m)[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Fri Feb 10 02:24:13 2023 +0200
+
+    10/2/23
+
+[33mcommit e5acb8086ff8f09977862d471c53875ec6aec004[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Feb 9 17:39:19 2023 +0200
+
+    done A
+
+[33mcommit 8056690299b569fa01dd715a346ca303b6215fa6[m[33m ([m[1;32mnew_branch_name[m[33m)[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Feb 9 16:39:49 2023 +0200
+
+    done 8/2
+
+[33mcommit 2069b18f22868d576735d644c4077d956e173f3f[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Feb 9 15:33:25 2023 +0200
+
+    done A
+
+[33mcommit 6cfe6daf1264d1efae14825d3efcc3ce60503a2f[m[33m ([m[1;32mcurrent[m[33m)[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 8 22:55:13 2023 +0200
+
+    done 8/2
+
+[33mcommit 978ccd49cf3304cbb5d1e7dfae9f25d4601867ab[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 8 09:37:44 2023 +0200
+
+    after adding stack to operation begore big change
+
+[33mcommit b63a65c872e9b4f4bde1a0d256adc90c4bc24ef4[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Tue Feb 7 14:26:27 2023 +0200
+
+    before changing to bytebuffer
+
+[33mcommit 2b3c0d751ba0258d2e82657e8ac6740668d6806f[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Feb 6 21:42:59 2023 +0200
+
+    done
+
+[33mcommit f9b8f07d1a46cd97928324ea5d666b12b82ebbae[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Feb 6 19:13:26 2023 +0200
+
+    wip
+
+[33mcommit f3e0fa128f65ca5fcad4bdff25659931fa3c8127[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sun Feb 5 23:24:27 2023 +0200
+
+    pshase one of server client
+
+[33mcommit b11aef32e1ff06e7456c5af4177fceec4bb9f56b[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sun Feb 5 13:07:52 2023 +0200
+
+    rename file extension to dsk
+
+[33mcommit f58e799489d181ef4bb5e924a6fe967770f2a61d[m
+Author: Muhammad Zahalqa <m@tryfinally.com>
+Date:   Sun Feb 5 09:51:09 2023 +0200
+
+    Code Review
+
+[33mcommit 36221d382ec7869fff099a73c6cda8ae770cd68e[m
+Author: Muhammad Zahalqa <m@tryfinally.com>
+Date:   Sun Feb 5 09:50:10 2023 +0200
+
+    Code Review
+
+[33mcommit e67a7e1ec0bb388ae917c1e87a54a2b35b79ae82[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sun Feb 5 08:21:42 2023 +0200
+
+    int check
+
+[33mcommit c56ac3ed07481984ebfaa32ed40af00a74c57918[m
+Merge: 9bf166a c157712
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sun Feb 5 00:15:18 2023 +0200
+
+    Merge branch 'main' of https://github.com/mhz-ninjas/j4.alon
+
+[33mcommit 9bf166a0910d1b21f255be8fcdf064e32695440f[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sun Feb 5 00:14:32 2023 +0200
+
+    end of 4/2/23
+
+[33mcommit c4f20ff885da1c0cff7cf09681154c3a11427310[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sat Feb 4 22:49:16 2023 +0200
+
+    wip change
+
+[33mcommit cdea0bf9fa03bec6843dbb252f425364e7f90ac3[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sat Feb 4 11:45:08 2023 +0200
+
+    wip fixing bug of new blk
+
+[33mcommit c1577125814df17695d4d4baf8da977d0840ad53[m
+Author: Alon <109466540+Gottfried-Wilhelm-Leibniz@users.noreply.github.com>
+Date:   Sat Feb 4 01:04:01 2023 +0200
+
+    Delete j05-filesystem directory
+
+[33mcommit a6329b349b771c000523b5c123f3ce83f5e66e96[m
+Merge: d3315fa f5d6d62
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sat Feb 4 01:01:13 2023 +0200
+
+    Merge branch 'temp-branch'
+
+[33mcommit f5d6d624cd74fd24316c4319f6cab55db21ecad0[m[33m ([m[1;32mtemp-branch[m[33m)[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sat Feb 4 00:57:50 2023 +0200
+
+    almost finish fs
+
+[33mcommit 351e80be080f243db31f7928bbfcbdd62523e47a[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Feb 2 00:24:32 2023 +0200
+
+    after changing half not working
+
+[33mcommit 7605c51341cc37f897a9b0896f50841d368a3999[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 1 22:32:27 2023 +0200
+
+    before changing a lot 2/1/23
+
+[33mcommit 5ee5aecef400ad58f477ca2b0c3c9030bb33eea7[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 1 20:49:26 2023 +0200
+
+    mahrozet
+
+[33mcommit beb016228a95300e270e6f4007c6e896a3347907[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 1 20:47:26 2023 +0200
+
+    01.02.2023 b
+
+[33mcommit d3315fa2badd80181ef71293856dd7739c17069c[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 1 09:30:46 2023 +0200
+
+    exam02
+
+[33mcommit 2b023e3ff6f6585252d2026c274b6e08609d66de[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 1 09:30:46 2023 +0200
+
+    exam02
+
+[33mcommit 55865f9c72c7d37b8a1039a827d1f11dfcb9b9a2[m
+Merge: b07ffcb 87f8d87
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 1 04:05:39 2023 +0200
+
+    Merge branch 'main' of https://github.com/mhz-ninjas/j4.alon
+
+[33mcommit b07ffcb88c475858b13981238deb8516b4bc723c[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 1 04:04:55 2023 +0200
+
+    01.02.2023
+
+[33mcommit 7d8a10ea69706d36b43757b0103db045a4439be4[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 1 03:52:56 2023 +0200
+
+    one
+
+[33mcommit 87f8d873eeede5316667ae77e07186bdda76dfa9[m
+Merge: f18ab39 6f55ce6
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 1 00:47:07 2023 +0200
+
+    Merge branch 'main' of https://github.com/mhz-ninjas/j4.alon
+
+[33mcommit f18ab39ca38642d4afd3fbb0b18c73be27bfd077[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 1 00:23:44 2023 +0200
+
+    END OF 31/01
+
+[33mcommit 6f55ce645b5b2cdf62c9ad4f107f79176261cdde[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Feb 1 00:23:44 2023 +0200
+
+    END OF 31/01
+
+[33mcommit e340299190a33029a36d16fef7d23686fec94479[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Tue Jan 31 22:42:56 2023 +0200
+
+    after names
+
+[33mcommit 2c50aa7622a04172fe472fcedb6f789da7c8a135[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Tue Jan 31 20:48:18 2023 +0200
+
+    AFTER WORKING NICE
+
+[33mcommit 5e0e04639b452e50097584041efabedd9eda07f7[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Tue Jan 31 20:07:32 2023 +0200
+
+    before adding update my board
+
+[33mcommit 2bdadcd5bb3a38de3f79f7b9a26b42a256c8ef70[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Tue Jan 31 17:06:10 2023 +0200
+
+    after try 1
+
+[33mcommit 78167285822c04f7c6ab452fd44faaf76645a975[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Tue Jan 31 08:54:52 2023 +0200
+
+    BEFORE CHANGING TO ARRAY 2
+
+[33mcommit 606275a09fb22b2b781b83ef8bdf70983e055336[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Jan 30 23:26:37 2023 +0200
+
+    wip changes 0
+
+[33mcommit 3fe7bf008ae172ec7e23e10a9691950ff1fa41c7[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sun Jan 29 23:14:09 2023 +0200
+
+    before changing data block back to good
+
+[33mcommit f270c9195895816e647b34c5136f04b6ca834803[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sun Jan 29 19:12:24 2023 +0200
+
+    changing datafile
+
+[33mcommit bd8eee4b6a6b27e44f0a66fa35edf348bf9f7687[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sun Jan 29 18:27:19 2023 +0200
+
+    before chaning save method
+
+[33mcommit a307b70966e903c08d65760bb8e62fb200f71c8f[m
+Merge: 2c7b4d0 bd16f69
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sun Jan 29 13:32:45 2023 +0200
+
+    before changing mohamds review
+
+[33mcommit 2c7b4d00162a9cb5d7040d73eb1210a7e3f7ef51[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sun Jan 29 08:04:31 2023 +0200
+
+    after fix list of blocks
+
+[33mcommit 31ebc2fbec124d549e628b411e637ce4a5f86f4f[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sat Jan 28 23:56:37 2023 +0200
+
+    END OF SHABAT
+
+[33mcommit bd16f696ee0654ae2efa3be2f6d163b1904979a9[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sat Jan 28 23:56:37 2023 +0200
+
+    END OF SHABAT
+
+[33mcommit 1e032790d5d9895bb6ec7923f33fb6de32ff5761[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sat Jan 28 21:09:40 2023 +0200
+
+    before changing datafile
+
+[33mcommit 5472e919614bd63643c41332f8d2b1b061499b48[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sat Jan 28 16:34:13 2023 +0200
+
+    after options
+
+[33mcommit 16f6e4ab3add8e1655e7d0b64cf926f32f7785f4[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sat Jan 28 16:07:15 2023 +0200
+
+    before adding options
+
+[33mcommit 665fae5215ccf575c4335a1f7c73638d4125e17b[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sat Jan 28 11:36:17 2023 +0200
+
+    before deleting old functions
+
+[33mcommit 156ad18678be3cc9e26757d90c87629c57495ede[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Fri Jan 27 15:54:38 2023 +0200
+
+    before pause
+
+[33mcommit 81806ca1d15269e119791856330f08381ea0edbb[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Fri Jan 27 13:11:05 2023 +0200
+
+    before changins files saved list
+
+[33mcommit d57534edc69651d2d0a415f31c432e4ac64f8433[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Fri Jan 27 11:16:45 2023 +0200
+
+    before fixing to bytes
+
+[33mcommit 30421f04636c9a5ada883fd9985fca1963f9e112[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Fri Jan 27 10:41:07 2023 +0200
+
+    wip middle of creating file
+
+[33mcommit 8a61fb9325238cacb8da5f392920a4fe249264ba[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Fri Jan 27 00:17:35 2023 +0200
+
+    wip middle of create file
+
+[33mcommit b161abfb7f4676f5f1a04ddfe19fbf8fc5e389ff[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 26 22:39:10 2023 +0200
+
+    after fix remove
+
+[33mcommit 5ebbc41256fe70275367d3be0abf80cbcce2f4fc[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 26 22:38:35 2023 +0200
+
+    wip after fix remove
+
+[33mcommit cd2fe548580efba50fe8c0e9d6e1be9328f6c216[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 26 18:15:15 2023 +0200
+
+    wip after save test
+
+[33mcommit 61a1fad413a63453038ba05c916571d04915749c[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 26 17:31:57 2023 +0200
+
+    wip after save test
+
+[33mcommit 1c99d1c18ebdb8d8c0c176306b5b20c29e0499fb[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 26 17:30:47 2023 +0200
+
+    wip after save test
+
+[33mcommit baf01ef43acbe67a2a671a32e68f43854c3620f2[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 26 17:10:31 2023 +0200
+
+    wip after save test
+
+[33mcommit 31a96a073a236c537902d7a7aca08bd205324904[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 26 17:06:17 2023 +0200
+
+    wip after save test
+
+[33mcommit 2f0d1c127dce85360938cf29b22a9139a45e71e7[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 26 15:50:13 2023 +0200
+
+    before moving save to fs
+
+[33mcommit 68d7486c402e6042165ee515385c05b66b6fd4a9[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 26 12:33:46 2023 +0200
+
+    wip before addin speacial fs and before tasting file
+
+[33mcommit 73361d43075e4fb20b0c07eb6f823af8f3d10c0f[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 26 10:03:43 2023 +0200
+
+    wip before changing to record
+
+[33mcommit 51718ab6052a18b3cc35ecdf244eb6f5c22a891a[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Jan 25 08:35:49 2023 +0200
+
+    before changes phase 3
+
+[33mcommit 411625ae0c9b63e1a33370348e50dd7197ebb8dd[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Tue Jan 24 15:41:23 2023 +0200
+
+    a
+
+[33mcommit 93425b0f585cb6f01f621db84da600602f6e6413[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Tue Jan 24 13:42:31 2023 +0200
+
+    before extra time
+
+[33mcommit f7ea24b08d99aca46cc94a318bc43509d3feea65[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Jan 23 23:16:50 2023 +0200
+
+    after phase 2
+
+[33mcommit d303ed3af98bca86d6b2ebab28d6bc6b03c7afcb[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Jan 23 18:39:00 2023 +0200
+
+    after phase 2 read good not able to make write work without define the seeker every time
+
+[33mcommit 6c7b12c8dd69cb1cdebf86c8be0b64c3d7777257[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Jan 23 14:50:08 2023 +0200
+
+    fixed2
+
+[33mcommit 251b042239f7a6ad2dc7839c9c8cf7c30d304e08[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Jan 23 14:22:23 2023 +0200
+
+    fixed
+
+[33mcommit 77543ce64aeca04dd73ec2104ec0fe569a6bb1f4[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Jan 23 14:16:08 2023 +0200
+
+    commit file system WIP
+
+[33mcommit 4d7c10786c3521828340abf2642e08f3ce7d6846[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Mon Jan 23 13:15:09 2023 +0200
+
+    before phase 2 task 5
+
+[33mcommit 264f16e5856ce21fbec1c8c62a62df011f537600[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Sun Jan 22 20:14:27 2023 +0200
+
+    nan
+
+[33mcommit 1847000395c26500c2708dea2c6e3869496f52f4[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 19 13:10:19 2023 +0200
+
+    final
+
+[33mcommit 7d75d7cdb5a6eb57d4bfbffb10893b29d01cf27c[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 19 09:27:39 2023 +0200
+
+    before change
+
+[33mcommit c9e6824a276c84fe22d3c29653c8e5eb94872250[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 19 09:06:46 2023 +0200
+
+    intial commit
+
+[33mcommit f7b1c07c32e470a6c0a97ffe01fd980aa8b2adcb[m
+Merge: 14e091c f1aa5b4
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 19 08:15:27 2023 +0200
+
+    Merge branch 'main' of https://github.com/mhz-ninjas/j4.alon
+
+[33mcommit 14e091cbeacdb55b8c373722e4a7a9e4d4b1f229[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 19 08:14:35 2023 +0200
+
+    intial commit
+
+[33mcommit 342795b14b3b86472b3681d20a724bc407806d6f[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Thu Jan 19 08:13:37 2023 +0200
+
+    after inserting options for paramters
+
+[33mcommit f1aa5b489df6143b3b1b96a7f3e323c9bed84df5[m
+Author: Alon <109466540+Gottfried-Wilhelm-Leibniz@users.noreply.github.com>
+Date:   Wed Jan 18 23:43:03 2023 +0200
+
+    Delete .gitignore
+
+[33mcommit 87b48df8978152ad505167c16e7f3bd6d38ba5ae[m
+Author: Alon <109466540+Gottfried-Wilhelm-Leibniz@users.noreply.github.com>
+Date:   Wed Jan 18 23:42:55 2023 +0200
+
+    Delete GameOfLife1.iml
+
+[33mcommit da7456288941b7baf1d1b1ef58652799b3bfd0b6[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Jan 18 23:42:06 2023 +0200
+
+    intial commit
+
+[33mcommit 92dff46ec745655e35bdd009be289cc08280d1ab[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Jan 18 23:38:40 2023 +0200
+
+    intial commit
+
+[33mcommit 1d30a4c97a5c292ddb56b8aaa0ff5ff62514190f[m
+Author: Alon Golov <golovmania@gmail.com>
+Date:   Wed Jan 18 15:58:27 2023 +0200
+
+    initial commit
+
+[33mcommit 8eeb99215b80544d7091590b1815bb844da15a72[m
+Author: Alon <109466540+Gottfried-Wilhelm-Leibniz@users.noreply.github.com>
+Date:   Wed Jan 18 15:09:00 2023 +0200
+
+    Delete 01 - life directory
+
+[33mcommit a53b58d92aae9be6ba58277ab5be8c417136c59d[m
+Author: Alon <109466540+Gottfried-Wilhelm-Leibniz@users.noreply.github.com>
+Date:   Wed Jan 18 14:08:26 2023 +0200
+
+    Create nothing
+    
+    just for creating the folder
+
+[33mcommit 8c4f6d32e9177da6f75aaa937fd4413259a079c1[m
+Author: Alon <109466540+Gottfried-Wilhelm-Leibniz@users.noreply.github.com>
+Date:   Wed Jan 18 14:04:37 2023 +0200
+
+    Delete 01 - life
+
+[33mcommit 31be1b135bc2a4826e0ab155028add9ad9b9af83[m
+Author: Alon <109466540+Gottfried-Wilhelm-Leibniz@users.noreply.github.com>
+Date:   Wed Jan 18 14:03:34 2023 +0200
+
+    Create 01 - life
+    
+    This is the game of life
+
+[33mcommit 962bb88ab5114d11459792c646b842825814af1a[m
+Author: Muhammad Zahalqa <m@tryfinally.com>
+Date:   Mon Jan 16 17:26:16 2023 +0200
+
+    Initial commit
