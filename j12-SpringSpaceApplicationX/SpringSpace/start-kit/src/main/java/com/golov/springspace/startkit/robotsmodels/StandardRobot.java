@@ -5,10 +5,10 @@ import randomizer.Randomizer;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class StandardRobot implements Robot {
-    @Getter
-    private final String model;
     private final String name;
     private final String callSign;
     private RobotState robotState;
@@ -22,7 +22,6 @@ public abstract class StandardRobot implements Robot {
         if (name.length() < 2 || name.length() > 32) {
             throw new InvalidRobotNameException("Robot's name should be 2-32 length");
         }
-        this.model = this.getClass().getName();
         this.name = name;
         this.callSign = callSign;
         this.tools = toolSet;
@@ -55,10 +54,10 @@ public abstract class StandardRobot implements Robot {
     }
     @Override
     public String toString() {
-        return model;
+        return this.getClass().getSimpleName();
     }
 }
 
 
 
-
+// todo json ignore

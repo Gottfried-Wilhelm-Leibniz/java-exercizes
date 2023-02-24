@@ -8,7 +8,7 @@ public class DispatchAction implements RobotAction {
 
     public DispatchAction(Robot r) {
         if(!r.robotState().equals(RobotState.ACTIVE)) {
-            throw new RobotNotActiveException("Robot: " + r.callSign() + " is not in Active state");
+            throw new RobotNotActiveException("Robot " + r.callSign() + " is not in Active state");
         }
         this.robot = r;
     }

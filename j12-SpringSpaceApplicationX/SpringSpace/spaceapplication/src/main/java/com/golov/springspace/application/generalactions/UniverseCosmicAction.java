@@ -1,21 +1,24 @@
 package com.golov.springspace.application.generalactions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import output.Printer;
 import randomizer.Randomizer;
 import com.golov.springspace.infra.*;
 import com.golov.springspace.station.fleet.Fleet;
 @Component
-public class UniverseCosmicAction implements generalActions {
+public class UniverseCosmicAction implements Runnable {//implements GeneralActions {
     @Autowired
     private Fleet<Robot> robotsFleet;
     @Autowired
-    private Randomizer randomizer = new Randomizer();
+    private Randomizer randomizer;
     @Autowired
     private Printer printer;
     @Override
+    @Async
     public void run() {
         while(true) {
+            System.out.println("hello");
             try {
                 Thread.sleep(randomizer.intRandom(15_000, 30_000));
             } catch (InterruptedException e) {

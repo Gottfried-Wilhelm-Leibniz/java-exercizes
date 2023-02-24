@@ -7,7 +7,12 @@ import com.golov.springspace.ui.UiEnum;
 public class Quit implements UiAction {
 
     @Override
-    public UiEnum act() {
+    public UiAction act() {
         throw new ErrorWhenExitingProgramException("the program failled to exit");
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
     }
 }

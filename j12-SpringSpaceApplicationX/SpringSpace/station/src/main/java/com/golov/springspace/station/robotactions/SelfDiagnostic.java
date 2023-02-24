@@ -13,7 +13,7 @@ public class SelfDiagnostic implements RobotAction {
 
     public SelfDiagnostic(Robot robot) {
         if(!robot.robotState().equals(RobotState.FAILING)) {
-            throw new RobotNotFailingException("Robot: " + robot.callSign() + " is not in Failing state");
+            throw new RobotNotFailingException("Robot " + robot.callSign() + " is not in Failing state");
         }
         this.robot = robot;
     }

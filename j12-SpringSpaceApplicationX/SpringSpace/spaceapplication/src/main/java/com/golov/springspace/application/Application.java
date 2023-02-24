@@ -1,31 +1,25 @@
 package com.golov.springspace.application;
-import com.golov.springspace.startkit.robotsmodels.Hal9000;
-import com.golov.springspace.startkit.robotsmodels.anotations.Hal9000Tool;
-import com.golov.springspace.startkit.toolmodels.LaserCutter;
+import com.golov.springspace.application.generalactions.UniverseCosmicAction;
 import loader.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.scheduling.annotation.AsyncConfigurer;
 import output.Printer;
 import parser.Parser;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Objects;
-
 import com.golov.springspace.station.*;
 import com.golov.springspace.ui.StationUi;
 
-public class Application {
-    public static void main(String[] args) throws InvocationTargetException, IllegalAccessException {
+public class Application implements AsyncConfigurer {
+    public static void main(String[] args) {
         var ctx = new AnnotationConfigApplicationContext(AppConfiguration.class);
+        @Autowired UniverseCosmicAction cosmicAction;
+        ctx.getBean(UniverseCosmicAction.class).run(); // todo weired conseq
         if(args.length > 0) {
             loadFromFile(args[0], ctx);
         }
-//        new Thread(new UniverseCosmicAction()).start();
-//        ctx.getBean("rununi", UniverseCosmicAction.class).run();
-//        System.out.println(ctx.getBean(Station.class).createNew("hal9000", "aaa", "bbbb"));
+        ctx.getBean("createNew", "hal9000", "aaa", "a"); // todo erase
 
         ctx.getBean("stationUi", StationUi.class).go();
     }

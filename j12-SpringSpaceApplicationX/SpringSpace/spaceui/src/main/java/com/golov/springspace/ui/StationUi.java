@@ -1,34 +1,20 @@
 package com.golov.springspace.ui;
+import com.golov.springspace.station.Reply;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
-import com.golov.springspace.infra.Robot;
-import com.golov.springspace.station.Station;
-import java.util.EnumMap;
-import java.util.Map;
 
 import com.golov.springspace.ui.uiactions.*;
 @Component
 public class StationUi {
     @Autowired
-    private Map<String, UiAction> actions;
-    @Autowired
-    private Station<Robot> spacestation;
-
-//    public StationUi(EnumMap<UiEnum, UiAction> actions) {
-//        this.actions = actions;
-//    }
+    private AnnotationConfigApplicationContext ctx;
 
     public void go() {
-        var choise = actions.get("menu").act();
-        while(!choise.equals(UiEnum.QUIT)) {
-            choise = actions.get(choise).act();
+        var next = ctx.getBean(UiEnum.MENU.toString(), UiAction.class).act();
+        while(! (next instanceof Quit)) {
+            next = next.act(); // = ctx.getBean(next.name(), UiAction.class).act();
         }
-        stationQuit();
-    }
-    private void stationQuit() {
-        spacestation.quit();
+        System.out.println(ctx.getBean("quitSystem", Reply.class).reason());
     }
 }
-
-
-// todo map automot

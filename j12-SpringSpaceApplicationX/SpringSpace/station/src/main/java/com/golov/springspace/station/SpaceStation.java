@@ -1,9 +1,11 @@
 package com.golov.springspace.station;
-import com.golov.springspace.infra.anotations.Hal9000Ano;
 import com.golov.springspace.startkit.robotsmodels.Hal9000;
 import com.golov.springspace.startkit.robotsmodels.Johnny5;
 import com.golov.springspace.startkit.robotsmodels.Maschinemensch;
 import com.golov.springspace.startkit.robotsmodels.Tachikomas;
+import org.springframework.beans.BeanInstantiationException;
+import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +27,7 @@ public class SpaceStation implements Station<Robot> {
     @Autowired
     private ExecutorService pool;
     @Autowired
-    private AnnotationConfigApplicationContext cpx;
+    private AnnotationConfigApplicationContext ctx;
 
     @Override
     public String getFleetList() {
@@ -33,26 +35,15 @@ public class SpaceStation implements Station<Robot> {
     }
 
     @Override
-    public String listAvailableModels() {
-        var sa = cpx.getBeanFactory().getBeanNamesForType(Robot.class);
-        return parser.strArrToStrList(sa);
-    }
-
-    @Override
     @Bean
     public Reply createNew(String model, String name, String callSign) {
-        model = model.toLowerCase();
         Robot newRobot;
         try {
-            newRobot = switch (model) {
-                case "hal9000" -> cpx.getBean(Hal9000.class, name, callSign);
-                case "tachikomas" -> cpx.getBean(Tachikomas.class, name, callSign);
-                case "johnny5" -> cpx.getBean(Johnny5.class, name, callSign);
-                case "maschinenmensch" -> cpx.getBean(Maschinemensch.class, name, callSign);
-                default -> throw new NoSuchRobotInFactoryException("no such robot in factory");
-            };
+            newRobot = (Robot)ctx.getBean(model.toLowerCase(), name, callSign);
             robotsfleet.addNew(newRobot);
-        } catch (NoSuchRobotInFactoryException | InvalidRobotNameException | CallSignAlreadyExistOnFleetException e) {
+        } catch (NoSuchBeanDefinitionException | BeanCreationException e) {
+            return replyGenerator(false,"Failed: " + e.getMostSpecificCause().getMessage());
+        } catch (CallSignAlreadyExistOnFleetException e) {
             return replyGenerator(false, "Failed: " + e.getMessage());
         }
         return replyGenerator(true, "The creation of " + newRobot.callSign() + " has Succeed\n" + parser.objectToJson(newRobot));
@@ -85,24 +76,25 @@ public class SpaceStation implements Station<Robot> {
         Robot r;
         try {
             r = robotsfleet.get(callSign);
+            var obj = ctx.getBean(robotOrder.toString().toLowerCase(), r);
+            var ra = (RobotAction) obj;
+            pool.execute(ra);
         } catch (RobotNotExistInFleetExceptopn e) {
             return replyGenerator(false, "Failed: " + e.getMessage());
-        }
-        try {
-            switch (robotOrder) {
-                case DISPATCH -> pool.execute(new DispatchAction(r));
-                case REBOOT -> pool.execute(new Reboot(r));
-                case DIAGNOSTIC -> pool.execute(new SelfDiagnostic(r));
-                case DELETE -> robotsfleet.remove(r);
-            };
-        } catch (RobotNotActiveException | RobotNotFailingException e) {
-            return replyGenerator(false, "Failed: call sign: " + callSign + " " + e.getMessage());
+        } catch (BeanCreationException e) {
+            return replyGenerator(false, "Failed: " + e.getMostSpecificCause().getMessage());
         }
         return replyGenerator(true, callSign + " is " + robotOrder);
     }
+
     @Override
-    public void quit() {
-        pool.close();
+    public Reply quit() {
+        try {
+            pool.close();
+        } catch (RuntimeException e ) {
+            return replyGenerator(false, e.getMessage());
+        }
+        return replyGenerator(true, "Ok ByeBye");
     }
 
     private Reply replyGenerator(boolean bool, String reason) {
@@ -110,3 +102,25 @@ public class SpaceStation implements Station<Robot> {
     }
 
 }
+
+//    @Override
+//    public String listAvailableModels() {
+//        var sa = cpx.getBeanFactory().getBeanNamesForType(Robot.class);
+//        return parser.strArrToStrList(sa);
+//    }
+
+// newRobot = switch (model) {
+//                case "hal9000" -> ctx.getBean(Hal9000.class, name, callSign);
+//                case "tachikomas" -> ctx.getBean(Tachikomas.class, name, callSign);
+//                case "johnny5" -> ctx.getBean(Johnny5.class, name, callSign);
+//                case "maschinenmensch" -> ctx.getBean(Maschinemensch.class, name, callSign);
+//                default -> throw new NoSuchRobotInFactoryException("no such robot in factory");
+//            };
+
+//
+// try {
+//         robotsfleet.addNew(newRobot);
+//         } catch (NoSuchRobotInFactoryException | InvalidRobotNameException | CallSignAlreadyExistOnFleetException e) {
+//         return replyGenerator(false, "Failed: " + e.getMessage());
+//         }
+//         return replyGenerator(true, "The creation of " + newRobot.callSign() + " has Succeed\n" + parser.objectToJson(newRobot));

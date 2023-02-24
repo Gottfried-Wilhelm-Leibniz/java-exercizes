@@ -14,8 +14,12 @@ public class FleetList implements UiAction {
     private AnnotationConfigApplicationContext cpx;
 
     @Override
-    public UiEnum act() {
+    public UiAction act() {
         printer.print(cpx.getBean("getFleetList", String.class));
-        return UiEnum.MENU;
+        return cpx.getBean(UiEnum.MENU.toString(), UiAction.class);
+    }
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
     }
 }

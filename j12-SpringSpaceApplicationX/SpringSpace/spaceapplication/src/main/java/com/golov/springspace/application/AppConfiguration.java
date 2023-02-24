@@ -1,4 +1,5 @@
 package com.golov.springspace.application;
+import com.golov.springspace.application.generalactions.UniverseCosmicAction;
 import com.golov.springspace.startkit.toolmodels.*;
 import com.golov.springspace.startkit.robotsmodels.*;
 import com.golov.springspace.infra.*;
@@ -6,16 +7,28 @@ import com.golov.springspace.station.Reply;
 import com.golov.springspace.station.RobotOrder;
 import com.golov.springspace.station.SpaceStation;
 import com.golov.springspace.station.Station;
+import com.golov.springspace.station.exceptions.RobotNotActiveException;
+import com.golov.springspace.station.exceptions.RobotNotFailingException;
 import com.golov.springspace.station.fleet.Fleet;
 import com.golov.springspace.station.fleet.RobotsFleet;
+import com.golov.springspace.station.robotactions.DispatchAction;
+import com.golov.springspace.station.robotactions.Reboot;
+import com.golov.springspace.station.robotactions.RobotAction;
+import com.golov.springspace.station.robotactions.SelfDiagnostic;
 import com.golov.springspace.ui.StationUi;
 import com.golov.springspace.ui.UiEnum;
 import com.golov.springspace.ui.uiactions.*;
 import input.Input;
 import input.UserInput;
 import loader.FileLoader;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.*;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncConfigurer;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import output.Printer;
 import output.SoutPrinter;
 import parser.Parser;
@@ -28,6 +41,7 @@ import java.util.concurrent.Executors;
 
 @Configuration
 @ComponentScan
+@EnableAsync
 public class AppConfiguration {
 
     @Bean
@@ -109,10 +123,10 @@ public class AppConfiguration {
     public Station<Robot> station() {
         return new SpaceStation();
     }
-    @Bean
-    public ExecutorService executorService() {
-        return Executors.newCachedThreadPool();
-    }
+//    @Bean
+//    public ExecutorService executorService() {
+//        return Executors.newCachedThreadPool();
+//    }
     @Bean
     public Input input() {
         return new UserInput();
@@ -148,14 +162,14 @@ public class AppConfiguration {
         return new Provision();
     }
     @Bean
-    public UiAction issuCommand() {
+    public UiAction issucommand() {
         return new IssuCommand();
     }
     @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public String getModels() {
-        return station().listAvailableModels();
+    public UiAction quit() {
+        return new Quit();
     }
+
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public String getFleetList() {
@@ -166,6 +180,45 @@ public class AppConfiguration {
     public String getAvailableRobots() {
         return station().listAvailableRobots();
     }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public RobotAction dispatch(Robot r) {
+        return new DispatchAction(r);
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public RobotAction reboot(Robot r) {
+        return new Reboot(r);
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public RobotAction diagnostic(Robot r) {
+        return new SelfDiagnostic(r);
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public Reply quitSystem() {
+        return station().quit();
+    }
+
+    @Bean
+    public UniverseCosmicAction universeCosmicAction() {
+        return new UniverseCosmicAction();
+    }
+
+    @Bean
+    public ExecutorService taskExecutor() {
+        return Executors.newCachedThreadPool();
+    }
+
+
+}
+
+
 //    @Bean
 //    public EnumMap<UiEnum, UiAction> actionEnumMap() {
 //        EnumMap<UiEnum, UiAction> m = new EnumMap<>(UiEnum.class);
@@ -176,7 +229,8 @@ public class AppConfiguration {
 //        return m;
 //    }
 
-}
-
-
-// todo map enum
+//    @Bean
+//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+//    public String getModels() {
+//        return station().listAvailableModels();
+//    }

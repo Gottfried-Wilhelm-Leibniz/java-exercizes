@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Parser {
     public<T> String iterableToJson(Iterable<T> iterable) {
@@ -66,6 +67,15 @@ public class Parser {
         var i = 1;
         for(var s : strings) {
             sb.append(i++).append(") ").append(s).append("\n");
+        }
+        return sb.toString();
+    }
+
+    public <T> String listToStringList(List<T> list) {
+        var sb = new StringBuilder();
+        var i = 1;
+        for(var o : list) {
+            sb.append(i++).append(") ").append(o.toString()).append("\n");
         }
         return sb.toString();
     }

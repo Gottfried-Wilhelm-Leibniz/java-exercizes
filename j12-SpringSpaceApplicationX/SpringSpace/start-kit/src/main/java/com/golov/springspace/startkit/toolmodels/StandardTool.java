@@ -12,6 +12,9 @@ public abstract class StandardTool implements Tool {
     public StandardTool(String name) {
         this.toolName = name;
     }
-
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
 }
 

@@ -1,5 +1,5 @@
 package com.golov.springspace.application.generalactions;
 @FunctionalInterface
-public interface generalActions extends Runnable {
+public interface GeneralActions extends Runnable {
     void run();
 }

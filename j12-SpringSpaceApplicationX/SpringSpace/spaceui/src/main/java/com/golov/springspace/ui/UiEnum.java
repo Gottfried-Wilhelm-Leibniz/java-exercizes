@@ -4,5 +4,10 @@ public enum UiEnum {
     FLEETLIST,
     PROVISION,
     ISSUCOMMAND,
-    QUIT
+    QUIT;
+
+    @Override
+    public String toString() {
+        return name().toLowerCase();
+    }
 }
