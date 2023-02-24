@@ -1,10 +1,12 @@
 package com.golov.springspace.station;
+import com.golov.springspace.infra.anotations.Hal9000Ano;
 import com.golov.springspace.startkit.robotsmodels.Hal9000;
 import com.golov.springspace.startkit.robotsmodels.Johnny5;
 import com.golov.springspace.startkit.robotsmodels.Maschinemensch;
 import com.golov.springspace.startkit.robotsmodels.Tachikomas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import parser.Parser;
 import com.golov.springspace.infra.Robot;
@@ -37,29 +39,25 @@ public class SpaceStation implements Station<Robot> {
     }
 
     @Override
-    public Reply createNew(String model) {
+    @Bean
+    public Reply createNew(String model, String name, String callSign) {
         model = model.toLowerCase();
         Robot newRobot;
         try {
             newRobot = switch (model) {
-                case "hal9000" -> cpx.getBean(model, Hal9000.class);
-                case "tachikomas" -> cpx.getBean(model, Tachikomas.class);
-                case "johnny5" -> cpx.getBean(model, Johnny5.class);
-                case "maschinenmensch" -> cpx.getBean(model, Maschinemensch.class);
+                case "hal9000" -> cpx.getBean(Hal9000.class, name, callSign);
+                case "tachikomas" -> cpx.getBean(Tachikomas.class, name, callSign);
+                case "johnny5" -> cpx.getBean(Johnny5.class, name, callSign);
+                case "maschinenmensch" -> cpx.getBean(Maschinemensch.class, name, callSign);
                 default -> throw new NoSuchRobotInFactoryException("no such robot in factory");
             };
             robotsfleet.addNew(newRobot);
         } catch (NoSuchRobotInFactoryException | InvalidRobotNameException | CallSignAlreadyExistOnFleetException e) {
             return replyGenerator(false, "Failed: " + e.getMessage());
         }
-
-        cpx.registerBean(newRobot.callSign(), Reply.class, (() -> getRobotDetails(newRobot.callSign())));
-        cpx.registerBean(newRobot.callSign() + RobotOrder.DISPATCH, Reply.class, (() -> commandRobot(RobotOrder.DISPATCH, newRobot.callSign())));
-        cpx.registerBean(newRobot.callSign() + RobotOrder.REBOOT, Reply.class, (() -> commandRobot(RobotOrder.REBOOT, newRobot.callSign())));
-        cpx.registerBean(newRobot.callSign() + RobotOrder.DIAGNOSTIC, Reply.class, (() -> commandRobot(RobotOrder.DIAGNOSTIC, newRobot.callSign())));
-        cpx.registerBean(newRobot.callSign() + RobotOrder.DELETE, Reply.class, (() -> commandRobot(RobotOrder.DELETE, newRobot.callSign())));
         return replyGenerator(true, "The creation of " + newRobot.callSign() + " has Succeed\n" + parser.objectToJson(newRobot));
     }
+
     @Override
     public String listAvailableRobots() {
         try {

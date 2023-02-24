@@ -1,5 +1,4 @@
 package com.golov.springspace.ui.uiactions;
-import com.golov.springspace.ui.context.Context;
 import com.golov.springspace.ui.UiEnum;
 import input.Input;
 import org.springframework.beans.factory.annotation.Autowired;

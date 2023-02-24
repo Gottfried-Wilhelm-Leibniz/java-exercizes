@@ -1,5 +1,4 @@
 package com.golov.springspace.ui.uiactions;
-import com.golov.springspace.ui.context.Context;
 import com.golov.springspace.ui.UiEnum;
 import input.Input;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class UiMenu implements UiAction {
             inputEnum = UiEnum.values()[intInput];
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
             printer.print(error);
-            return UiEnum.MENU;
+            return "menu";
         }
         return inputEnum;
     }

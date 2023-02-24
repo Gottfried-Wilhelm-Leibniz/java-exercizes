@@ -1,6 +1,5 @@
 package com.golov.springspace.ui.uiactions;
 import com.golov.springspace.station.Reply;
-import com.golov.springspace.ui.context.Context;
 import com.golov.springspace.ui.UiEnum;
 import com.golov.springspace.station.RobotOrder;
 import input.Input;
@@ -23,7 +22,8 @@ public class IssuCommand implements UiAction {
         printer.print(haed);
         printer.print(cpx.getBean("getAvailableRobots", String.class));
         var callSign = input.in();
-        var reply = cpx.getBean(callSign, Reply.class);
+        var obj = cpx.getBean("getRobotDetails", callSign);
+        var reply = (Reply)obj;
         printer.print(reply.reason());
         if (!reply.isSucceed()) {
             return UiEnum.ISSUCOMMAND;
@@ -42,9 +42,11 @@ public class IssuCommand implements UiAction {
             printer.print("no such option");
             return UiEnum.ISSUCOMMAND;
         }
-        reply = cpx.getBean(callSign + inputEnum, Reply.class);
+        obj = cpx.getBean("issuCommand", inputEnum, callSign);
+        reply = (Reply)obj;
         printer.print(reply.reason());
         return UiEnum.MENU;
     }
 }
 
+// todo reply manager

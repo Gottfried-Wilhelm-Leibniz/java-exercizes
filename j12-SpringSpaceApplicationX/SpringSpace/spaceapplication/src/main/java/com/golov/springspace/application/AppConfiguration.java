@@ -3,6 +3,7 @@ import com.golov.springspace.startkit.toolmodels.*;
 import com.golov.springspace.startkit.robotsmodels.*;
 import com.golov.springspace.infra.*;
 import com.golov.springspace.station.Reply;
+import com.golov.springspace.station.RobotOrder;
 import com.golov.springspace.station.SpaceStation;
 import com.golov.springspace.station.Station;
 import com.golov.springspace.station.fleet.Fleet;
@@ -19,6 +20,7 @@ import output.Printer;
 import output.SoutPrinter;
 import parser.Parser;
 import randomizer.Randomizer;
+
 import java.util.EnumMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -28,87 +30,69 @@ import java.util.concurrent.Executors;
 @ComponentScan
 public class AppConfiguration {
 
-//    @Bean
-//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-//    public Disruptor disruptor() {
-//        return new Disruptor();
-//    }
-//    @Bean
-//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-//    public LaserCutter laserCutter() {
-//        return new LaserCutter();
-//    }
-//    @Bean
-//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-//    public Replicator replicator() {
-//        return new Replicator();
-//    }
-//    @Bean
-//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-//    public StaticBrush staticBrush() {
-//        return new StaticBrush();
-//    }
-
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Hal9000 hal9000() {
-        List<Tool> toolList = List.of(laserCutter(), replicator(), disruptor());
-        return new Hal9000(robotname(), robotcallSign(), toolList);
+    public Disruptor disruptor() {
+        return new Disruptor();
     }
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Reply createhal9000() {
-        return station().createNew("hal9000");
+    public LaserCutter laserCutter() {
+        return new LaserCutter();
     }
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Johnny5 johnny5() {
-        List<Tool> toolList = List.of(laserCutter(), staticBrush());
-        return new Johnny5(robotname(), robotcallSign(), toolList);
+    public Replicator replicator() {
+        return new Replicator();
     }
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Reply createjohnny5() {
-        return station().createNew("Johnny5");
-    }
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Tachikomas tachikomas() {
-        List<Tool> toolList = List.of(laserCutter(), disruptor());
-        return new Tachikomas(robotname(), robotcallSign(), toolList);
-    }
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Reply createtachikomas() {
-        return station().createNew("tachikomas");
-    }
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Maschinemensch maschinenmensch() {
-        List<Tool> toolList = List.of(replicator(), disruptor());
-        return new Maschinemensch(robotname(), robotcallSign(), toolList);
-    }
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Reply createmaschinenmensch() {
-        return station().createNew("maschinenmensch");
-    }
-    @Bean
-    @Primary
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Reply create() {
-        return station().createNew(null);
-    }
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public String robotname() {
-        return new Randomizer().randomString(5);
+    public StaticBrush staticBrush() {
+        return new StaticBrush();
     }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public String robotcallSign() {
-        return new Randomizer().randomString(3);
+    public Hal9000 hal9000(String name, String callSign) {
+//        List<Tool> toolList = List.of(laserCutter(), replicator(), disruptor());
+//        return new Hal9000();
+        return new Hal9000(name, callSign, List.of(laserCutter(), replicator(), disruptor()));
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public Reply createNew(String model, String name, String callSign) {
+        return station().createNew(model, name, callSign);
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public Reply getRobotDetails(String callSign) {
+        return station().getRobotDetails(callSign);
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public Reply commandRobot(RobotOrder robotOrder, String callSign) {
+        return station().commandRobot(robotOrder, callSign);
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public Johnny5 johnny5(String name, String callSign) {
+        return new Johnny5(name, callSign, List.of(laserCutter(), staticBrush()));
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public Tachikomas tachikomas(String name, String callSign) {
+        return new Tachikomas(name, callSign, List.of(laserCutter(), disruptor()));
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public Maschinemensch maschinenmensch(String name, String callSign) {
+        return new Maschinemensch(name, callSign, List.of(replicator(), disruptor()));
     }
 
     @Bean
@@ -152,7 +136,7 @@ public class AppConfiguration {
     }
 
     @Bean
-    public UiAction uiMenu() {
+    public UiAction menu() {
         return new UiMenu();
     }
     @Bean
@@ -182,14 +166,17 @@ public class AppConfiguration {
     public String getAvailableRobots() {
         return station().listAvailableRobots();
     }
-    @Bean
-    public EnumMap<UiEnum, UiAction> actionEnumMap() {
-        EnumMap<UiEnum, UiAction> m = new EnumMap<>(UiEnum.class);
-        m.put(UiEnum.MENU, uiMenu());
-        m.put(UiEnum.FLEETLIST, fleetList());
-        m.put(UiEnum.PROVISION, provision());
-        m.put(UiEnum.ISSUCOMMAND, issuCommand());
-        return m;
-    }
+//    @Bean
+//    public EnumMap<UiEnum, UiAction> actionEnumMap() {
+//        EnumMap<UiEnum, UiAction> m = new EnumMap<>(UiEnum.class);
+//        m.put(UiEnum.MENU, uiMenu());
+//        m.put(UiEnum.FLEETLIST, fleetList());
+//        m.put(UiEnum.PROVISION, provision());
+//        m.put(UiEnum.ISSUCOMMAND, issuCommand());
+//        return m;
+//    }
 
 }
+
+
+// todo map enum
