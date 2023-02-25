@@ -9,6 +9,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import output.Printer;
 import parser.Parser;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class IssuCommand implements UiAction {
@@ -28,28 +29,32 @@ public class IssuCommand implements UiAction {
     public UiAction act() {
         printer.print(haed + ctx.getBean("getAvailableRobots", String.class));
         var callSign = input.in();
-        var obj = ctx.getBean("getRobotDetails", callSign);
-        var reply = (Reply) obj;
+        var reply = (Reply)ctx.getBean("getRobotDetails", callSign);
         printer.print(reply.reason());
-        if(! reply.isSucceed()) {
+        if(!reply.isSucceed()) {
             return ctx.getBean(UiEnum.ISSUCOMMAND.toString(), UiAction.class);
         }
-        printer.print(menu + parser.strArrToStrList(ctx.getBeanFactory().getBeanNamesForType(RobotAction.class))); // + parser.listToStringList(robotActions));
+        var actions = ctx.getBeanFactory().getBeanNamesForType(RobotAction.class);
+        var some = new String[actions.length + 1];
+        System.arraycopy(actions, 0, some, 0, actions.length);
+        some[some.length - 1] = "Back to main menu";
+        printer.print(menu + parser.strArrToStrList(some));
+//        printer.print(menu + parser.strArrToStrList(ctx.getBeanFactory().getBeanNamesForType(RobotAction.class))); // + parser.listToStringList(robotActions));
         var command = input.in();
+
         if(command.equals("5")) {
             return ctx.getBean(UiEnum.MENU.toString(), UiAction.class);
         }
         int intInput;
         RobotOrder inputEnum;
         try {
-            intInput = Integer.parseInt(command) - 1;
+            intInput = Integer.parseInt(command) - 1; // todo continue
             inputEnum = RobotOrder.values()[intInput];
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
             printer.print("no such option");
             return ctx.getBean(UiEnum.ISSUCOMMAND.toString(), UiAction.class);
         }
-        obj = ctx.getBean("commandRobot", inputEnum, callSign);
-        reply = (Reply) obj;
+        reply = (Reply) ctx.getBean("commandRobot", inputEnum, callSign);
         printer.print(reply.reason());
         return ctx.getBean(UiEnum.MENU.toString(), UiAction.class);
     }
@@ -60,4 +65,3 @@ public class IssuCommand implements UiAction {
     }
 }
 // todo reply manager
-// todo orgenize by order

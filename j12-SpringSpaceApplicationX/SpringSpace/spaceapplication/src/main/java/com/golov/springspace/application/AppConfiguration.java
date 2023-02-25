@@ -12,10 +12,7 @@ import com.golov.springspace.station.exceptions.RobotNotActiveException;
 import com.golov.springspace.station.exceptions.RobotNotFailingException;
 import com.golov.springspace.station.fleet.Fleet;
 import com.golov.springspace.station.fleet.RobotsFleet;
-import com.golov.springspace.station.robotactions.DispatchAction;
-import com.golov.springspace.station.robotactions.Reboot;
-import com.golov.springspace.station.robotactions.RobotAction;
-import com.golov.springspace.station.robotactions.SelfDiagnostic;
+import com.golov.springspace.station.robotactions.*;
 import com.golov.springspace.ui.StationUi;
 import com.golov.springspace.ui.UiEnum;
 import com.golov.springspace.ui.uiactions.*;
@@ -70,8 +67,6 @@ public class AppConfiguration implements AsyncConfigurer {
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public Hal9000 hal9000(String name, String callSign) {
-//        List<Tool> toolList = List.of(laserCutter(), replicator(), disruptor());
-//        return new Hal9000();
         return new Hal9000(name, callSign, List.of(laserCutter(), replicator(), disruptor()));
     }
 
@@ -199,6 +194,11 @@ public class AppConfiguration implements AsyncConfigurer {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public RobotAction diagnostic(Robot r) {
         return new SelfDiagnostic(r);
+    }
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public RobotAction remove(Robot r) {
+        return new RemoveRobot(r);
     }
 
     @Bean

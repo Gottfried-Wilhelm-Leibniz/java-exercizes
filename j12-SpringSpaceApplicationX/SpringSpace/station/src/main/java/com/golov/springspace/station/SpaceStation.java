@@ -1,9 +1,4 @@
 package com.golov.springspace.station;
-import com.golov.springspace.startkit.robotsmodels.Hal9000;
-import com.golov.springspace.startkit.robotsmodels.Johnny5;
-import com.golov.springspace.startkit.robotsmodels.Maschinemensch;
-import com.golov.springspace.startkit.robotsmodels.Tachikomas;
-import org.springframework.beans.BeanInstantiationException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +12,12 @@ import com.golov.springspace.station.exceptions.*;
 import com.golov.springspace.station.robotactions.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 @Component
 public class SpaceStation implements Station<Robot> {
     @Autowired
     private Fleet<Robot> robotsfleet;
     @Autowired
     private Parser parser;
-//    @Autowired
-//    private ExecutorService pool;
     @Autowired
     private AnnotationConfigApplicationContext ctx;
 
@@ -75,10 +67,9 @@ public class SpaceStation implements Station<Robot> {
     public Reply commandRobot(RobotOrder robotOrder, String callSign) {
         Robot r;
         try {
-            r = robotsfleet.get(callSign); //todo delelte thread
+            r = robotsfleet.get(callSign);
             var ra = (RobotAction)ctx.getBean(robotOrder.toString().toLowerCase(), r);
             ra.run();
-//            pool.execute(ra);
         } catch (RobotNotExistInFleetExceptopn e) {
             return replyGenerator(false, "Failed: " + e.getMessage());
         } catch (BeanCreationException e) {
@@ -90,7 +81,7 @@ public class SpaceStation implements Station<Robot> {
     @Override
     public Reply quit() {
         try {
-//            pool.close();
+//            pool.close(); //todo close pool
         } catch (RuntimeException e ) {
             return replyGenerator(false, e.getMessage());
         }
