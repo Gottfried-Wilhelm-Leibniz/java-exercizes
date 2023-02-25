@@ -12,13 +12,15 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 import java.util.List;
 import java.util.concurrent.Executors;
 
 @Configuration
-@ComponentScan(basePackages = {"randomizer", "loader", "output", "input", "com.golov.springspace", "parser"}) //, "com.golov.space", "com.golov.springspace", "com.golov.accessorize"})
+@ComponentScan(basePackages = {"randomizer", "loader", "output", "input", "com.golov.springspace", "parser"})
 @EnableAsync
+@EnableScheduling
 public class AppConfiguration implements AsyncConfigurer {
 
     @Bean
@@ -141,89 +143,5 @@ public class AppConfiguration implements AsyncConfigurer {
         return new ConcurrentTaskExecutor(Executors.newCachedThreadPool());
 //        return Executors.newCachedThreadPool(); //
     }
-//
 
 }
-
-
-//    @Bean
-//    public EnumMap<UiEnum, UiAction> actionEnumMap() {
-//        EnumMap<UiEnum, UiAction> m = new EnumMap<>(UiEnum.class);
-//        m.put(UiEnum.MENU, uiMenu());
-//        m.put(UiEnum.FLEETLIST, fleetList());
-//        m.put(UiEnum.PROVISION, provision());
-//        m.put(UiEnum.ISSUCOMMAND, issuCommand());
-//        return m;
-//    }
-
-//    @Bean
-//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-//    public String getModels() {
-//        return station().listAvailableModels();
-//    }
-
-//    @Bean
-//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-//    public Reply quitSystem() {
-//        return station().quit();
-//    }
-
-//    @Bean
-//    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-//    public Fleet<Robot> robotsFleet() {
-//        return new RobotsFleet();
-//    }
-
-//    @Bean
-//    public FileLoader fileLoader() {
-//        return new FileLoader();
-//    }
-
-//    @Bean
-//    public Randomizer randomizer() {
-//        return new Randomizer();
-//    }
-
-//    @Bean
-//    public UiAction menu() {
-//        return new UiMenu();
-//    }
-//    @Bean
-//    public UiAction fleetList() {
-//        return new FleetList();
-//    }
-//    @Bean
-//    public UiAction provision() {
-//        return new Provision();
-//    }
-//    @Bean
-//    public UiAction issucommand() {
-//        return new IssuCommand();
-//    }
-//    @Bean
-//    public UiAction quit() {
-//        return new Quit();
-//    }
-
-//    @Bean
-//    public Input input() {
-//        return new UserInput();
-//    }
-//    @Bean
-//    public StationUi stationUi() {
-//        return new StationUi();
-//    }
-
-//@Bean
-//    public Printer printer() {
-//        return new SoutPrinter();
-//    }
-//        @Bean
-//    public Parser parser() {
-//        return new Parser();
-//    }
-
-//    @Bean
-//    public GeneralActions universeCosmicAction() {
-//        return new UniverseCosmicAction();
-//    }

@@ -9,7 +9,7 @@ public abstract class StandardTool implements Tool {
     @Setter
     private ToolState toolState = ToolState.READY;
 
-    public StandardTool(String name) {
+    protected StandardTool(String name) {
         this.toolName = name;
     }
     @Override

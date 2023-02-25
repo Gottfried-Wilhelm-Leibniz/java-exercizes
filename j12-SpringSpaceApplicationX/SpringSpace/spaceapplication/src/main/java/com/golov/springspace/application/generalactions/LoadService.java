@@ -5,11 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import output.Printer;
 import parser.Parser;
-
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 
-public class LoadService implements Runnable{
+public class LoadService implements Runnable {
     @Autowired
     private AnnotationConfigApplicationContext ctx;
     @Autowired
@@ -42,16 +41,3 @@ public class LoadService implements Runnable{
         }
     }
 }
-
-
-//    Loader loader = ctx.getBean("fileLoader", FileLoader.class);
-//    var bytes = loader.load(Path.of(arg));
-//    var parser =ctx.getBean("parser", Parser.class);
-//    var str = parser.bytesToString(bytes, Charset.defaultCharset());
-//    var robotsStrings = parser.stringSeparator(str, "\n");
-//    var printer = ctx.getBean("printer", Printer.class);
-//    var spaceStation = ctx.getBean("station", SpaceStation.class);
-//        for(var r : robotsStrings) {
-//                var robotsDetails = parser.stringSeparator(r, ":");
-//                printer.print(spaceStation.createNew(robotsDetails[0], robotsDetails[1], robotsDetails[2]).reason());
-//                }

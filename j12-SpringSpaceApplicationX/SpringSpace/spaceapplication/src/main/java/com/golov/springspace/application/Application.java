@@ -1,5 +1,4 @@
 package com.golov.springspace.application;
-import com.golov.springspace.application.generalactions.GeneralActions;
 import com.golov.springspace.application.generalactions.LoadService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import com.golov.springspace.ui.StationUi;
@@ -10,16 +9,12 @@ public class Application {
         if(args.length > 0) {
             ctx.getBean(LoadService.class, args[0]).run();
         }
-        ctx.getBean("createNew", "hal9000", "aaa", "a"); // todo for prac
-        ctx.getBean("createNew", "hal9000", "aaa", "b"); // todo for prac
-        ctx.getBean("createNew", "hal9000", "aaa", "c"); // todo for prac
-        ctx.getBean(GeneralActions.class).run();
         ctx.getBean("stationUi", StationUi.class).go();
     }
 }
 
 
-//practise
+//for initial practise
 //Path path = Path.of("try");
 //        try {
 //                Files.deleteIfExists(path);
@@ -44,4 +39,8 @@ public class Application {
 //                } catch (IOException e) {
 //                throw new RuntimeException(e);
 //                }
+
+//                ctx.getBean("createNew", "hal9000", "aaa", "a");
+//                ctx.getBean("createNew", "hal9000", "aaa", "b");
+//                ctx.getBean("createNew", "hal9000", "aaa", "c");
 // end of practise

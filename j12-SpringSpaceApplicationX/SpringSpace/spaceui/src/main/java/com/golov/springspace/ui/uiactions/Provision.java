@@ -50,7 +50,6 @@ public class Provision implements UiAction {
             return this;
         }
         return menu;
-
     }
 
     @Override

@@ -63,23 +63,3 @@ public class IssuCommand implements UiAction {
         return this.getClass().getSimpleName();
     }
 }
-
-//    int intInput;
-//    RobotOrder inputEnum;
-//        try {
-//                intInput = Integer.parseInt(choise) - 1;
-//                inputEnum = RobotOrder.values()[intInput];
-//                } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-//                printer.print("no such option");
-//                return ctx.getBean(UiEnum.ISSUCOMMAND.toString(), UiAction.class);
-//        }
-//        reply = (Reply) ctx.getBean("commandRobot", inputEnum, callSign);
-//        printer.print(reply.reason());
-//        return ctx.getBean(UiEnum.MENU.toString(), UiAction.class);
-//        }
-
-//        if(choise.equals("5")) {
-//            return ctx.getBean(UiEnum.MENU.toString(), UiAction.class);
-//        }
-
-//        printer.print(menu + parser.strArrToStrList(ctx.getBeanFactory().getBeanNamesForType(RobotAction.class))); // + parser.listToStringList(robotActions));

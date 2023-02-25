@@ -5,9 +5,7 @@ import randomizer.Randomizer;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class StandardRobot implements Robot {
     private final String model = this.toString();
     private final String name;
@@ -15,9 +13,9 @@ public abstract class StandardRobot implements Robot {
     private RobotState robotState;
     @Getter
     protected List<Tool> tools;
-//    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-//    private final Lock readLock = lock.readLock();
-//    private final Lock writeLock = lock.writeLock();
+    private final transient ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private final transient Lock readLock = lock.readLock();
+    private final transient Lock writeLock = lock.writeLock();
 
     protected StandardRobot(String name, String callSign, List<Tool> toolSet) {
         if (name.length() < 2 || name.length() > 32) {
@@ -37,20 +35,20 @@ public abstract class StandardRobot implements Robot {
     }
     @Override
     public RobotState robotState() {
-//        readLock.lock();
+        readLock.lock();
         try {
             return robotState;
         } finally {
-//            readLock.unlock();
+            readLock.unlock();
         }
     }
     @Override
     public void setRobotState(RobotState newRobotState) {
-//        writeLock.lock();
+        writeLock.lock();
         try {
             robotState = newRobotState;
         } finally {
-//            writeLock.unlock();
+            writeLock.unlock();
         }
     }
     @Override
@@ -58,7 +56,3 @@ public abstract class StandardRobot implements Robot {
         return this.getClass().getSimpleName();
     }
 }
-
-
-
-// todo json ignore

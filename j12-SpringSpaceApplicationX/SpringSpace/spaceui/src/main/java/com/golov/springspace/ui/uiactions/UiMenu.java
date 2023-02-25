@@ -1,5 +1,4 @@
 package com.golov.springspace.ui.uiactions;
-import com.golov.springspace.ui.UiEnum;
 import input.Input;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -8,7 +7,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import output.Printer;
 import parser.Parser;
-
 import java.util.List;
 @UiActionAno
 @Component
@@ -23,7 +21,7 @@ public class UiMenu implements UiAction {
     private Parser parser;
     @Autowired
     private List<UiAction> uiActionList;
-    private final String menu = "Menu\nPlease Choose:\n"; //\n1.Fleet list\n2.provision new robot\n3.issue command to a robot\n4.Exit";
+    private final String menu = "Menu\nPlease Choose:\n";
     private final String error = "No such option, please choose again";
     @Autowired
     private AnnotationConfigApplicationContext ctx;
@@ -38,7 +36,7 @@ public class UiMenu implements UiAction {
             return uiActionList.get(intInput - 1);
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
             printer.print(error);
-            return ctx.getBean(UiEnum.MENU.toString(), UiAction.class);
+            return this;
         }
     }
 

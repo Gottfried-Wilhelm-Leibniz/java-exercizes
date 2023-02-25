@@ -83,35 +83,3 @@ public class SpaceStation implements Station<Robot> {
     }
 
 }
-
-//    @Override
-//    public String listAvailableModels() {
-//        var sa = cpx.getBeanFactory().getBeanNamesForType(Robot.class);
-//        return parser.strArrToStrList(sa);
-//    }
-
-// newRobot = switch (model) {
-//                case "hal9000" -> ctx.getBean(Hal9000.class, name, callSign);
-//                case "tachikomas" -> ctx.getBean(Tachikomas.class, name, callSign);
-//                case "johnny5" -> ctx.getBean(Johnny5.class, name, callSign);
-//                case "maschinenmensch" -> ctx.getBean(Maschinemensch.class, name, callSign);
-//                default -> throw new NoSuchRobotInFactoryException("no such robot in factory");
-//            };
-
-//
-// try {
-//         robotsfleet.addNew(newRobot);
-//         } catch (NoSuchRobotInFactoryException | InvalidRobotNameException | CallSignAlreadyExistOnFleetException e) {
-//         return replyGenerator(false, "Failed: " + e.getMessage());
-//         }
-//         return replyGenerator(true, "The creation of " + newRobot.callSign() + " has Succeed\n" + parser.objectToJson(newRobot));
-
-//    @Override
-//    public Reply quit() {
-//        try {
-//
-//        } catch (RuntimeException e ) {
-//            return replyGenerator(false, e.getMessage());
-//        }
-//        return replyGenerator(true, "Ok ByeBye");
-//    }
