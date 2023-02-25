@@ -1,20 +1,22 @@
 package com.golov.springspace.ui.uiactions;
 import com.golov.springspace.station.Reply;
 import com.golov.springspace.station.robotactions.RobotAction;
-import com.golov.springspace.ui.UiEnum;
-import com.golov.springspace.station.RobotOrder;
 import input.Input;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import output.Printer;
 import parser.Parser;
-
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
+@Component
+@UiActionAno
+@Order(4)
 public class IssuCommand implements UiAction {
-    private String haed = "Choose call sign from the Available robots:\n";
-    private String menu = "Choose action:\n"; // 1.Dispatch\n2.Reboot\n3.SelfDiagnostic\n4.Delete\n5.Back";
+    private final String haed = "Choose call sign from the Available robots:\n";
+    private final String menuDis = "Choose action:\n"; // 1.Dispatch\n2.Reboot\n3.SelfDiagnostic\n4.Delete\n5.Back";
 
     @Autowired
     private Parser parser;
@@ -24,6 +26,8 @@ public class IssuCommand implements UiAction {
     private Input input;
     @Autowired
     private AnnotationConfigApplicationContext ctx;
+    @Autowired
+    private UiAction menu;
 
     @Override
     public UiAction act() {
@@ -32,31 +36,26 @@ public class IssuCommand implements UiAction {
         var reply = (Reply)ctx.getBean("getRobotDetails", callSign);
         printer.print(reply.reason());
         if(!reply.isSucceed()) {
-            return ctx.getBean(UiEnum.ISSUCOMMAND.toString(), UiAction.class);
+            return this;
         }
         var actions = ctx.getBeanFactory().getBeanNamesForType(RobotAction.class);
-        var some = new String[actions.length + 1];
-        System.arraycopy(actions, 0, some, 0, actions.length);
-        some[some.length - 1] = "Back to main menu";
-        printer.print(menu + parser.strArrToStrList(some));
-//        printer.print(menu + parser.strArrToStrList(ctx.getBeanFactory().getBeanNamesForType(RobotAction.class))); // + parser.listToStringList(robotActions));
-        var command = input.in();
-
-        if(command.equals("5")) {
-            return ctx.getBean(UiEnum.MENU.toString(), UiAction.class);
-        }
-        int intInput;
-        RobotOrder inputEnum;
+        var options = new ArrayList<>(Arrays.asList(actions));
+        options.add(("Back to main menu"));
+        printer.print(menuDis + parser.listToStringList(options));
+        var choise = input.in();
         try {
-            intInput = Integer.parseInt(command) - 1; // todo continue
-            inputEnum = RobotOrder.values()[intInput];
-        } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-            printer.print("no such option");
-            return ctx.getBean(UiEnum.ISSUCOMMAND.toString(), UiAction.class);
+            var intInput = Integer.parseInt(choise);
+            if(intInput == options.size()) {
+                return menu;
+            }
+             choise = options.get(intInput - 1);
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            printer.print("No such option, try again");
+            return this;
         }
-        reply = (Reply) ctx.getBean("commandRobot", inputEnum, callSign);
+        reply = (Reply) ctx.getBean("commandRobot",choise , callSign);
         printer.print(reply.reason());
-        return ctx.getBean(UiEnum.MENU.toString(), UiAction.class);
+        return menu;
     }
 
     @Override
@@ -64,4 +63,23 @@ public class IssuCommand implements UiAction {
         return this.getClass().getSimpleName();
     }
 }
-// todo reply manager
+
+//    int intInput;
+//    RobotOrder inputEnum;
+//        try {
+//                intInput = Integer.parseInt(choise) - 1;
+//                inputEnum = RobotOrder.values()[intInput];
+//                } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+//                printer.print("no such option");
+//                return ctx.getBean(UiEnum.ISSUCOMMAND.toString(), UiAction.class);
+//        }
+//        reply = (Reply) ctx.getBean("commandRobot", inputEnum, callSign);
+//        printer.print(reply.reason());
+//        return ctx.getBean(UiEnum.MENU.toString(), UiAction.class);
+//        }
+
+//        if(choise.equals("5")) {
+//            return ctx.getBean(UiEnum.MENU.toString(), UiAction.class);
+//        }
+
+//        printer.print(menu + parser.strArrToStrList(ctx.getBeanFactory().getBeanNamesForType(RobotAction.class))); // + parser.listToStringList(robotActions));

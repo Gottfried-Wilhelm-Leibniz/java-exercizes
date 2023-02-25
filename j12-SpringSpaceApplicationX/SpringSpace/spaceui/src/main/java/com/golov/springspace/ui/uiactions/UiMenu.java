@@ -3,11 +3,17 @@ import com.golov.springspace.ui.UiEnum;
 import input.Input;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import output.Printer;
 import parser.Parser;
 
 import java.util.List;
-
+@UiActionAno
+@Component
+@Order(1)
+@Primary
 public class UiMenu implements UiAction {
     @Autowired
     private Printer printer;

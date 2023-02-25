@@ -64,28 +64,18 @@ public class SpaceStation implements Station<Robot> {
     }
 
     @Override
-    public Reply commandRobot(RobotOrder robotOrder, String callSign) {
+    public Reply commandRobot(String robotCommand, String callSign) {
         Robot r;
         try {
             r = robotsfleet.get(callSign);
-            var ra = (RobotAction)ctx.getBean(robotOrder.toString().toLowerCase(), r);
+            var ra = (RobotAction)ctx.getBean(robotCommand, r);
             ra.run();
         } catch (RobotNotExistInFleetExceptopn e) {
             return replyGenerator(false, "Failed: " + e.getMessage());
         } catch (BeanCreationException e) {
             return replyGenerator(false, "Failed: " + e.getMostSpecificCause().getMessage());
         }
-        return replyGenerator(true, callSign + " is " + robotOrder);
-    }
-
-    @Override
-    public Reply quit() {
-        try {
-//            pool.close(); //todo close pool
-        } catch (RuntimeException e ) {
-            return replyGenerator(false, e.getMessage());
-        }
-        return replyGenerator(true, "Ok ByeBye");
+        return replyGenerator(true, callSign + " is " + robotCommand);
     }
 
     private Reply replyGenerator(boolean bool, String reason) {
@@ -115,3 +105,13 @@ public class SpaceStation implements Station<Robot> {
 //         return replyGenerator(false, "Failed: " + e.getMessage());
 //         }
 //         return replyGenerator(true, "The creation of " + newRobot.callSign() + " has Succeed\n" + parser.objectToJson(newRobot));
+
+//    @Override
+//    public Reply quit() {
+//        try {
+//
+//        } catch (RuntimeException e ) {
+//            return replyGenerator(false, e.getMessage());
+//        }
+//        return replyGenerator(true, "Ok ByeBye");
+//    }

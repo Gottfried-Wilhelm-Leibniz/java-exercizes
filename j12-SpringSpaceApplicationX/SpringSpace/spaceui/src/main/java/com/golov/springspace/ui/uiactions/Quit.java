@@ -1,14 +1,24 @@
 package com.golov.springspace.ui.uiactions;
-import com.golov.springspace.ui.exceptions.ErrorWhenExitingProgramException;
-import com.golov.springspace.ui.UiEnum;
-
-///////////// deprecated ///////////////////////
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+import output.Printer;
+@Component
+@UiActionAno
+@Order(5)
 public class Quit implements UiAction {
+    @Autowired
+    private AnnotationConfigApplicationContext ctx;
+    @Autowired
+    private Printer printer;
 
     @Override
     public UiAction act() {
-        throw new ErrorWhenExitingProgramException("the program failled to exit");
+        ctx.close();
+        printer.print("Ok ByeBye");
+        System.exit(0);
+        return null; //todo solve the exit
     }
 
     @Override

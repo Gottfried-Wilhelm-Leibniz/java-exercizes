@@ -1,12 +1,15 @@
 package com.golov.springspace.station.fleet;
 import com.golov.springspace.infra.*;
 import com.golov.springspace.station.exceptions.*;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 @Component
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class RobotsFleet implements Fleet<Robot> {
     private final Map<String, Robot> robotsMap = new ConcurrentHashMap<>();
 

@@ -5,6 +5,6 @@ public interface Station<T> {
     Reply createNew(String model, String name, String callSign);
     String listAvailableRobots();
     Reply getRobotDetails(String callSign);
-    Reply commandRobot(RobotOrder robotOrder, String callSign);
-    Reply quit();
+    Reply commandRobot(String robotOrder, String callSign);
+//    Reply quit();
 }

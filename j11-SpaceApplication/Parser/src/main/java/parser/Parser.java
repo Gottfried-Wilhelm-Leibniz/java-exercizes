@@ -8,8 +8,9 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 import java.util.Objects;
-
+@Component
 public class Parser {
     public<T> String iterableToJson(Iterable<T> iterable) {
         var sb = new StringBuilder();

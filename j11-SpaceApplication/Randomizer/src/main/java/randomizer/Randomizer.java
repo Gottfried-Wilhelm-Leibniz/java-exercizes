@@ -1,6 +1,8 @@
 package randomizer;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.springframework.stereotype.Component;
+@Component
 public class Randomizer {
     public boolean boolRandom(double r) {
         return ThreadLocalRandom.current().nextDouble() < r;

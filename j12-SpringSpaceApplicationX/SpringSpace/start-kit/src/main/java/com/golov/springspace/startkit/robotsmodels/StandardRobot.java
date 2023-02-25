@@ -9,6 +9,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 //@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class StandardRobot implements Robot {
+    private final String model = this.toString();
     private final String name;
     private final String callSign;
     private RobotState robotState;
