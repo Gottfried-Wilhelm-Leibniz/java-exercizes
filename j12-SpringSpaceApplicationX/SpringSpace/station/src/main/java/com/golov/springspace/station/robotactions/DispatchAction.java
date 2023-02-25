@@ -1,4 +1,5 @@
 package com.golov.springspace.station.robotactions;
+import org.springframework.scheduling.annotation.Async;
 import randomizer.Randomizer;
 import com.golov.springspace.infra.*;
 import com.golov.springspace.station.exceptions.RobotNotActiveException;
@@ -14,6 +15,7 @@ public class DispatchAction implements RobotAction {
     }
 
     @Override
+    @Async
     public void run() {
         robot.setRobotState(RobotState.WORKING);
         try {

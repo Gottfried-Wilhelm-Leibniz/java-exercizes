@@ -24,8 +24,8 @@ public class SpaceStation implements Station<Robot> {
     private Fleet<Robot> robotsfleet;
     @Autowired
     private Parser parser;
-    @Autowired
-    private ExecutorService pool;
+//    @Autowired
+//    private ExecutorService pool;
     @Autowired
     private AnnotationConfigApplicationContext ctx;
 
@@ -75,10 +75,10 @@ public class SpaceStation implements Station<Robot> {
     public Reply commandRobot(RobotOrder robotOrder, String callSign) {
         Robot r;
         try {
-            r = robotsfleet.get(callSign);
-            var obj = ctx.getBean(robotOrder.toString().toLowerCase(), r);
-            var ra = (RobotAction) obj;
-            pool.execute(ra);
+            r = robotsfleet.get(callSign); //todo delelte thread
+            var ra = (RobotAction)ctx.getBean(robotOrder.toString().toLowerCase(), r);
+            ra.run();
+//            pool.execute(ra);
         } catch (RobotNotExistInFleetExceptopn e) {
             return replyGenerator(false, "Failed: " + e.getMessage());
         } catch (BeanCreationException e) {
@@ -90,7 +90,7 @@ public class SpaceStation implements Station<Robot> {
     @Override
     public Reply quit() {
         try {
-            pool.close();
+//            pool.close();
         } catch (RuntimeException e ) {
             return replyGenerator(false, e.getMessage());
         }

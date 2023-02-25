@@ -1,4 +1,5 @@
 package com.golov.springspace.station.robotactions;
+import org.springframework.scheduling.annotation.Async;
 import randomizer.Randomizer;
 import com.golov.springspace.infra.*;
 
@@ -8,7 +9,7 @@ public class Reboot implements RobotAction {
     public Reboot(Robot robot) {
         this.robot = robot;
     }
-
+    @Async
     @Override
     public void run() {
         robot.setRobotState(RobotState.REBOOTING);

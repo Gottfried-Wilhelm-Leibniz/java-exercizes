@@ -1,4 +1,5 @@
 package com.golov.springspace.application;
+import com.golov.springspace.application.generalactions.GeneralActions;
 import com.golov.springspace.application.generalactions.UniverseCosmicAction;
 import com.golov.springspace.startkit.toolmodels.*;
 import com.golov.springspace.startkit.robotsmodels.*;
@@ -28,6 +29,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import output.Printer;
 import output.SoutPrinter;
@@ -42,7 +44,7 @@ import java.util.concurrent.Executors;
 @Configuration
 @ComponentScan
 @EnableAsync
-public class AppConfiguration {
+public class AppConfiguration implements AsyncConfigurer {
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -206,13 +208,14 @@ public class AppConfiguration {
     }
 
     @Bean
-    public UniverseCosmicAction universeCosmicAction() {
+    public GeneralActions universeCosmicAction() {
         return new UniverseCosmicAction();
     }
 
     @Bean
-    public ExecutorService taskExecutor() {
-        return Executors.newCachedThreadPool();
+    public TaskExecutor taskExecutor() {
+        return new ConcurrentTaskExecutor(Executors.newCachedThreadPool());
+//        return Executors.newCachedThreadPool();
     }
 
 

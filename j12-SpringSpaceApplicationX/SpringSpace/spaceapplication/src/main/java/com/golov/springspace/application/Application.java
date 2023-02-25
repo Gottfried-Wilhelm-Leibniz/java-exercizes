@@ -1,4 +1,5 @@
 package com.golov.springspace.application;
+import com.golov.springspace.application.generalactions.GeneralActions;
 import com.golov.springspace.application.generalactions.UniverseCosmicAction;
 import loader.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,20 +12,18 @@ import java.nio.file.Path;
 import com.golov.springspace.station.*;
 import com.golov.springspace.ui.StationUi;
 
-public class Application implements AsyncConfigurer {
+public class Application {
     public static void main(String[] args) {
         var ctx = new AnnotationConfigApplicationContext(AppConfiguration.class);
-        @Autowired UniverseCosmicAction cosmicAction;
-        ctx.getBean(UniverseCosmicAction.class).run(); // todo weired conseq
         if(args.length > 0) {
             loadFromFile(args[0], ctx);
         }
         ctx.getBean("createNew", "hal9000", "aaa", "a"); // todo erase
-
+        ctx.getBean(GeneralActions.class).run();
         ctx.getBean("stationUi", StationUi.class).go();
     }
 
-    private static void loadFromFile(String arg, AnnotationConfigApplicationContext ctx) {
+    private static void loadFromFile(String arg, AnnotationConfigApplicationContext ctx) { //todo class of runnable
         Loader loader = ctx.getBean("fileLoader", FileLoader.class);
         var bytes = loader.load(Path.of(arg));
         var parser =ctx.getBean("parser", Parser.class);

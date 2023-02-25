@@ -1,6 +1,7 @@
 package com.golov.springspace.station.robotactions;
 import com.golov.springspace.infra.RobotState;
 import com.golov.springspace.infra.ToolState;
+import org.springframework.scheduling.annotation.Async;
 import output.Printer;
 import output.SoutPrinter;
 import randomizer.Randomizer;
@@ -17,7 +18,7 @@ public class SelfDiagnostic implements RobotAction {
         }
         this.robot = robot;
     }
-
+    @Async
     @Override
     public void run() {
         var toolList = robot.getTools();
