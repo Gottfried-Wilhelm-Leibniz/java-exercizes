@@ -4,6 +4,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import output.Printer;
+import com.golov.springspace.station.StationService;
 
 @Component
 @UiActionAno
@@ -12,13 +13,13 @@ public class FleetList implements UiAction {
     @Autowired
     private Printer printer;
     @Autowired
-    private AnnotationConfigApplicationContext cpx;
-    @Autowired
     UiAction menu;
+    @Autowired
+    private StationService stationService;
 
     @Override
     public UiAction act() {
-        printer.print(cpx.getBean("getFleetList", String.class));
+        printer.print(stationService.getFleetList());
         return menu;
     }
     @Override

@@ -3,9 +3,6 @@ import com.golov.springspace.application.generalactions.LoadService;
 import com.golov.springspace.startkit.toolmodels.*;
 import com.golov.springspace.startkit.robotsmodels.*;
 import com.golov.springspace.infra.*;
-import com.golov.springspace.station.Reply;
-import com.golov.springspace.station.SpaceStation;
-import com.golov.springspace.station.Station;
 import com.golov.springspace.station.robotactions.*;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.*;
@@ -66,45 +63,6 @@ public class AppConfiguration implements AsyncConfigurer {
     public Maschinemensch maschinemensch(String name, String callSign) {
         return new Maschinemensch(name, callSign, List.of(replicator(), disruptor()));
     }
-
-
-
-    @Bean
-    public Station<Robot> station() {
-        return new SpaceStation();
-    }
-
-
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Reply createNew(String model, String name, String callSign) {
-        return station().createNew(model, name, callSign);
-    }
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Reply getRobotDetails(String callSign) {
-        return station().getRobotDetails(callSign);
-    }
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public Reply commandRobot(String command, String callSign) {
-        return station().commandRobot(command, callSign);
-    }
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public String getFleetList() {
-        return station().getFleetList();
-    }
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public String getAvailableRobots() {
-        return station().listAvailableRobots();
-    }
-
 
 
     @Bean

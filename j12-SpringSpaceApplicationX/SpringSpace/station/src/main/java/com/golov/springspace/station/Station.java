@@ -5,4 +5,6 @@ public interface Station<T> {
     String listAvailableRobots();
     Reply getRobotDetails(String callSign);
     Reply commandRobot(String robotOrder, String callSign);
+    String[] getAvailableModels();
+    String[] getRobotActions();
 }

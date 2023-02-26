@@ -1,5 +1,6 @@
 package com.golov.springspace.station;
 import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -20,17 +21,24 @@ public class SpaceStation implements Station<Robot> {
     private Parser parser;
     @Autowired
     private AnnotationConfigApplicationContext ctx;
-
     @Override
     public String getFleetList() {
         return parser.iterableToJson(robotsfleet.listRobots());
     }
+    @Override
+    public String[] getAvailableModels() {
+        return ctx.getBeanNamesForType(Robot.class);
+    }
+    @Override
+    public String[] getRobotActions() {
+        return ctx.getBeanNamesForType(RobotAction.class);
+    }
 
     @Override
-    @Bean
     public Reply createNew(String model, String name, String callSign) {
         Robot newRobot;
         try {
+
             newRobot = (Robot)ctx.getBean(model.toLowerCase(), name, callSign);
             robotsfleet.addNew(newRobot);
         } catch (NoSuchBeanDefinitionException | BeanCreationException e) {

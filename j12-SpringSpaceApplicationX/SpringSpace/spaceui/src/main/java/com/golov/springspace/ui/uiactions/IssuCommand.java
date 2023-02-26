@@ -1,5 +1,6 @@
 package com.golov.springspace.ui.uiactions;
 import com.golov.springspace.station.Reply;
+import com.golov.springspace.station.StationService;
 import com.golov.springspace.station.robotactions.RobotAction;
 import input.Input;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,20 +26,20 @@ public class IssuCommand implements UiAction {
     @Autowired
     private Input input;
     @Autowired
-    private AnnotationConfigApplicationContext ctx;
-    @Autowired
     private UiAction menu;
+    @Autowired
+    private StationService stationService;
 
     @Override
     public UiAction act() {
-        printer.print(haed + ctx.getBean("getAvailableRobots", String.class));
+        printer.print(haed +stationService.listAvailableRobots());
         var callSign = input.in();
-        var reply = (Reply)ctx.getBean("getRobotDetails", callSign);
+        var reply = stationService.getRobotDetails(callSign);
         printer.print(reply.reason());
         if(!reply.isSucceed()) {
             return this;
         }
-        var actions = ctx.getBeanFactory().getBeanNamesForType(RobotAction.class);
+        var actions = stationService.getRobotActions();
         var options = new ArrayList<>(Arrays.asList(actions));
         options.add(("Back to main menu"));
         printer.print(menuDis + parser.listToStringList(options));
@@ -53,7 +54,7 @@ public class IssuCommand implements UiAction {
             printer.print("No such option, try again");
             return this;
         }
-        reply = (Reply) ctx.getBean("commandRobot",choise , callSign);
+        reply = stationService.commandRobot(choise, callSign);
         printer.print(reply.reason());
         return menu;
     }

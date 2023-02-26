@@ -1,7 +1,6 @@
 package com.golov.springspace.ui.uiactions;
 import input.Input;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -23,8 +22,6 @@ public class UiMenu implements UiAction {
     private List<UiAction> uiActionList;
     private final String menu = "Menu\nPlease Choose:\n";
     private final String error = "No such option, please choose again";
-    @Autowired
-    private AnnotationConfigApplicationContext ctx;
 
     @Override
     public UiAction act() {

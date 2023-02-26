@@ -1,6 +1,7 @@
 package com.golov.springspace.ui.uiactions;
 import com.golov.springspace.infra.Robot;
 import com.golov.springspace.station.Reply;
+import com.golov.springspace.station.StationService;
 import input.Input;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -8,6 +9,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import output.Printer;
 import parser.Parser;
+
+import java.util.List;
 
 @Component
 @UiActionAno
@@ -24,13 +27,13 @@ public class Provision implements UiAction {
     @Autowired
     private Parser parser;
     @Autowired
-    private AnnotationConfigApplicationContext ctx;
-    @Autowired
     private UiAction menu;
+    @Autowired
+    private StationService stationService;
 
     @Override
     public UiAction act() {
-        var beansArr = ctx.getBeanFactory().getBeanNamesForType(Robot.class);
+        var beansArr = stationService.getAvailableModels();
         printer.print(headLine + parser.strArrToStrList(beansArr) + chooseModle);
         String modelStr;
         try {
@@ -44,7 +47,7 @@ public class Provision implements UiAction {
         var name = input.in();
         printer.print(signChoose);
         var calSign = input.in();
-        var reply = (Reply)ctx.getBean("createNew", modelStr, name, calSign);
+        var reply = stationService.createNew(modelStr, name, calSign);
         printer.print(reply.reason());
         if(! reply.isSucceed()) {
             return this;
