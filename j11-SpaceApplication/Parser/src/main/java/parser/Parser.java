@@ -6,10 +6,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import org.springframework.stereotype.Component;
-import java.util.Objects;
+
 @Component
 public class Parser {
     public<T> String iterableToJson(Iterable<T> iterable) {
@@ -79,5 +79,11 @@ public class Parser {
             sb.append(i++).append(") ").append(o.toString()).append("\n");
         }
         return sb.toString();
+    }
+    public <T,S> String[] mapKeysToStrArr(Map<T,S> map) {
+        String[] s = new String[map.size()];
+        var list = new ArrayList<String>();
+        map.keySet().forEach(t-> list.add(t.toString()));
+        return list.toArray(s);
     }
 }

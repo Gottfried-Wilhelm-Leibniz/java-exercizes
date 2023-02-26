@@ -1,22 +1,29 @@
 package com.golov.springspace.station.robotactions;
 import com.golov.springspace.infra.RobotState;
 import com.golov.springspace.infra.ToolState;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 import output.Printer;
-import output.SoutPrinter;
 import randomizer.Randomizer;
 import com.golov.springspace.infra.Robot;
 import com.golov.springspace.station.exceptions.RobotNotFailingException;
-
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Order(3)
 public class SelfDiagnostic implements RobotAction {
-    private final Robot robot;
-    private final Printer printer = new SoutPrinter();
+    private Robot robot;
+    @Autowired
+    private Printer printer;
 
-    public SelfDiagnostic(Robot robot) {
+    public void setRobot(Robot r) {
         if(!robot.robotState().equals(RobotState.FAILING)) {
             throw new RobotNotFailingException("Robot " + robot.callSign() + " is not in Failing state");
         }
-        this.robot = robot;
+        this.robot = r;
     }
     @Async
     @Override

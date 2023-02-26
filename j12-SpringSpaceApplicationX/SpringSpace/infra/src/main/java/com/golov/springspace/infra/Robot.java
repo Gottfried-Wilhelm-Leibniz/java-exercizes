@@ -6,4 +6,8 @@ public interface Robot {
     RobotState robotState();
     void setRobotState(RobotState newRobotState);
     List<Tool> getTools();
+
+    void setName(String name);
+
+    void setCallSign(String callSign);
 }

@@ -7,7 +7,7 @@ public class Application {
     public static void main(String[] args) {
         var ctx = new AnnotationConfigApplicationContext(AppConfiguration.class);
         if(args.length > 0) {
-            ctx.getBean(LoadService.class, args[0]).run();
+//            ctx.getBean(LoadService.class, args[0]).run();
         }
         ctx.getBean("stationUi", StationUi.class).go();
     }

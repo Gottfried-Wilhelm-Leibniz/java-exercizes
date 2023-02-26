@@ -1,6 +1,7 @@
 package com.golov.springspace.station.robotactions;
-@FunctionalInterface
-public interface RobotAction extends Runnable {
+import com.golov.springspace.infra.Robot;
 
+public interface RobotAction extends Runnable {
+    void setRobot(Robot r);
 }
 

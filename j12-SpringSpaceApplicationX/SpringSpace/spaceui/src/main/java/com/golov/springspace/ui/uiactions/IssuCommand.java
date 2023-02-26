@@ -32,7 +32,7 @@ public class IssuCommand implements UiAction {
 
     @Override
     public UiAction act() {
-        printer.print(haed +stationService.listAvailableRobots());
+        printer.print(haed + stationService.listAvailableRobots());
         var callSign = input.in();
         var reply = stationService.getRobotDetails(callSign);
         printer.print(reply.reason());

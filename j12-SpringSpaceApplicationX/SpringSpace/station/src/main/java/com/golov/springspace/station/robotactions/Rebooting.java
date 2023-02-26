@@ -1,13 +1,19 @@
 package com.golov.springspace.station.robotactions;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 import randomizer.Randomizer;
 import com.golov.springspace.infra.*;
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Order(2)
+public class Rebooting implements RobotAction {
+    private Robot robot;
 
-public class Reboot implements RobotAction {
-    private final Robot robot;
-
-    public Reboot(Robot robot) {
-        this.robot = robot;
+    public void setRobot(Robot r) {
+        this.robot = r;
     }
     @Async
     @Override
