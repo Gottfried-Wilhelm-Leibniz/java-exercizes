@@ -15,4 +15,3 @@ public class Hal9000 extends StandardRobot {
 
 }
 
-// todo methood creation !
