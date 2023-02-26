@@ -4,23 +4,30 @@ import com.golov.springspace.station.Reply;
 import com.golov.springspace.station.StationService;
 import input.Input;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import output.Printer;
 import parser.Parser;
 
-import java.util.List;
-
 @Component
 @UiActionAno
 @Order(3)
+@PropertySource("classpath:application.properties")
 public class Provision implements UiAction {
-    private final String headLine = "Those are the Available models:\n";
-    private final String chooseModle = "Please enter the number of the model you desire:";
-    private final String nameChoose = "Please enter the Name for the new model:";
-    private final String signChoose = "Please enter the Sign for the new model:";
+
+    @Value("${provision.headLine}")
+    private String headLine;
+    @Value("${provision.chooseMoodle}")
+    private String chooseMoodle;
+    @Value("${provision.nameChoose}")
+    private String nameChoose;
+    @Value("${provision.signChoose}")
+    private String signChoose;
+    @Value("${output.nuSuchOption}")
+    private String error;
     @Autowired
     private Printer printer;
     @Autowired
@@ -36,13 +43,13 @@ public class Provision implements UiAction {
     @Override
     public UiAction act() {
         var beansArr = stationService.getAvailableModels();
-        printer.print(headLine + parser.strArrToStrList(beansArr) + chooseModle);
+        printer.print(headLine + parser.strArrToStrList(beansArr) + chooseMoodle);
         String modelStr;
         try {
             var modelInt = Integer.parseInt(input.in());
             modelStr = beansArr[modelInt - 1];
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-            printer.print("Not a Valid choice, try again");
+            printer.print(error);
             return this;
         }
         printer.print(nameChoose);

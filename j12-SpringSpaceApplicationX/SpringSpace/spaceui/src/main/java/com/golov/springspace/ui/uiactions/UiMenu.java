@@ -1,7 +1,9 @@
 package com.golov.springspace.ui.uiactions;
 import input.Input;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import output.Printer;
@@ -11,6 +13,7 @@ import java.util.List;
 @Component
 @Order(1)
 @Primary
+@PropertySource("classpath:application.properties")
 public class UiMenu implements UiAction {
     @Autowired
     private Printer printer;
@@ -20,8 +23,10 @@ public class UiMenu implements UiAction {
     private Parser parser;
     @Autowired
     private List<UiAction> uiActionList;
-    private final String menu = "Menu\nPlease Choose:\n";
-    private final String error = "No such option, please choose again";
+    @Value("${output.preMenu}")
+    private String menu;
+    @Value("${output.nuSuchOption}")
+    private String error;
 
     @Override
     public UiAction act() {

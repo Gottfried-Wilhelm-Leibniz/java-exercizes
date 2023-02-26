@@ -4,8 +4,10 @@ import com.golov.springspace.station.StationService;
 import com.golov.springspace.station.robotactions.RobotAction;
 import input.Input;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import output.Printer;
@@ -14,12 +16,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @Component
+@PropertySource("classpath:application.properties")
 @UiActionAno
 @Order(4)
 public class IssuCommand implements UiAction {
-    private final String haed = "Choose call sign from the Available robots:\n";
-    private final String menuDis = "Choose action:\n"; // 1.Dispatch\n2.Reboot\n3.SelfDiagnostic\n4.Delete\n5.Back";
-
+    @Value("${output.ChooseCallSign}")
+    private String haed;
+    @Value("${output.ChooseAction}")
+    private String menuDis;
+    @Value("${output.nuSuchOption}")
+    private String error;
     @Autowired
     private Parser parser;
     @Autowired
@@ -53,7 +59,7 @@ public class IssuCommand implements UiAction {
             }
              choise = options.get(intInput - 1);
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            printer.print("No such option, try again");
+            printer.print(error);
             return this;
         }
         reply = stationService.commandRobot(choise, callSign);
