@@ -5,6 +5,7 @@ import com.golov.springspace.station.StationService;
 import input.Input;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import output.Printer;
@@ -26,6 +27,7 @@ public class Provision implements UiAction {
     private Input input;
     @Autowired
     private Parser parser;
+    @Lazy
     @Autowired
     private UiAction menu;
     @Autowired

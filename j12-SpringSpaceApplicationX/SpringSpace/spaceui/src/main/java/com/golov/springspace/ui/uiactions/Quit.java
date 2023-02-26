@@ -8,17 +8,17 @@ import output.Printer;
 @UiActionAno
 @Order(5)
 public class Quit implements UiAction {
-    @Autowired
-    private AnnotationConfigApplicationContext ctx;
+//    @Autowired
+//    private AnnotationConfigApplicationContext ctx;
     @Autowired
     private Printer printer;
 
     @Override
     public UiAction act() {
-        ctx.close();
+//        ctx.close(); // TODO CLOSE
         printer.print("Ok ByeBye");
         System.exit(0);
-        return null; //todo solve the exit
+        return null;
     }
 
     @Override

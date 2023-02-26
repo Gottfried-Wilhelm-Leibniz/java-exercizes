@@ -5,6 +5,7 @@ import com.golov.springspace.station.robotactions.RobotAction;
 import input.Input;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import output.Printer;
@@ -25,6 +26,7 @@ public class IssuCommand implements UiAction {
     private Printer printer;
     @Autowired
     private Input input;
+    @Lazy
     @Autowired
     private UiAction menu;
     @Autowired

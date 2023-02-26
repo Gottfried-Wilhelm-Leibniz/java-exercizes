@@ -2,11 +2,12 @@ package com.golov.springspace.application.generalactions;
 import com.golov.springspace.station.StationService;
 import loader.Loader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import output.Printer;
 import parser.Parser;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
-
+@Component
 public class LoadService implements Runnable {
     @Autowired
     private Parser parser;
@@ -14,11 +15,11 @@ public class LoadService implements Runnable {
     private Loader loader;
     @Autowired
     private Printer printer;
-    private final String arg;
+    private String arg;
     @Autowired
     StationService stationService;
 
-    public LoadService(String arg) {
+    public void load(String arg) {
         this.arg = arg;
     }
 

@@ -22,8 +22,6 @@ public class SpaceStation implements Station<Robot> {
     @Autowired
     private Parser parser;
     @Autowired
-    private AnnotationConfigApplicationContext ctx;
-    @Autowired
     private BeanFactory beanFactory;
     @Autowired
     private Map<String,Robot> robotMap;
@@ -50,8 +48,8 @@ public class SpaceStation implements Station<Robot> {
             newRobot.setName(name);
             newRobot.setCallSign(callSign);
             robotsfleet.addNew(newRobot);
-//        } catch (NoSuchBeanDefinitionException | BeanCreationException e) {
-//            return replyGenerator(false,"Failed: " + e.getMostSpecificCause().getMessage());
+        } catch (NullPointerException e) {
+            return replyGenerator(false, "No such robot in factory");
         } catch (CallSignAlreadyExistOnFleetException | InvalidRobotNameException e) {
             return replyGenerator(false, "Failed: " + e.getMessage());
         }
@@ -91,9 +89,6 @@ public class SpaceStation implements Station<Robot> {
         } catch (RobotNotExistInFleetExceptopn | RobotNotActiveException | RobotNotFailingException e) {
             return replyGenerator(false, "Failed: " + e.getMessage());
         }
-//        catch (BeanCreationException e) {
-//            return replyGenerator(false, "Failed: " + e.getMostSpecificCause().getMessage());
-//        }
         ra.run();
         return replyGenerator(true, callSign + " is " + robotCommand);
     }
@@ -103,3 +98,10 @@ public class SpaceStation implements Station<Robot> {
     }
 
 }
+
+//        catch (BeanCreationException e) {
+//            return replyGenerator(false, "Failed: " + e.getMostSpecificCause().getMessage());
+//        }
+
+//        } catch (NoSuchBeanDefinitionException | BeanCreationException e) {
+//            return replyGenerator(false,"Failed: " + e.getMostSpecificCause().getMessage());
