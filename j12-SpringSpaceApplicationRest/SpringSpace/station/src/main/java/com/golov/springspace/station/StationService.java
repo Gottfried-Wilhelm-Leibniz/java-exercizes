@@ -1,6 +1,4 @@
 package com.golov.springspace.station;
-import com.golov.springspace.station.Reply;
-import com.golov.springspace.station.SpaceStation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

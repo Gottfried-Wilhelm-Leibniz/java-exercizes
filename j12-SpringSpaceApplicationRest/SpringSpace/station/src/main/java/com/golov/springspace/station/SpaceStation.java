@@ -1,11 +1,9 @@
 package com.golov.springspace.station;
 import com.golov.springspace.startkit.robotsmodels.InvalidRobotNameException;
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
 import parser.Parser;
 import com.golov.springspace.infra.Robot;
 import com.golov.springspace.station.fleet.*;
@@ -16,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@RestController
 public class SpaceStation implements Station<Robot> {
     @Autowired
     private Fleet<Robot> robotsfleet;
@@ -79,7 +78,7 @@ public class SpaceStation implements Station<Robot> {
     }
 
     @Override
-    public Reply commandRobot(String robotCommand, String callSign) {
+    public Reply commandRobot(String callSign, String robotCommand) {
         Robot r;
         RobotAction ra;
         try {
@@ -87,7 +86,7 @@ public class SpaceStation implements Station<Robot> {
             ra = robotActionMap.get(robotCommand);
             ra.setRobot(r);
             ra.run();
-        } catch (RobotNotExistInFleetExceptopn | RobotNotActiveException | RobotNotFailingException e) {
+        } catch (RobotNotExistInFleetExceptopn | RobotNotActiveException | RobotNotFailingException e) { // todo robot not failing not catched
             return replyGenerator(false, "Failed: " + e.getMessage());
         }
         return replyGenerator(true, callSign + " is " + robotCommand);

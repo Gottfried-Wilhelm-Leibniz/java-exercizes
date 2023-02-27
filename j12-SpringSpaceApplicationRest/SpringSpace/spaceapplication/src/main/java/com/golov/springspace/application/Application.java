@@ -20,7 +20,7 @@ public class Application implements CommandLineRunner {
             loadService.load(args[0]);
             loadService.run();
         }
-            stationUi.go();
+//            stationUi.go();
         }
 }
 

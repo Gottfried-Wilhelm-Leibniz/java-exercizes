@@ -23,10 +23,12 @@ public class UiMenu implements UiAction {
     private Parser parser;
     @Autowired
     private List<UiAction> uiActionList;
-    @Value("${output.preMenu}")
-    private String menu;
-    @Value("${output.nuSuchOption}")
-    private String error;
+//    @Value("${output.preMenu}")
+//    private String menu;
+    private final String menu = "Menu\nPlease Choose:\n";
+//    @Value("${output.nuSuchOption}")
+//    private String error;
+    private final String error = "No such option, please choose again";
 
     @Override
     public UiAction act() {

@@ -18,16 +18,21 @@ import parser.Parser;
 @PropertySource("classpath:application.properties")
 public class Provision implements UiAction {
 
-    @Value("${provision.headLine}")
-    private String headLine;
-    @Value("${provision.chooseMoodle}")
-    private String chooseMoodle;
-    @Value("${provision.nameChoose}")
-    private String nameChoose;
-    @Value("${provision.signChoose}")
-    private String signChoose;
-    @Value("${output.nuSuchOption}")
-    private String error;
+//    @Value("${provision.headLine}")
+//    private String headLine;
+//    @Value("${provision.chooseMoodle}")
+//    private String chooseMoodle;
+//    @Value("${provision.nameChoose}") // todo not working the properties since i changed the name
+//    private String nameChoose;
+//    @Value("${provision.signChoose}")
+//    private String signChoose;
+//    @Value("${output.nuSuchOption}")
+//    private String error;
+    private String error = "No such option, please choose again";
+    private final String headLine = "Those are the Available models:\n";
+    private final String chooseMoodle = "Please enter the model Name you desire";
+    private final String nameChoose = "Please enter the Name for the new model";
+    private final String signChoose = "Please enter the Sign for the new model";
     @Autowired
     private Printer printer;
     @Autowired

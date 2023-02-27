@@ -1,11 +1,8 @@
 package com.golov.springspace.ui.uiactions;
-import com.golov.springspace.station.Reply;
 import com.golov.springspace.station.StationService;
-import com.golov.springspace.station.robotactions.RobotAction;
 import input.Input;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
@@ -20,12 +17,15 @@ import java.util.Arrays;
 @UiActionAno
 @Order(4)
 public class IssuCommand implements UiAction {
-    @Value("${output.ChooseCallSign}")
-    private String haed;
-    @Value("${output.ChooseAction}")
-    private String menuDis;
-    @Value("${output.nuSuchOption}")
-    private String error;
+//    @Value("${output.ChooseCallSign}")
+//    private String head;
+    private String head = "Choose call sign from the Available robots:\n";
+//    @Value("${output.ChooseAction}")
+//    private String menuDis;
+    private String menuDis = "Choose action:\n";
+//    @Value("${output.nuSuchOption}")
+//    private String error;
+    private String error = "No such option, please choose again";
     @Autowired
     private Parser parser;
     @Autowired
@@ -40,7 +40,7 @@ public class IssuCommand implements UiAction {
 
     @Override
     public UiAction act() {
-        printer.print(haed + stationService.listAvailableRobots());
+        printer.print(head + stationService.listAvailableRobots());
         var callSign = input.in();
         var reply = stationService.getRobotDetails(callSign);
         printer.print(reply.reason());

@@ -1,5 +1,7 @@
-package com.golov.springspace.application;
-import org.springframework.context.annotation.*;
+package com.golov.springspace.simplecontroller;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -12,7 +14,7 @@ import java.util.concurrent.Executors;
 @ComponentScan(basePackages = {"randomizer", "loader", "output", "input", "com.golov.springspace", "parser"})
 @EnableAsync
 @EnableScheduling
-public class AppConfiguration implements AsyncConfigurer {
+public class RestConfiguration implements AsyncConfigurer {
     @Bean
     public TaskExecutor taskExecutor() {
         return new ConcurrentTaskExecutor(Executors.newCachedThreadPool());
