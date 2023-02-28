@@ -15,7 +15,10 @@ public class Main {
 //        Set<Integer> b = Set.of(4,5,6);
 //        System.out.println(sets(List.of(a,b)));
         // q3
-        System.out.println(fibRec(50));
+//        System.out.println(fibRec(50));
+        //q4
+//        System.out.println(listDupRemoved(List.of(1, 3, 7, 3, 8, 1)));
+        //q5
     }
 
     private static int kGreatest(int[] arr, int n) {
@@ -42,8 +45,8 @@ public class Main {
         return fibRec(index - 1) + fibRec(index - 2);
     }
     private static <T> List<T> listDupRemoved(List<T> list) {
-        var newList = new ArrayList<T>();
-
+        return list.stream().filter(a -> Collections.frequency(list, a) < 2).toList();
     }
+
 
 }
